@@ -348,5 +348,90 @@ substantially completed:
       fully green (frontend+backend). **Not yet done**: exercising a full pipeline run
       (`POST /api/pipeline/run`) through the live frontend in an actual browser - the
       individual pieces are verified live but the full user journey isn't yet.
+- [x] ~~Exercise the full pipeline run through the live frontend in an actual browser~~ —
+      DONE this session (2026-09-22), see session log entry below. Found and fixed a long
+      chain of real bugs the way live testing keeps finding them: wrong request-body field
+      names, response-shape mismatches, a broken FastAPI JSON encoder path, a completely
+      fake 3D viewer, and 3D style buttons that didn't do anything visible. All fixed,
+      redeployed, and re-verified live via Claude-in-Chrome + direct curl.
 - [ ] Full Definition-of-Done checklist review against
       `docs/client_provided/complete_phase_plan.md` before considering the project done.
+
+---
+
+## Session log — 2026-09-22 14:02 UTC
+
+Continuing from a prior session that left backend/frontend fixes uncommitted in the
+working tree (docking.py, ml.py, pipeline.py, Targets.jsx, PipelineRun.jsx ID fix).
+User's ask this session: fix the sharp-edged protein-shape dropdown, check whether the
+"3D thing" is dummy, and finish whatever's left.
+
+**Committed/deployed in order (6 commits, each redeployed to HF Space + Vercel and
+re-verified live before moving to the next):**
+
+1. `71278f2` — pushed the prior session's uncommitted fixes: docking.py/ml.py/pipeline.py
+   wrong-method-name fallbacks (agent.dock/predict/explain didn't exist → fell back to
+   random.seed fake scores), Results.jsx was passing the compound ID as `smiles` to
+   docking/ML/XAI instead of resolving the real SMILES first, Targets.jsx field-name
+   mismatch, PipelineRun.jsx's fake setTimeout-only "6 steps" animation replaced with one
+   that narrates while the REAL pipeline call runs in the background (caps at 92% until
+   it actually resolves, shows a real error on failure), rounded-corner dropdown fix
+   (native `<select>` needs `appearance-none` — `rounded-2xl` alone is ignored by most
+   browsers) on both the pipeline page and SearchBar.
+   - **Deploy hiccup found+fixed in the same pass**: `hf upload backend/ .` silently
+     overwrote the HF Space's root `README.md` (which carries required
+     `sdk: docker`/`app_port` YAML frontmatter) with `backend/README.md` (a plain doc,
+     no frontmatter) → Space went to `CONFIG_ERROR`. Recovered the correct README from
+     Space commit history, restored it, and **renamed `backend/README.md` →
+     `backend/BACKEND_README.md`** in the repo so this can't happen again on future
+     uploads. If you ever re-run `hf upload bhumika-tewari-282006/ayurvedic-drug-discovery-backend backend/ . --repo-type space`, this collision is now avoided.
+2. `43afd05` — `/ml/explain` still 500'd after live testing: `expl.__dict__` (raw
+   dataclass) left numpy arrays nested inside it, which FastAPI's `jsonable_encoder`
+   cannot serialize. Fixed to use `explain_prediction(..., return_evidence_tagged=True)`
+   + `.to_dict()`, same pattern the rest of the codebase already uses.
+3. `6dd738e` — all 5 endpoints returned real 200s but the UI showed 0.00/NaN/empty
+   everywhere because real backend field names don't match what the (already-built, not
+   rewritten) display components expect: `best_affinity_kcal_mol`/`all_poses` vs.
+   `affinity_kcal_mol`/`poses`; `predicted_pkd`/`applicability_domain.is_inside` (word
+   confidence) vs. `pKd_pred`/`.inside` (numeric 0-1 confidence); nested
+   `data.shap.top_features` ([name, shapValue] pairs) vs. a flat `topFeatures` array.
+   Added `normalizeDocking`/`normalizeMLPrediction`/`normalizeExplanation` in `api.js`
+   (same pattern as the pre-existing `normalizeCompound`) rather than rewriting the
+   components. `affinity_nM` is a real pKd→nM conversion (`10^(9-pKd)`), not fabricated.
+4. `15acc53` — **the actual "is the 3D thing dummy" answer: yes.**
+   `MoleculeViewer.jsx`'s `defaultLigandSDF` was literally commented `Withaferin A mock`
+   (8 fabricated atoms) and `defaultProteinPDB` was a fake 6-residue fragment — and
+   `Results.jsx` never passed real `proteinPDB`/`ligandSDF` props at all, so EVERY
+   result page showed the same fake molecule regardless of compound. Real structures
+   already existed on disk mid-request (`prepare_ligand` does a real RDKit 3D
+   embed+MMFF optimize; `prepare_protein` fetches the real RCSB crystal structure or the
+   CI-cached one) but were never read back into the API response. Fixed:
+   `docking_agent.py`'s `run_docking()` now reads both real PDB files and returns them
+   as `data.structures.{ligand_pdb, protein_pdb}` (honest empty string if a file is
+   genuinely missing, never fabricated); wired through `api.js` → `Results.jsx` →
+   `MoleculeViewer`'s new `ligandPDB` prop. Verified live via curl: real 6613-byte
+   RDKit-embedded Withaferin A ligand + the real 239KB RCSB 6LU7 (COVID-19 Mpro) crystal
+   structure, confirmed rendering in the browser.
+5. `ec3f8a5` — user immediately caught the follow-on bug: all 4 style buttons
+   (Sticks/Balls/Lines/Ribbons) looked identical even with real data, because they only
+   ever restyled the tiny ligand (model 1) — the protein (model 0, hundreds of residues,
+   dominates the view) was hardcoded to cartoon+stick regardless of the selected button.
+   Extracted `proteinStyleFor()`/`ligandStyleFor()`, applied both models' styles together
+   on init and on every button change. Verified live: "Sticks" now shows the full
+   all-atom protein, "Ribbons" shows a visibly distinct cartoon backbone with real
+   helices/sheets.
+
+**Lesson reinforced (again) this session**: every one of bugs 1-5 above passed a code
+read and "looks right" review earlier — every single one was only found by actually
+clicking through the live deployed app and reading real network responses / HF Space
+logs. Static review does not substitute for exercising the real endpoints end-to-end.
+**Deploy-tooling lesson (new)**: `hf upload <space> <local_dir> .` overwrites the
+Space's ENTIRE root, including files that only exist on the Space (like its
+YAML-frontmatter README) and were never part of the git repo being uploaded — always
+check `hf spaces logs`/Space status after any such upload, not just after a code change.
+
+**Not yet done**: full Definition-of-Done checklist pass against
+`docs/client_provided/complete_phase_plan.md`; `/candidates/rank` (the Shortlist/ranking
+page's batch docking) was not checked for the same real-3D-structure gap this session —
+worth a quick live check next session since it shares `DockingAgent` but calls
+`batch_docking()`, a separate method from the now-fixed `run_docking()`.
