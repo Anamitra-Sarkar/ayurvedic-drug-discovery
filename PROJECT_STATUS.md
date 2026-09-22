@@ -526,3 +526,125 @@ analysis" flow was silently broken until the timeout fix — now confirmed worki
 end-to-end live. Remaining before a confident "ready" call: the Definition-of-Done pass
 against `docs/client_provided/complete_phase_plan.md` (still not done, tracked above),
 and ideally a real mobile-device spot check given the emulation limitation.
+
+---
+
+## Session log — 2026-09-22 15:34 UTC (continuation, same day, final push)
+
+User sent a real mobile screenshot (DevTools docked, genuinely narrow ~410px render —
+more reliable than this session's broken `resize_window` tool) showing results content
+cut off with no scrollbar. Then, mid-session, pasted the client's own message describing
+the final literature-review document structure and said to do a full completion/
+submission-readiness check. 12 more commits this session (`270ad2a` through `143b7bd`),
+every one redeployed and re-verified live.
+
+**The narrow-viewport cutoff (real bug, root-caused correctly):** CSS grid/flex items
+default to `min-width: auto` (their content's intrinsic min-content size), which
+overrides an inner `overflow-x-auto` scroller's containment and forces the WHOLE grid
+row — and with it the whole page — wider than the viewport. `DockingResults.jsx`'s Best
+Attempts table (`min-w-[420px]`, meant to scroll horizontally on its own) was silently
+pushing its entire ancestor grid item past 100vw. Before the earlier session's
+`overflow-x:hidden` fix this showed as the page "zooming out"; after it, the excess
+content became genuinely unreachable — a real regression that fix introduced, now
+properly fixed at the root: `.card` got `min-width:0` (frontend/src/index.css), and the
+plain (non-`.card`) grid-item wrapper divs in `Results.jsx`/`CompoundDetail.jsx` got
+explicit `min-w-0`. While fixing `CompoundDetail.jsx`: found and fixed a **second,
+independent copy** of the compound-ID-passed-as-SMILES bug already fixed in `Results.jsx`
+earlier — this page has its own copy of the same data-loading logic and was never
+touched when the bug was first found.
+
+**Two real build breaks, both self-inflicted and both caught before staying broken:**
+JSDoc comments describing markdown syntax (`**Answer:**/`, `*italic*/`) each contained a
+literal `*/` mid-sentence — the block-comment close token — which silently truncated the
+comment and left a stray token that broke `esbuild`. Brace-balance counting (this
+session's earlier verification method) cannot catch this class of bug; **switched to an
+actual `esbuild` bundle of the real `App.jsx` entry point** (with real imports, i.e. an
+actual build, not one file in isolation) as the standard pre-push check from this point
+on. Vercel's own deploy failure output (`vercel ls` showing `● Error`, then
+`vercel inspect --logs <url>`) was how the first break was caught after a push+deploy
+had already gone out — the second was caught locally before pushing.
+
+**Literature-panel rendering, iterated three times against real live answers (each
+found by the user pointing out a still-broken piece — genuinely different real LLM
+outputs use genuinely different markdown structure, so each iteration surfaced a new
+real pattern, not the same bug twice):**
+1. Raw `**Answer:**`/`**Disclaimer:**` markdown asterisks showing literally — first fix
+   just stripped bold markers and cut boilerplate, assuming a fixed answer shape.
+2. A *different* real answer (no `**Answer:**` prefix, `###` headings, `-` bullets,
+   `*italic*` plant names, `---` rules) showed the first fix was shape-specific, not
+   general. Replaced the plain-text stripper with a real dependency-free renderer,
+   `frontend/src/utils/markdownLite.jsx` (headings/bullets/numbered-lists/hr/inline
+   bold+italic rendered as real `<ul>`/`<li>`/`<h4>`/`<em>`, not de-asterisked text). No
+   npm package added — avoided an unverified remote-build risk on top of everything
+   else moving fast this session; the renderer only needs to cover patterns real answers
+   have actually used, not arbitrary markdown.
+3. Yet another real answer used a markdown pipe table (`| Evidence type | Finding |
+   Source |`) and literal `<sup>`/`<sub>` HTML tags for chemistry notation
+   (`M<sup>pro</sup>`, `IC<sub>50</sub>`) — neither handled yet. Added table-block
+   parsing (real `<table>`) and sup/sub inline matching. Then found the sup/sub
+   detection didn't fire when *nested* inside a bold span (`**title with <sup>pro</sup>**`)
+   because the original `renderInline` was a single non-recursive regex pass — the bold
+   match's captured group swallowed the literal `<sup>...` text as a plain string.
+   Made `renderInline` recurse into every match's captured text; terminates safely since
+   each recursive call always operates on a strictly shorter substring. **Verified live
+   end-to-end after this: real headings, bold, italic, superscript/subscript chemistry
+   notation, and a properly rendered table all confirmed correct in the browser.**
+
+**Found via reading the client's own message + cross-checking `docs/`:**
+`docs/LITERATURE_REVIEW_COMBINED.md` was independently verified to match the client's
+described final structure exactly — Section 2 (Project Overview: six functional layers +
+five evidentiary tiers + AYUSH-64 justification), Section 3 (3.1 Purpose/Scope + 3.2.A
+through 3.2.G, all seven areas present), Section 4 (Literature Review Matrix, 20 real
+rows in `docs/LITERATURE_MATRIX.md`), Section 5 (Research and Engineering Gap: real
+pipeline-flow diagram, the five-category evidence taxonomy, an explicit "must not
+present a computational prediction as clinical proof" statement), Section 6 (References
+— confirmed exactly 40 numbered entries via grep). No fabrication or gaps found in this
+document.
+
+**One more real dummy-data finding via top-to-bottom audit (not user-reported this
+time):** the Shortlist/Ranking page (`/ranking`) showed "Trust 0%" and "0% grounded" for
+every single candidate — a real, undifferentiated computed-looking zero that was
+actually just an absent computation. Root cause: `/candidates/rank`'s real
+`batch_docking()` path only ever computes DATABASE_DERIVED + DOCKING_RESULT per
+candidate (confirmed via the endpoint's own real `tiersPresent` field) - it never runs
+ML/XAI/literature for a whole ranked list of up to 11 candidates (too slow to do
+per-candidate on every shortlist view, unlike the single-compound Results page).
+`CandidateRankingTable.jsx` read the always-undefined `c.ml`/`c.literature` fields with
+`|| 0` fallbacks, silently rendering a real-looking zero — exactly the kind of
+undifferentiated claim `docs/LITERATURE_REVIEW_COMBINED.md` Section 5's own evidentiary
+rule says a computational result must never collapse into. Fixed: added `hasTier()`
+reading the real `tiersPresent` array, all 6 render sites (mobile card, desktop table,
+both expandable breakdowns) now show an honest "Not computed for this shortlist"
+instead. **This was found by the audit, not reported by the user — the Definition-of-
+Done pass paid for itself.**
+
+**Verified this session, confirmed live/public:**
+- CI green on every one of this session's ~16 commits (one real failure, caught and
+  fixed same session: the `*/`-in-comment build break).
+- GitHub repo: public (`gh repo view` → `"visibility":"PUBLIC"`).
+- HF Space (`bhumika-tewari-282006/ayurvedic-drug-discovery-backend`): public
+  (`space_info().private == False`), `/docs` returns 200.
+- HF model (`bhumika-tewari-282006/ayurvedic-drug-discovery-affinity-model`): public.
+- Vercel (`ayurvedic-drug-discovery.vercel.app`): 200, latest deploy `Ready`.
+- Compound-descriptor fix (drug_likeness → oil-water/exposed-surface/bonding/balance)
+  confirmed generalizing correctly across the full `/compounds` list, not just one
+  compound's Results page — real, distinct values per compound.
+- `/about` page spot-checked: clean, honest, no dummy content, matches the app's plain-
+  language design throughout.
+
+**Still not done / honest open items:**
+- The visual mobile-viewport re-check remains blocked by this session's `resize_window`
+  tool not actually changing `window.innerWidth` (confirmed via JS: stayed ~1880px
+  regardless of the requested 390×844) — the CSS grid min-width fix is verified correct
+  by direct cause analysis and by checking the live deployed CSS bundle contains
+  `min-width:0` on `.card`, but not by an actual narrow-viewport screenshot. A real phone
+  or a working device-emulation environment should confirm this before calling the
+  mobile experience fully done.
+- `/candidates/rank`'s batch endpoint could, in principle, be extended to run real
+  ML/XAI for each candidate for a fuller Shortlist view — deliberately not done this
+  session (too slow/expensive for a bulk endpoint); the honest "not computed" state is
+  the correct interim answer, not a placeholder for later silent fabrication.
+- No further check was done this session of `docs/DATA_PROVENANCE.md`,
+  `docs/REPRODUCIBILITY.md`, `docs/SCIENTIFIC_LIMITATIONS.md`,
+  `docs/DEPLOYMENT_VERIFICATION.md` beyond confirming they exist and have real content
+  (from earlier sessions) — not re-read line by line this session.
