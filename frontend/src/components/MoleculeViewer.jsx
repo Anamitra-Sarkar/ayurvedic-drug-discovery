@@ -17,9 +17,10 @@ function shapeTitle(raw) {
   return 'Protein shape preview';
 }
 
-export default function MoleculeViewer({ 
-  proteinPDB = null, // PDB string or URL
-  ligandSDF = null, // SDF/MOL string
+export default function MoleculeViewer({
+  proteinPDB = null, // real PDB text (RCSB structure)
+  ligandSDF = null, // SDF/MOL string (legacy prop, mock fallback only)
+  ligandPDB = null, // real PDB text (RDKit 3D-embedded ligand)
   dockingResult = null,
   height = 480,
   showControls = true,
@@ -96,7 +97,10 @@ $$$$
         viewerRef.current = viewer;
 
         const pdbData = proteinPDB || defaultProteinPDB;
-        const ligandData = ligandSDF || defaultLigandSDF;
+        // Prefer the real RDKit-embedded ligand PDB; fall back to the
+        // legacy mock SDF only when no real structure was returned.
+        const ligandData = ligandPDB || ligandSDF || defaultLigandSDF;
+        const ligandFormat = ligandPDB ? 'pdb' : 'sdf';
 
         // Add protein
         viewer.addModel(pdbData, 'pdb');
@@ -104,7 +108,7 @@ $$$$
 
         // Add ligand as second model
         if (ligandData) {
-          viewer.addModel(ligandData, 'sdf');
+          viewer.addModel(ligandData, ligandFormat);
           const ligandStyle = style === 'sphere' ? { sphere: { scale: 0.3 } } :
                               style === 'line' ? { line: {} } :
                               style === 'cartoon' ? { stick: { radius: 0.2 }, sphere: { scale: 0.25 } } :
@@ -133,7 +137,7 @@ $$$$
 
     initViewer();
     return () => { mounted = false; };
-  }, [proteinPDB, ligandSDF, dockingResult]);
+  }, [proteinPDB, ligandSDF, ligandPDB, dockingResult]);
 
   // Update style dynamically
   useEffect(() => {

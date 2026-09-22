@@ -121,7 +121,7 @@ export default function Results() {
           )}
           {tab === 'shape' && (
             <div className="grid gap-5 lg:grid-cols-5">
-              <div className="lg:col-span-3"><MoleculeViewer dockingResult={fit} height={440} /></div>
+              <div className="lg:col-span-3"><MoleculeViewer dockingResult={fit} proteinPDB={fit?.protein_pdb} ligandPDB={fit?.ligand_pdb} height={440} /></div>
               <div className="lg:col-span-2"><DockingResults result={fit} /></div>
             </div>
           )}

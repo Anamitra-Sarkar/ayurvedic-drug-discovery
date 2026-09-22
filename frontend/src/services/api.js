@@ -212,6 +212,11 @@ function normalizeDocking(r) {
     rmsd,
     poseCluster: poses.length,
     interactions: d.interactions || [],
+    // Real RDKit-embedded ligand PDB + real RCSB protein PDB (empty string
+    // if the backend genuinely couldn't produce one - MoleculeViewer falls
+    // back to its own honestly-labeled mock only when these are empty).
+    ligand_pdb: d.structures?.ligand_pdb || '',
+    protein_pdb: d.structures?.protein_pdb || '',
   };
 }
 

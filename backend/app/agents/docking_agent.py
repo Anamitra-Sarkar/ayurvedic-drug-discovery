@@ -705,6 +705,22 @@ ENDROOT
         features = prep_lig.features
         target_gene = prep_prot.gene_symbol
 
+        # Real 3D coordinates for the frontend's 3Dmol.js viewer, which
+        # previously always rendered a hardcoded 8-atom fake ligand/16-atom
+        # fake protein snippet regardless of what was actually docked - real
+        # structures exist on disk at this point (prepare_ligand did a real
+        # RDKit 3D embed + MMFF optimize; prepare_protein fetched the real
+        # RCSB structure or the CI-cached one) but were never read back and
+        # returned to the API caller. Honest empty string if a file is
+        # somehow missing - never a fabricated fallback here.
+        def _read_pdb_text(path: Optional[str]) -> str:
+            try:
+                return Path(path).read_text() if path and os.path.exists(path) else ""
+            except Exception:
+                return ""
+        ligand_pdb_text = _read_pdb_text(prep_lig.pdb_path)
+        protein_pdb_text = _read_pdb_text(prep_prot.pdb_path)
+
         # 3 docking execution
         affinity = None
         poses: List[DockingPose] = []
@@ -848,6 +864,11 @@ ENDROOT
                 "contacts": best_pose.interactions_hint
             } if best_pose else None,
             "features": features.to_dict() if features else {},
+            "structures": {
+                "ligand_pdb": ligand_pdb_text,
+                "protein_pdb": protein_pdb_text,
+                "ligand_format": "pdb",
+            },
             "scoring_breakdown": scoring_breakdown,
             "preparation": {
                 "ligand_log": prep_lig.preparation_log,
