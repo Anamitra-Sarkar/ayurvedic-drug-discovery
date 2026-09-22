@@ -49,14 +49,23 @@ export default function PipelineRun() {
     addLog('i', `Finding ${compoundId} in the plant library…`);
 
     let step = 0;
+    const startedAt = Date.now();
     const timer = setInterval(() => {
-      if (step >= NARRATION.length) return;
-      const n = NARRATION[step];
-      setActiveLayer(n.id);
-      addLog(n.id, n.msg);
-      setStatus({ progress: n.cap, stage: `Working — this can take a little while on real chemistry` });
-      step += 1;
-    }, 1100);
+      if (step < NARRATION.length) {
+        const n = NARRATION[step];
+        setActiveLayer(n.id);
+        addLog(n.id, n.msg);
+        setStatus({ progress: n.cap, stage: `Working — this can take a little while on real chemistry` });
+        step += 1;
+        return;
+      }
+      // Real docking + ML + XAI + a real literature LLM call genuinely
+      // takes ~60-90s end to end (timed live at 70s) - once the 6 narration
+      // steps run out, keep sending a real-elapsed-time heartbeat so the
+      // page never looks frozen for the remaining wait.
+      const elapsed = Math.round((Date.now() - startedAt) / 1000);
+      addLog('vi', `Still working — real chemistry takes longer than a demo would (${elapsed}s so far)…`);
+    }, 5000);
 
     try {
       const job = await apiClient.runPipeline({ compound_id: compoundId, target });
@@ -81,7 +90,7 @@ export default function PipelineRun() {
         <h1 className="font-display text-3xl md:text-4xl font-semibold text-forest-950 dark:text-cream-50">Run a new analysis</h1>
         <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-forest-800/80 dark:text-cream-100/70">
           Pick a compound and a protein shape. We will walk through six gentle steps and explain each one —
-          about a minute, with plain words throughout.
+          real computation, usually one to two minutes, with plain words throughout.
         </p>
       </div>
 

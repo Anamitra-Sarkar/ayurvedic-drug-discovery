@@ -154,7 +154,7 @@ export default function NetworkGraph({ networkData, loading }) {
           <div className="w-8 h-8 shrink-0 rounded-lg bg-green-700 text-white flex items-center justify-center">🕸️</div>
           <div className="min-w-0">
             <div className="font-display font-semibold text-sm truncate">Triphala plant map</div>
-            <div className="font-mono text-[10px] sm:text-[11px] text-slate-500 leading-snug">Plant connections — 3 plants • 174 bioactives • 6 targets • {filtered.edges.length} edges</div>
+            <div className="font-mono text-[10px] sm:text-[11px] text-slate-500 leading-snug">Plant connections — {stats?.plants ?? 3} plants • {stats?.bioactives ?? 174} bioactives • {stats?.targets ?? '—'} shared targets (literature) • {filtered.edges.length} edges shown</div>
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-1.5 overflow-x-auto">
@@ -167,7 +167,7 @@ export default function NetworkGraph({ networkData, loading }) {
         {[
           {id:'all', label:'All'},
           {id:'plant', label:'Plants'},
-          {id:'compound', label:'Compounds (174)'},
+          {id:'compound', label:`Compounds (${stats?.bioactives ?? 174})`},
           {id:'target', label:'Targets'},
         ].map(b=>(
           <button key={b.id} onClick={()=>setFilter(b.id)} className={`px-3 py-1.5 rounded-full text-xs font-medium border ${filter===b.id ? 'bg-slate-900 text-white border-slate-900' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'}`}>{b.label}</button>

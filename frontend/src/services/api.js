@@ -517,7 +517,13 @@ export const apiClient = {
 
   async runPipeline(payload) {
     try {
-      const res = await api.post('/pipeline/run', payload);
+      // The real 9-node orchestrator (docking + ML + XAI + literature RAG,
+      // several real Groq LLM calls) genuinely takes ~60-90s end to end -
+      // confirmed via a live timed run (70s). The global 30s axios timeout
+      // was aborting every single real run before it could finish, which
+      // looked like "the backend is down" but was purely a client-side
+      // timeout set too short for honest (non-mocked) computation time.
+      const res = await api.post('/pipeline/run', payload, { timeout: 150000 });
       return res.data;
     } catch (e) {
       if (DEV) {
