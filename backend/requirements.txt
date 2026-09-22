@@ -35,11 +35,17 @@ torch==2.4.1  # unused in current codebase, verify before removing
 # Fallback: scikit-learn TF-IDF used if sentence-transformers/faiss unavailable
 
 # --- Orchestration / LLM ---
-langgraph==0.2.28  # unused in current codebase, verify before removing
-langchain==0.3.7  # unused in current codebase, verify before removing
-langchain-core==0.3.15  # unused in current codebase, verify before removing
-langchain-community==0.3.7  # unused in current codebase, verify before removing
-langchain-openai==0.2.12  # unused in current codebase, verify before removing
+# The real orchestrator (backend/app/agents/orchestrator.py) is a hand-rolled
+# state machine, NOT built on the langgraph/langchain library (confirmed unused
+# by grep in chunk A2). These 5 packages have a version conflict with each
+# other in a fresh resolver (langchain-core pin incompatible with the others)
+# and break CI/fresh installs for no benefit. Commented out rather than
+# deleted in case a future phase genuinely adopts langgraph.
+# langgraph==0.2.28
+# langchain==0.3.7
+# langchain-core==0.3.15
+# langchain-community==0.3.7
+# langchain-openai==0.2.12
 # Direct OpenAI client actually imported (with mock-LLM fallback if absent):
 # - backend/app/core/rag/generator.py: `import openai` (try/except, OPENAI_AVAILABLE flag)
 openai==1.55.3  # imported in app/core/rag/generator.py, optional — falls back to mock generator without API key
