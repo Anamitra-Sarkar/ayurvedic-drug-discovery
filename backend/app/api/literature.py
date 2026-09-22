@@ -10,24 +10,27 @@ async def query_literature(q: str = Query(..., description="Scientific question"
     try:
         from app.agents.literature_agent import LiteratureAgent
         agent = LiteratureAgent()
-        result = agent.query(question=q, top_k=top_k)
+        # NOTE: this previously called agent.query(...), a method that does not
+        # exist on LiteratureAgent - every call silently raised AttributeError
+        # and fell into the except block below, which returned a HARDCODED
+        # fake answer + fake citation IDs (REF_004/007/012) regardless of the
+        # actual question asked. Found via live production testing (identical
+        # byte-for-byte response to unrelated queries). Fixed to call the real,
+        # working method used elsewhere in this codebase (orchestrator.py),
+        # which does real retrieval + real citation-grounded generation
+        # (real LLM via Groq if GROQ_API_KEY is set, honest mock otherwise).
+        tiered = agent.answer_question(q, top_k=top_k)
+        result = tiered.to_dict() if hasattr(tiered, "to_dict") else tiered
         return result
     except Exception as e:
+        # Honest failure - never fabricate citations or an answer.
         return {
             "query": q,
-            "answer": f"Based on retrieved literature, {q} is supported by network pharmacology and docking studies. Triphala shows 174 bioactives [4], IMPPAT contains 1,742 plants [7], Vina is 100x faster [12], BACE1 fusion R2 0.78 [20].",
-            "citations": [
-                {"id": "REF_004", "title": "Triphala network pharmacology", "year": 2023, "relevance": 0.92, "faithfulness": 0.87},
-                {"id": "REF_007", "title": "IMPPAT database", "year": 2018, "relevance": 0.88},
-                {"id": "REF_012", "title": "AutoDock Vina", "year": 2010, "relevance": 0.85}
-            ],
-            "retrieval_metrics": {
-                "hallucination_rate": "0% with RAG vs 40-60% non-RAG [27]",
-                "faithfulness": "0.52->0.87, accuracy 0.54->0.89, hallucination 47.8%->12.3% [28]",
-                "reranking": "Sentence-BERT + FAISS + reranking + Llama 3.2 style"
-            },
+            "error": str(e),
+            "answer": None,
+            "citations": [],
             "evidence_tier": "LITERATURE_DERIVED",
-            "disclaimer": "RAG citation-grounded, requires verification of retrieved papers"
+            "disclaimer": "Real literature retrieval failed for this query - no answer generated. This is not a fabricated result.",
         }
 
 @router.get("/literature/rag-info")
