@@ -285,12 +285,12 @@ function normalizeExplanation(r) {
  * retrievedDocs, query}. The real answer was already being computed
  * honestly (including a correct "the corpus has nothing on this" refusal)
  * but never reached the UI because of this shape mismatch. */
-/** The real Groq answer is markdown with **Answer:**/**Disclaimer:**/
- * **Evidence tier:**/**References** sections - LiteraturePanel.jsx just
- * prints it as plain text (no markdown renderer), so the raw "**" showed
- * up literally. The UI already has its own disclaimer text and evidence-tier
- * badge everywhere, so pull out just the real answer prose instead of
- * adding a markdown renderer for one field. */
+/** The real Groq answer is markdown with bold "Answer:", "Disclaimer:",
+ * "Evidence tier:" and "References" section headers, but LiteraturePanel.jsx
+ * just prints it as plain text (no markdown renderer), so the raw bold
+ * markers showed up literally. The UI already has its own disclaimer text
+ * and evidence-tier badge everywhere, so pull out just the real answer
+ * prose instead of adding a markdown renderer for one field. */
 function cleanLiteratureAnswer(raw) {
   if (!raw) return raw;
   const m = raw.match(/\*\*Answer:?\*\*\s*([\s\S]*?)(?=\n\s*\*\*(?:Disclaimer|Evidence tier|References)|$)/i);
