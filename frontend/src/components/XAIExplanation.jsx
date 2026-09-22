@@ -99,7 +99,7 @@ export default function XAIExplanation({ explanation, loading }) {
           {explanation.topFeatures?.map((f, i) => (
             <div key={i} className="grid grid-cols-12 px-3 py-2 text-xs border-b last:border-0 border-forest-900/5 items-center">
               <span className="col-span-5 font-medium truncate" title={f.feature}>{friendlyFeatureName(f.feature)}</span>
-              <span className="col-span-2 text-forest-700/70 dark:text-cream-100/60">{typeof f.value === 'number' ? f.value.toFixed(2) : String(f.value).slice(0, 20)}</span>
+              <span className="col-span-2 text-forest-700/70 dark:text-cream-100/60">{typeof f.value === 'number' ? f.value.toFixed(2) : (f.value == null ? '—' : String(f.value).slice(0, 20))}</span>
               <span className={`col-span-2 font-semibold ${f.shap >= 0 ? 'text-forest-700' : 'text-gold-600'}`}>{f.shap > 0 ? '+' : ''}{f.shap.toFixed(3)}</span>
               <span className="col-span-3 text-[11px] text-forest-800/75 dark:text-cream-100/70 leading-tight">{plainDescription(f.description)}</span>
             </div>

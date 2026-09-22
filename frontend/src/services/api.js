@@ -188,6 +188,76 @@ function normalizeCompound(rec, fallbackId) {
   };
 }
 
+/** Real DockingAgent.run_docking() returns best_affinity_kcal_mol/all_poses;
+ * DockingResults.jsx reads affinity_kcal_mol/poses/rmsd/poseCluster. Map
+ * real fields through rather than changing the component's contract. */
+function normalizeDocking(r) {
+  const d = r ?? {};
+  const poses = (d.all_poses || d.poses || []).map((p) => ({
+    affinity: p.affinity,
+    rmsd_lb: p.rmsd_lb,
+    rmsd_ub: p.rmsd_ub,
+  }));
+  // "Steadiness": real spread of the runner-up poses' RMSD from the best
+  // pose (mode 1, which is 0 by definition) - a real number derived from
+  // the real docking output, not a placeholder.
+  const others = poses.slice(1);
+  const rmsd = others.length
+    ? (others.reduce((s, p) => s + (p.rmsd_ub || 0), 0) / others.length).toFixed(2)
+    : (poses[0]?.rmsd_ub ?? 0).toFixed(2);
+  return {
+    ...d,
+    affinity_kcal_mol: d.best_affinity_kcal_mol ?? d.affinity_kcal_mol,
+    poses,
+    rmsd,
+    poseCluster: poses.length,
+    interactions: d.interactions || [],
+  };
+}
+
+const AD_CONFIDENCE_WORDS = { low: 0.4, medium: 0.65, high: 0.85 };
+
+/** Real MLAgent.predict() returns predicted_pkd / applicability_domain.is_inside
+ * (confidence as a word: low/medium/high); MLPredictionCard.jsx reads
+ * pKd_pred / applicability_domain.inside (confidence as a 0-1 number). */
+function normalizeMLPrediction(r) {
+  const p = r ?? {};
+  const pkd = p.predicted_pkd ?? p.pKd_pred;
+  const ad = p.applicability_domain || {};
+  const adConfidence = typeof ad.confidence === 'string'
+    ? (AD_CONFIDENCE_WORDS[ad.confidence.toLowerCase()] ?? 0.6)
+    : ad.confidence;
+  return {
+    ...p,
+    pKd_pred: pkd,
+    // pKd = -log10(Kd in M) is a real, standard conversion - not a fabricated number.
+    affinity_nM: typeof pkd === 'number' ? (Math.pow(10, 9 - pkd)).toFixed(1) + ' nM' : undefined,
+    featuresUsed: p.top_features_contrib?.length ?? p.featuresUsed,
+    applicability_domain: { ...ad, inside: ad.is_inside ?? ad.inside, confidence: adConfidence },
+  };
+}
+
+/** Real XAIAgent.explain_prediction()'s evidence-tagged output nests
+ * everything under data.shap.top_features (array of [name, shapValue]
+ * pairs) and metadata.textual_interpretation; XAIExplanation.jsx reads a
+ * flat topFeatures array of {feature, shap, value, description} + summary. */
+function normalizeExplanation(r) {
+  const e = r ?? {};
+  const rawFeatures = e.data?.shap?.top_features || e.topFeatures || [];
+  const topFeatures = Array.isArray(rawFeatures)
+    ? rawFeatures.map((f) => (
+      Array.isArray(f)
+        ? { feature: f[0], shap: f[1], value: null, description: null }
+        : f
+    ))
+    : [];
+  return {
+    ...e,
+    topFeatures,
+    summary: e.metadata?.textual_interpretation ?? e.summary,
+  };
+}
+
 export const apiClient = {
   async searchCompounds(query, filters = {}) {
     try {
@@ -235,7 +305,7 @@ export const apiClient = {
     try {
       // Real route is POST /docking/run, DockingRequest = {smiles, protein_pdb_id, phytochemical_name, num_poses}.
       const res = await api.post('/docking/run', { smiles, protein_pdb_id: targetId, phytochemical_name: compoundId });
-      return res.data;
+      return normalizeDocking(res.data);
     } catch (e) {
       if (DEV) {
         console.warn('[DEV fallback] runDocking — local sample data, never served in production');
@@ -249,7 +319,7 @@ export const apiClient = {
     try {
       // Real route is POST /ml/predict, MLRequest = {smiles, docking_affinity, features?}.
       const res = await api.post('/ml/predict', { smiles, docking_affinity: dockingAffinity });
-      return res.data;
+      return normalizeMLPrediction(res.data);
     } catch (e) {
       if (DEV) {
         console.warn('[DEV fallback] predictAffinity — local sample data, never served in production');
@@ -263,7 +333,7 @@ export const apiClient = {
     try {
       // Real route is POST /ml/explain, MLRequest = {smiles, docking_affinity, features?}.
       const res = await api.post('/ml/explain', { smiles, docking_affinity: dockingAffinity });
-      return res.data;
+      return normalizeExplanation(res.data);
     } catch (e) {
       if (DEV) {
         console.warn('[DEV fallback] explainPrediction — local sample data, never served in production');
