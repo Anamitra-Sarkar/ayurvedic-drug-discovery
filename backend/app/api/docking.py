@@ -1,5 +1,5 @@
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from pydantic import BaseModel
 from typing import List, Optional
 
@@ -42,6 +42,54 @@ async def run_docking(req: DockingRequest):
             "mock_used": True,
             "warning": "NOT clinical proof"
         }
+
+@router.get("/candidates/rank")
+async def rank_candidates(target: str = Query("GABRA1"), limit: int = Query(11, ge=1, le=11)):
+    """Rank the 11 novel neuromodulator candidates via real DockingAgent batch docking."""
+    from app.agents.docking_agent import (
+        DockingAgent,
+        EPILEPSY_TARGETS,
+        ELEVEN_NOVEL_NEUROMODULATOR_CANDIDATES,
+    )
+    agent = DockingAgent()
+    if target in EPILEPSY_TARGETS:
+        tiered = agent.rank_eleven_candidates(target=target)
+        resolved_target = target
+    else:
+        # Treat as a PDB ID override; dock the same real candidate library against it.
+        tiered = agent.batch_docking(
+            phytochemical_library=ELEVEN_NOVEL_NEUROMODULATOR_CANDIDATES,
+            protein_pdb_id=target,
+        )
+        resolved_target = target
+    data = tiered.data if hasattr(tiered, "data") else tiered
+    ranked = (data.get("ranked_results") or [])[:limit]
+    candidates = []
+    for i, r in enumerate(ranked):
+        meta = r.get("library_metadata") or {}
+        candidates.append({
+            "rank": i + 1,
+            "compound": {
+                "id": meta.get("id") or meta.get("imppat_id") or r.get("ligand_id"),
+                "name": meta.get("name"),
+                "plant": meta.get("herb"),
+                "smiles": meta.get("smiles") or meta.get("canonical_smiles"),
+            },
+            "database": {"evidenceTier": "DATABASE_DERIVED", "source": "IMPPAT-derived candidate library"},
+            "docking": {
+                "evidenceTier": "DOCKING_RESULT",
+                "affinity_kcal_mol": r.get("best_affinity_kcal_mol"),
+                "confidence": r.get("confidence_score"),
+            },
+            "tiersPresent": ["DATABASE_DERIVED", "DOCKING_RESULT"],
+        })
+    return {
+        "evidence_tier": "DOCKING_RESULT",
+        "target": resolved_target,
+        "candidates": candidates,
+        "total": len(candidates),
+        "disclaimer": data.get("disclaimer") or "COMPUTATIONAL RANKING ONLY - NOT CLINICAL PRIORITY. Requires validation.",
+    }
 
 @router.get("/docking/scoring-info")
 async def scoring_info():

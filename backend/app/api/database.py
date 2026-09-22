@@ -1,5 +1,5 @@
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, HTTPException
 from typing import List, Optional
 from pathlib import Path
 import json
@@ -31,6 +31,16 @@ async def search_database(
                 filtered = [d for d in data if q.lower() in json.dumps(d).lower()][:20]
             return {"results": filtered, "evidence_tier": "DATABASE_DERIVED", "source": "IMPPAT sample fallback", "count": len(filtered)}
         return {"error": str(e), "evidence_tier": "SYSTEM_ERROR"}
+
+@router.get("/database/compound/{compound_id}")
+async def get_compound(compound_id: str):
+    """Single phytochemical record by compound_id (matches list_all_phytochemicals keys)."""
+    from app.agents.database_agent import DatabaseAgent
+    agent = DatabaseAgent()
+    for rec in agent.list_all_phytochemicals():
+        if rec.get("compound_id") == compound_id or rec.get("imppat_id") == compound_id:
+            return {"result": rec, "evidence_tier": "DATABASE_DERIVED", "source": "IMPPAT sample"}
+    raise HTTPException(status_code=404, detail="Compound not found")
 
 @router.get("/database/plants")
 async def list_plants():

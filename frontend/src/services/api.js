@@ -15,7 +15,12 @@ api.interceptors.response.use(
   }
 );
 
-const MOCK_COMPOUNDS = [
+// Local-dev sample data. NEVER served in production builds: every use below
+// is gated behind `import.meta.env.DEV`, otherwise the error is re-thrown so
+// the UI can show an honest error state instead of fake numbers.
+const DEV = import.meta.env.DEV;
+
+const DEV_FALLBACK_COMPOUNDS = [
   {
     id: 'IMPHY000123',
     name: 'Withaferin A',
@@ -104,7 +109,7 @@ const MOCK_COMPOUNDS = [
   }
 ];
 
-const MOCK_DOCKING = {
+const DEV_FALLBACK_DOCKING = {
   evidenceTier: 'DOCKING_RESULT',
   target: 'SARS-CoV-2 Mpro (6LU7)',
   compoundId: 'IMPHY000123',
@@ -125,7 +130,7 @@ const MOCK_DOCKING = {
   nonClinicalDisclaimer: 'Docking score is computational binding hypothesis, NOT clinical efficacy.',
 };
 
-const MOCK_ML = {
+const DEV_FALLBACK_ML = {
   evidenceTier: 'ML_PREDICTION',
   compoundId: 'IMPHY000123',
   pKd_pred: 7.2,
@@ -136,7 +141,7 @@ const MOCK_ML = {
   featuresUsed: 2048,
 };
 
-const MOCK_XAI = {
+const DEV_FALLBACK_XAI = {
   evidenceTier: 'XAI_INTERPRETATION',
   compoundId: 'IMPHY000123',
   baseValue: 5.8,
@@ -152,7 +157,7 @@ const MOCK_XAI = {
   summary: 'Lactone + aromatic features drive higher affinity prediction',
 };
 
-const MOCK_LIT = {
+const DEV_FALLBACK_LIT = {
   evidenceTier: 'LITERATURE_DERIVED',
   query: 'Withaferin A antiviral Mpro',
   faithfulness: 0.87,
@@ -166,35 +171,63 @@ const MOCK_LIT = {
   nonClinicalDisclaimer: 'RAG synthesis of existing literature, NOT new clinical finding.',
 };
 
+/** Normalize a real IMPPAT record to the card-friendly fields pages read. */
+function normalizeCompound(rec, fallbackId) {
+  const r = rec ?? {};
+  const plants = Array.isArray(r.plant_sources) ? r.plant_sources.join(', ') : (r.plant ?? '');
+  const uses = Array.isArray(r.therapeutic_uses) ? r.therapeutic_uses.join(', ') : (r.traditionalUse ?? '');
+  return {
+    ...r,
+    id: r.compound_id ?? r.imppat_id ?? r.id ?? fallbackId,
+    name: r.compound_name ?? r.name ?? fallbackId,
+    plant: plants,
+    traditionalUse: uses || r.traditionalUse,
+    formula: r.molecular_formula ?? r.formula,
+    mw: r.molecular_weight ?? r.mw,
+    evidenceTier: r.evidence_tier ?? r.evidenceTier ?? 'DATABASE_DERIVED',
+  };
+}
+
 export const apiClient = {
   async searchCompounds(query, filters = {}) {
     try {
       const res = await api.get('/database/search', { params: { q: query, ...filters } });
-      return res.data;
+      const d = res.data ?? {};
+      // Real backend returns {results: [...]}; pages read {data: [...]}.
+      const data = (d.data ?? d.results ?? []).map((c) => normalizeCompound(c));
+      return { ...d, data, count: d.count ?? data.length, query };
     } catch (e) {
-      console.warn('Backend unreachable, using mock IMPPAT data');
-      const q = (query || '').toLowerCase();
-      const filtered = MOCK_COMPOUNDS.filter(c =>
-        !q || c.name.toLowerCase().includes(q) || c.plant.toLowerCase().includes(q) || c.id.toLowerCase().includes(q)
-      );
-      return {
-        evidenceTier: 'DATABASE_DERIVED',
-        query,
-        count: filtered.length,
-        data: filtered,
-        source: 'IMPPAT mock fallback - Tier 1',
-        disclaimer: 'Database-derived, not efficacy.',
-      };
+      if (DEV) {
+        console.warn('[DEV fallback] searchCompounds — local sample data, never served in production');
+        const q = (query || '').toLowerCase();
+        const filtered = DEV_FALLBACK_COMPOUNDS.filter(c =>
+          !q || c.name.toLowerCase().includes(q) || c.plant.toLowerCase().includes(q) || c.id.toLowerCase().includes(q)
+        );
+        return {
+          evidenceTier: 'DATABASE_DERIVED',
+          query,
+          count: filtered.length,
+          data: filtered,
+          source: 'DEV fallback sample - local dev only',
+          disclaimer: 'Database-derived, not efficacy.',
+        };
+      }
+      throw e;
     }
   },
 
   async getCompound(id) {
     try {
-      const res = await api.get(`/compounds/${id}`);
-      return res.data;
-    } catch {
-      const found = MOCK_COMPOUNDS.find(c => c.id === id) || MOCK_COMPOUNDS[0];
-      return { ...found, evidenceTier: 'DATABASE_DERIVED', source: 'Mock fallback' };
+      const res = await api.get(`/database/compound/${id}`);
+      // Real backend wraps the record as {result: {...}}.
+      return normalizeCompound(res.data?.result ?? res.data, id);
+    } catch (e) {
+      if (DEV) {
+        console.warn('[DEV fallback] getCompound — local sample data, never served in production');
+        const found = DEV_FALLBACK_COMPOUNDS.find(c => c.id === id) || DEV_FALLBACK_COMPOUNDS[0];
+        return { ...found, evidenceTier: 'DATABASE_DERIVED', source: 'DEV fallback - local dev only' };
+      }
+      throw e;
     }
   },
 
@@ -202,8 +235,12 @@ export const apiClient = {
     try {
       const res = await api.post('/docking/run', { compound_id: compoundId, target: targetId, box });
       return res.data;
-    } catch {
-      return { ...MOCK_DOCKING, compoundId, target: targetId, timestamp: new Date().toISOString() };
+    } catch (e) {
+      if (DEV) {
+        console.warn('[DEV fallback] runDocking — local sample data, never served in production');
+        return { ...DEV_FALLBACK_DOCKING, compoundId, target: targetId, timestamp: new Date().toISOString() };
+      }
+      throw e;
     }
   },
 
@@ -211,26 +248,40 @@ export const apiClient = {
     try {
       const res = await api.post('/ml/predict', { compound_id: compoundId, target: targetId });
       return res.data;
-    } catch {
-      return { ...MOCK_ML, compoundId, target: targetId };
+    } catch (e) {
+      if (DEV) {
+        console.warn('[DEV fallback] predictAffinity — local sample data, never served in production');
+        return { ...DEV_FALLBACK_ML, compoundId, target: targetId };
+      }
+      throw e;
     }
   },
 
   async explainPrediction(compoundId, targetId = '6LU7') {
     try {
-      const res = await api.post('/xai/explain', { compound_id: compoundId, target: targetId });
+      // Real route is POST /ml/explain, expecting {smiles, docking_affinity, features?}.
+      const res = await api.post('/ml/explain', { smiles: compoundId });
       return res.data;
-    } catch {
-      return { ...MOCK_XAI, compoundId };
+    } catch (e) {
+      if (DEV) {
+        console.warn('[DEV fallback] explainPrediction — local sample data, never served in production');
+        return { ...DEV_FALLBACK_XAI, compoundId };
+      }
+      throw e;
     }
   },
 
   async queryLiterature(query, topK = 5) {
     try {
-      const res = await api.post('/literature/query', { query, top_k: topK });
+      // Real route is GET /literature/query with params q + top_k.
+      const res = await api.get('/literature/query', { params: { q: query, top_k: topK } });
       return res.data;
-    } catch {
-      return { ...MOCK_LIT, query, topK };
+    } catch (e) {
+      if (DEV) {
+        console.warn('[DEV fallback] queryLiterature — local sample data, never served in production');
+        return { ...DEV_FALLBACK_LIT, query, topK };
+      }
+      throw e;
     }
   },
 
@@ -238,66 +289,100 @@ export const apiClient = {
     try {
       const res = await api.get('/candidates/rank', { params: { target, limit } });
       return res.data;
-    } catch {
-      const candidates = MOCK_COMPOUNDS.map((c, i) => ({
-        rank: i + 1,
-        compound: c,
-        database: { evidenceTier: 'DATABASE_DERIVED', qed: c.drugLikeness?.qed || 0.6, lipinskiPass: true },
-        docking: { evidenceTier: 'DOCKING_RESULT', affinity_kcal_mol: -8.4 + i * 0.6, confidence: 0.78 - i * 0.05 },
-        ml: { evidenceTier: 'ML_PREDICTION', pKd_pred: 7.2 - i * 0.3, applicability: 0.81 - i * 0.05 },
-        xai: { evidenceTier: 'XAI_INTERPRETATION', topFeature: 'lactone chemotype', shapSum: 0.74 - i * 0.05 },
-        literature: { evidenceTier: 'LITERATURE_DERIVED', citations: 2 + (i % 3), faithfulness: 0.87 - i * 0.03 },
-        tiersPresent: ['DATABASE_DERIVED','DOCKING_RESULT','ML_PREDICTION','XAI_INTERPRETATION','LITERATURE_DERIVED'],
-      }));
-      return {
-        evidenceTier: 'DATABASE_DERIVED',
-        target,
-        candidates,
-        disclaimer: 'COMPUTATIONAL RANKING ONLY - NOT CLINICAL PRIORITY. Requires validation.',
-        total: candidates.length,
-      };
+    } catch (e) {
+      if (DEV) {
+        console.warn('[DEV fallback] getRankedCandidates — local sample data, never served in production');
+        const candidates = DEV_FALLBACK_COMPOUNDS.map((c, i) => ({
+          rank: i + 1,
+          compound: c,
+          database: { evidenceTier: 'DATABASE_DERIVED', qed: c.drugLikeness?.qed || 0.6, lipinskiPass: true },
+          docking: { evidenceTier: 'DOCKING_RESULT', affinity_kcal_mol: -8.4 + i * 0.6, confidence: 0.78 - i * 0.05 },
+          ml: { evidenceTier: 'ML_PREDICTION', pKd_pred: 7.2 - i * 0.3, applicability: 0.81 - i * 0.05 },
+          xai: { evidenceTier: 'XAI_INTERPRETATION', topFeature: 'lactone chemotype', shapSum: 0.74 - i * 0.05 },
+          literature: { evidenceTier: 'LITERATURE_DERIVED', citations: 2 + (i % 3), faithfulness: 0.87 - i * 0.03 },
+          tiersPresent: ['DATABASE_DERIVED','DOCKING_RESULT','ML_PREDICTION','XAI_INTERPRETATION','LITERATURE_DERIVED'],
+        }));
+        return {
+          evidenceTier: 'DATABASE_DERIVED',
+          target,
+          candidates,
+          disclaimer: 'DEV fallback sample - local dev only. COMPUTATIONAL RANKING ONLY - NOT CLINICAL PRIORITY.',
+          total: candidates.length,
+        };
+      }
+      throw e;
     }
   },
 
   async getTriphalaNetwork() {
     try {
-      const res = await api.get('/network/triphala');
-      return res.data;
-    } catch {
-      const nodes = [
-        { id: 'Emblica officinalis', type: 'plant', label: 'Amalaki', color: '#16a34a', size: 28, bioactives: 68 },
-        { id: 'Terminalia bellirica', type: 'plant', label: 'Bibhitaki', color: '#15803d', size: 26, bioactives: 52 },
-        { id: 'Terminalia chebula', type: 'plant', label: 'Haritaki', color: '#166534', size: 27, bioactives: 54 },
-      ];
-      for (let i = 0; i < 174; i++) {
-        const plant = ['Emblica officinalis','Terminalia bellirica','Terminalia chebula'][i % 3];
-        nodes.push({
-          id: `COMP_${i}`,
-          label: `Phytochem ${i+1}`,
-          type: 'compound',
-          plant,
-          color: '#7c3aed',
-          size: 4 + Math.random()*4,
-          qed: Math.random(),
-        });
-      }
-      const edges = [];
-      nodes.slice(3).forEach(n => {
-        edges.push({ source: n.plant, target: n.id, weight: 1 });
-      });
-      const targets = ['NF-kB','TNF-alpha','IL-6','COX-2','Mpro','ACE2'];
-      targets.forEach(t => nodes.push({ id: t, label: t, type: 'target', color: '#db2777', size: 12 }));
-      nodes.slice(3, 33).forEach(n => {
-        const t = targets[Math.floor(Math.random()*targets.length)];
-        edges.push({ source: n.id, target: t, weight: 0.6, type: 'predicted' });
-      });
+      // Real route is GET /database/triphala: a formulation summary
+      // {formulation, constituents, bioactives, shared_targets, network:{nodes,edges}}.
+      const res = await api.get('/database/triphala');
+      const d = res.data ?? {};
+      const constituents = d.constituents ?? [];
+      const plantColors = ['#16a34a', '#15803d', '#166534'];
+      const nodes = constituents.map((name, i) => ({
+        id: name,
+        label: name,
+        type: 'plant',
+        color: plantColors[i % plantColors.length],
+        size: 28,
+      }));
       return {
-        evidenceTier: 'DATABASE_DERIVED',
-        name: 'Triphala Network Pharmacology (174 bioactives)',
+        ...d,
+        name: d.formulation ? `${d.formulation} formulation summary` : d.name,
         nodes,
-        edges,
-        stats: { plants: 3, bioactives: 174, targets: targets.length, interactions: edges.length },
+        edges: [],
+        stats: {
+          plants: constituents.length,
+          bioactives: d.bioactives ?? 0,
+          targets: d.shared_targets ?? 0,
+          interactions: d.network?.edges ?? 0,
+        },
+        // The backend does not expose per-compound nodes/edges, so the graph
+        // can only show the plant-level summary honestly.
+        summaryOnly: true,
       };
+    } catch (e) {
+      if (DEV) {
+        console.warn('[DEV fallback] getTriphalaNetwork — local sample data, never served in production');
+        const nodes = [
+          { id: 'Emblica officinalis', type: 'plant', label: 'Amalaki', color: '#16a34a', size: 28, bioactives: 68 },
+          { id: 'Terminalia bellirica', type: 'plant', label: 'Bibhitaki', color: '#15803d', size: 26, bioactives: 52 },
+          { id: 'Terminalia chebula', type: 'plant', label: 'Haritaki', color: '#166534', size: 27, bioactives: 54 },
+        ];
+        for (let i = 0; i < 174; i++) {
+          const plant = ['Emblica officinalis','Terminalia bellirica','Terminalia chebula'][i % 3];
+          nodes.push({
+            id: `COMP_${i}`,
+            label: `Phytochem ${i+1}`,
+            type: 'compound',
+            plant,
+            color: '#7c3aed',
+            size: 4 + Math.random()*4,
+            qed: Math.random(),
+          });
+        }
+        const edges = [];
+        nodes.slice(3).forEach(n => {
+          edges.push({ source: n.plant, target: n.id, weight: 1 });
+        });
+        const targets = ['NF-kB','TNF-alpha','IL-6','COX-2','Mpro','ACE2'];
+        targets.forEach(t => nodes.push({ id: t, label: t, type: 'target', color: '#db2777', size: 12 }));
+        nodes.slice(3, 33).forEach(n => {
+          const t = targets[Math.floor(Math.random()*targets.length)];
+          edges.push({ source: n.id, target: t, weight: 0.6, type: 'predicted' });
+        });
+        return {
+          evidenceTier: 'DATABASE_DERIVED',
+          name: 'Triphala Network Pharmacology (174 bioactives)',
+          nodes,
+          edges,
+          stats: { plants: 3, bioactives: 174, targets: targets.length, interactions: edges.length },
+        };
+      }
+      throw e;
     }
   },
 
@@ -314,8 +399,12 @@ export const apiClient = {
     try {
       const res = await api.post('/pipeline/run', payload);
       return res.data;
-    } catch {
-      return { status: 'mock', message: 'Backend not connected - running in demo mode', jobId: 'mock-'+Date.now() };
+    } catch (e) {
+      if (DEV) {
+        console.warn('[DEV fallback] runPipeline — demo mode, local dev only');
+        return { status: 'mock', message: 'Backend not connected - running in demo mode', jobId: 'mock-'+Date.now() };
+      }
+      throw e;
     }
   },
 
@@ -323,8 +412,12 @@ export const apiClient = {
     try {
       const res = await api.get(`/pipeline/status`, { params: { job_id: jobId } });
       return res.data;
-    } catch {
-      return { jobId, status: 'completed', progress: 100, tiers: ['DATABASE_DERIVED','DOCKING_RESULT','ML_PREDICTION','XAI_INTERPRETATION','LITERATURE_DERIVED'] };
+    } catch (e) {
+      if (DEV) {
+        console.warn('[DEV fallback] getPipelineStatus — demo mode, local dev only');
+        return { jobId, status: 'completed', progress: 100, tiers: ['DATABASE_DERIVED','DOCKING_RESULT','ML_PREDICTION','XAI_INTERPRETATION','LITERATURE_DERIVED'] };
+      }
+      throw e;
     }
   }
 };
