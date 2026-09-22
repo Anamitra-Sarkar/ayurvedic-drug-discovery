@@ -113,12 +113,28 @@
       "iupac_name": "(5R,8R,9S,10S,13R,14R,17S)-3-[(2R,3R,4R,5S,6R)-3,4-dihydroxy-6-(hydroxymethyl)-5-[(2S,3R,4S,5S)-3,4,5-trihydroxyoxan-2-yl]oxyoxan-2-yl]oxy-10-(hydroxymethyl)-17-[(2S)-2-hydroxy-6-methylhept-5-en-2-yl]-4,4,8,14-tetramethyl-1,2,3,5,6,7,9,11,12,13,15,17-dodecahydrocyclopenta[a]phenanthren-16-one"
     },
     {
+      "query_name": "Asiatic acid",
+      "pubchem_cid": 119034,
+      "canonical_smiles": "CC1CCC2(CCC3(C(=CCC4C3(CCC5C4(CC(C(C5(C)CO)O)O)C)C)C2C1C)C)C(=O)O",
+      "molecular_formula": "C30H48O5",
+      "molecular_weight": "488.7",
+      "iupac_name": "(1S,2R,4aS,6aR,6aS,6bR,8aR,9R,10R,11R,12aR,14bS)-10,11-dihydroxy-9-(hydroxymethyl)-1,2,6a,6b,9,12a-hexamethyl-2,3,4,5,6,6a,7,8,8a,10,11,12,13,14b-tetradecahydro-1H-picene-4a-carboxylic acid"
+    },
+    {
       "query_name": "Curcumin",
       "pubchem_cid": 969516,
       "canonical_smiles": "COC1=C(C=CC(=C1)C=CC(=O)CC(=O)C=CC2=CC(=C(C=C2)O)OC)O",
       "molecular_formula": "C21H20O6",
       "molecular_weight": "368.4",
       "iupac_name": "(1E,6E)-1,7-bis(4-hydroxy-3-methoxyphenyl)hepta-1,6-diene-3,5-dione"
+    },
+    {
+      "query_name": "Demethoxycurcumin",
+      "pubchem_cid": 5469424,
+      "canonical_smiles": "COC1=C(C=CC(=C1)C=CC(=O)CC(=O)C=CC2=CC=C(C=C2)O)O",
+      "molecular_formula": "C20H18O5",
+      "molecular_weight": "338.4",
+      "iupac_name": "(1E,6E)-1-(4-hydroxy-3-methoxyphenyl)-7-(4-hydroxyphenyl)hepta-1,6-diene-3,5-dione"
     },
     {
       "query_name": "Bisdemethoxycurcumin",
@@ -129,181 +145,353 @@
       "iupac_name": "(1E,6E)-1,7-bis(4-hydroxyphenyl)hepta-1,6-diene-3,5-dione"
     },
     {
+      "query_name": "Berberine",
+      "pubchem_cid": 2353,
+      "canonical_smiles": "COC1=C(C2=C[N+]3=C(C=C2C=C1)C4=CC5=C(C=C4CC3)OCO5)OC",
+      "molecular_formula": "C20H18NO4+",
+      "molecular_weight": "336.4",
+      "iupac_name": "16,17-dimethoxy-5,7-dioxa-13-azoniapentacyclo[11.8.0.02,10.04,8.015,20]henicosa-1(13),2,4(8),9,14,16,18,20-octaene"
+    },
+    {
+      "query_name": "Andrographolide",
+      "pubchem_cid": 5318517,
+      "canonical_smiles": "CC12CCC(C(C1CCC(=C)C2CC=C3C(COC3=O)O)(C)CO)O",
+      "molecular_formula": "C20H30O5",
+      "molecular_weight": "350.4",
+      "iupac_name": "(3E,4S)-3-[2-[(1R,4aS,5R,6R,8aS)-6-hydroxy-5-(hydroxymethyl)-5,8a-dimethyl-2-methylidene-3,4,4a,6,7,8-hexahydro-1H-naphthalen-1-yl]ethylidene]-4-hydroxyoxolan-2-one"
+    },
+    {
       "query_name": "Boswellic acid",
       "pubchem_cid": 168928,
       "canonical_smiles": "CC1CCC2(CCC3(C(=CCC4C3(CCC5C4(CCC(C5(C)C(=O)O)O)C)C)C2C1C)C)C",
       "molecular_formula": "C30H48O3",
       "molecular_weight": "456.7",
       "iupac_name": "(3R,4R,4aR,6aR,6bS,8aR,11R,12S,12aR,14aR,14bR)-3-hydroxy-4,6a,6b,8a,11,12,14b-heptamethyl-2,3,4a,5,6,7,8,9,10,11,12,12a,14,14a-tetradecahydro-1H-picene-4-carboxylic acid"
-    }
-  ],
-  "unresolved": [
-    {
-      "query_name": "Asiatic acid",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Demethoxycurcumin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Berberine",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Andrographolide",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
     },
     {
       "query_name": "Ursolic acid",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+      "pubchem_cid": 64945,
+      "canonical_smiles": "CC1CCC2(CCC3(C(=CCC4C3(CCC5C4(CCC(C5(C)C)O)C)C)C2C1C)C)C(=O)O",
+      "molecular_formula": "C30H48O3",
+      "molecular_weight": "456.7",
+      "iupac_name": "(1S,2R,4aS,6aR,6aS,6bR,8aR,10S,12aR,14bS)-10-hydroxy-1,2,6a,6b,9,9,12a-heptamethyl-2,3,4,5,6,6a,7,8,8a,10,11,12,13,14b-tetradecahydro-1H-picene-4a-carboxylic acid"
     },
+    {
+      "query_name": "Rosmarinic acid",
+      "pubchem_cid": 5281792,
+      "canonical_smiles": "C1=CC(=C(C=C1CC(C(=O)O)OC(=O)C=CC2=CC(=C(C=C2)O)O)O)O",
+      "molecular_formula": "C18H16O8",
+      "molecular_weight": "360.3",
+      "iupac_name": "(2R)-3-(3,4-dihydroxyphenyl)-2-[(E)-3-(3,4-dihydroxyphenyl)prop-2-enoyl]oxypropanoic acid"
+    },
+    {
+      "query_name": "Eugenol",
+      "pubchem_cid": 3314,
+      "canonical_smiles": "COC1=C(C=CC(=C1)CC=C)O",
+      "molecular_formula": "C10H12O2",
+      "molecular_weight": "164.20",
+      "iupac_name": "2-methoxy-4-prop-2-enylphenol"
+    },
+    {
+      "query_name": "Piperine",
+      "pubchem_cid": 638024,
+      "canonical_smiles": "C1CCN(CC1)C(=O)C=CC=CC2=CC3=C(C=C2)OCO3",
+      "molecular_formula": "C17H19NO3",
+      "molecular_weight": "285.34",
+      "iupac_name": "(2E,4E)-5-(1,3-benzodioxol-5-yl)-1-piperidin-1-ylpenta-2,4-dien-1-one"
+    },
+    {
+      "query_name": "Gingerol",
+      "pubchem_cid": 442793,
+      "canonical_smiles": "CCCCCC(CC(=O)CCC1=CC(=C(C=C1)O)OC)O",
+      "molecular_formula": "C17H26O4",
+      "molecular_weight": "294.4",
+      "iupac_name": "(5S)-5-hydroxy-1-(4-hydroxy-3-methoxyphenyl)decan-3-one"
+    },
+    {
+      "query_name": "Shogaol",
+      "pubchem_cid": 5281794,
+      "canonical_smiles": "CCCCCC=CC(=O)CCC1=CC(=C(C=C1)O)OC",
+      "molecular_formula": "C17H24O3",
+      "molecular_weight": "276.4",
+      "iupac_name": "(E)-1-(4-hydroxy-3-methoxyphenyl)dec-4-en-3-one"
+    },
+    {
+      "query_name": "Azadirachtin",
+      "pubchem_cid": 5281303,
+      "canonical_smiles": "CC=C(C)C(=O)OC1CC(C2(COC3C2C14COC(C4C(C3O)(C)C56C7CC(C5(O6)C)C8(C=COC8O7)O)(C(=O)OC)O)C(=O)OC)OC(=O)C",
+      "molecular_formula": "C35H44O16",
+      "molecular_weight": "720.7",
+      "iupac_name": "dimethyl (1S,4S,5R,6S,7S,8R,11S,12R,14S,15R)-12-acetyloxy-4,7-dihydroxy-6-[(1S,2S,6S,8S,9R,11S)-2-hydroxy-11-methyl-5,7,10-trioxatetracyclo[6.3.1.02,6.09,11]dodec-3-en-9-yl]-6-methyl-14-[(E)-2-methylbut-2-enoyl]oxy-3,9-dioxatetracyclo[6.6.1.01,5.011,15]pentadecane-4,11-dicarboxylate"
+    },
+    {
+      "query_name": "Nimbin",
+      "pubchem_cid": 108058,
+      "canonical_smiles": "CC1=C2C(CC1C3=COC=C3)OC4C2(C(C5(C(C4OC(=O)C)C(C=CC5=O)(C)C(=O)OC)C)CC(=O)OC)C",
+      "molecular_formula": "C30H36O9",
+      "molecular_weight": "540.6",
+      "iupac_name": "methyl (1S,2R,3R,4R,8R,9S,10R,13R,15R)-2-acetyloxy-13-(furan-3-yl)-9-(2-methoxy-2-oxoethyl)-4,8,10,12-tetramethyl-7-oxo-16-oxatetracyclo[8.6.0.03,8.011,15]hexadeca-5,11-diene-4-carboxylate"
+    },
+    {
+      "query_name": "Reserpine",
+      "pubchem_cid": 5770,
+      "canonical_smiles": "COC1C(CC2CN3CCC4=C(C3CC2C1C(=O)OC)NC5=C4C=CC(=C5)OC)OC(=O)C6=CC(=C(C(=C6)OC)OC)OC",
+      "molecular_formula": "C33H40N2O9",
+      "molecular_weight": "608.7",
+      "iupac_name": "methyl (1R,15S,17R,18R,19S,20S)-6,18-dimethoxy-17-(3,4,5-trimethoxybenzoyl)oxy-1,3,11,12,14,15,16,17,18,19,20,21-dodecahydroyohimban-19-carboxylate"
+    },
+    {
+      "query_name": "Ajmalicine",
+      "pubchem_cid": 441975,
+      "canonical_smiles": "CC1C2CN3CCC4=C(C3CC2C(=CO1)C(=O)OC)NC5=CC=CC=C45",
+      "molecular_formula": "C21H24N2O3",
+      "molecular_weight": "352.4",
+      "iupac_name": "methyl (1S,15R,16S,20S)-16-methyl-17-oxa-3,13-diazapentacyclo[11.8.0.02,10.04,9.015,20]henicosa-2(10),4,6,8,18-pentaene-19-carboxylate"
+    },
+    {
+      "query_name": "Guggulsterone",
+      "pubchem_cid": 6450278,
+      "canonical_smiles": "CC=C1C(=O)CC2C1(CCC3C2CCC4=CC(=O)CCC34C)C",
+      "molecular_formula": "C21H28O2",
+      "molecular_weight": "312.4",
+      "iupac_name": "(8R,9S,10R,13S,14S,17Z)-17-ethylidene-10,13-dimethyl-1,2,6,7,8,9,11,12,14,15-decahydrocyclopenta[a]phenanthrene-3,16-dione"
+    },
+    {
+      "query_name": "Bacoside A3",
+      "pubchem_cid": 91827005,
+      "canonical_smiles": "CC(=CC1CC(C2C3CCC4C5(CCC(C(C5CCC4(C36CC2(O1)OC6)C)(C)C)OC7C(C(C(C(O7)CO)O)OC8C(C(C(C(O8)CO)O)O)O)OC9C(C(C(O9)CO)O)O)C)(C)O)C",
+      "molecular_formula": "C47H76O18",
+      "molecular_weight": "929.1",
+      "iupac_name": "(2S,3R,4S,5S,6R)-2-[(2R,3R,4S,5R,6R)-5-[(2S,3R,4R,5S)-3,4-dihydroxy-5-(hydroxymethyl)oxolan-2-yl]oxy-3-hydroxy-2-(hydroxymethyl)-6-[[(1S,2R,5R,7S,10R,11R,14R,15S,16S,18R,20S)-16-hydroxy-2,6,6,10,16-pentamethyl-18-(2-methylprop-1-enyl)-19,21-dioxahexacyclo[18.2.1.01,14.02,11.05,10.015,20]tricosan-7-yl]oxy]oxan-4-yl]oxy-6-(hydroxymethyl)oxane-3,4,5-triol"
+    },
+    {
+      "query_name": "Shatavarin IV",
+      "pubchem_cid": 441896,
+      "canonical_smiles": "CC1CCC2(C(C3C(O2)CC4C3(CCC5C4CCC6C5(CCC(C6)OC7C(C(C(C(O7)CO)OC8C(C(C(C(O8)C)O)O)O)O)OC9C(C(C(C(O9)CO)O)O)O)C)C)C)OC1",
+      "molecular_formula": "C45H74O17",
+      "molecular_weight": "887.1",
+      "iupac_name": "(2S,3R,4R,5R,6S)-2-[(2R,3S,4S,5R,6R)-4-hydroxy-2-(hydroxymethyl)-6-[(1R,2S,4S,5'S,6R,7S,8R,9S,12S,13S,16S,18R)-5',7,9,13-tetramethylspiro[5-oxapentacyclo[10.8.0.02,9.04,8.013,18]icosane-6,2'-oxane]-16-yl]oxy-5-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]oxyoxan-3-yl]oxy-6-methyloxane-3,4,5-triol"
+    },
+    {
+      "query_name": "Diosgenin",
+      "pubchem_cid": 99474,
+      "canonical_smiles": "CC1CCC2(C(C3C(O2)CC4C3(CCC5C4CC=C6C5(CCC(C6)O)C)C)C)OC1",
+      "molecular_formula": "C27H42O3",
+      "molecular_weight": "414.6",
+      "iupac_name": "(1S,2S,4S,5'R,6R,7S,8R,9S,12S,13R,16S)-5',7,9,13-tetramethylspiro[5-oxapentacyclo[10.8.0.02,9.04,8.013,18]icos-18-ene-6,2'-oxane]-16-ol"
+    },
+    {
+      "query_name": "Trigonelline",
+      "pubchem_cid": 5570,
+      "canonical_smiles": "C[N+]1=CC=CC(=C1)C(=O)[O-]",
+      "molecular_formula": "C7H7NO2",
+      "molecular_weight": "137.14",
+      "iupac_name": "1-methylpyridin-1-ium-3-carboxylate"
+    },
+    {
+      "query_name": "Solasodine",
+      "pubchem_cid": 442985,
+      "canonical_smiles": "CC1CCC2(C(C3C(O2)CC4C3(CCC5C4CC=C6C5(CCC(C6)O)C)C)C)NC1",
+      "molecular_formula": "C27H43NO2",
+      "molecular_weight": "413.6",
+      "iupac_name": "(1S,2S,4S,5'R,6R,7S,8R,9S,12S,13R,16S)-5',7,9,13-tetramethylspiro[5-oxapentacyclo[10.8.0.02,9.04,8.013,18]icos-18-ene-6,2'-piperidine]-16-ol"
+    },
+    {
+      "query_name": "Colchicine",
+      "pubchem_cid": 6167,
+      "canonical_smiles": "CC(=O)NC1CCC2=CC(=C(C(=C2C3=CC=C(C(=O)C=C13)OC)OC)OC)OC",
+      "molecular_formula": "C22H25NO6",
+      "molecular_weight": "399.4",
+      "iupac_name": "N-[(7S)-1,2,3,10-tetramethoxy-9-oxo-6,7-dihydro-5H-benzo[a]heptalen-7-yl]acetamide"
+    },
+    {
+      "query_name": "Vasicinone",
+      "pubchem_cid": 442935,
+      "canonical_smiles": "C1CN2C(=NC3=CC=CC=C3C2=O)C1O",
+      "molecular_formula": "C11H10N2O2",
+      "molecular_weight": "202.21",
+      "iupac_name": "(3S)-3-hydroxy-2,3-dihydro-1H-pyrrolo[2,1-b]quinazolin-9-one"
+    },
+    {
+      "query_name": "Embelin",
+      "pubchem_cid": 3218,
+      "canonical_smiles": "CCCCCCCCCCCC1=C(C(=O)C=C(C1=O)O)O",
+      "molecular_formula": "C17H26O4",
+      "molecular_weight": "294.4",
+      "iupac_name": "2,5-dihydroxy-3-undecylcyclohexa-2,5-diene-1,4-dione"
+    },
+    {
+      "query_name": "Plumbagin",
+      "pubchem_cid": 10205,
+      "canonical_smiles": "CC1=CC(=O)C2=C(C1=O)C=CC=C2O",
+      "molecular_formula": "C11H8O3",
+      "molecular_weight": "188.18",
+      "iupac_name": "5-hydroxy-2-methylnaphthalene-1,4-dione"
+    },
+    {
+      "query_name": "Lupeol",
+      "pubchem_cid": 259846,
+      "canonical_smiles": "CC(=C)C1CCC2(C1C3CCC4C5(CCC(C(C5CCC4(C3(CC2)C)C)(C)C)O)C)C",
+      "molecular_formula": "C30H50O",
+      "molecular_weight": "426.7",
+      "iupac_name": "(1R,3aR,5aR,5bR,7aR,9S,11aR,11bR,13aR,13bR)-3a,5a,5b,8,8,11a-hexamethyl-1-prop-1-en-2-yl-1,2,3,4,5,6,7,7a,9,10,11,11b,12,13,13a,13b-hexadecahydrocyclopenta[a]chrysen-9-ol"
+    },
+    {
+      "query_name": "Betulinic acid",
+      "pubchem_cid": 64971,
+      "canonical_smiles": "CC(=C)C1CCC2(C1C3CCC4C5(CCC(C(C5CCC4(C3(CC2)C)C)(C)C)O)C)C(=O)O",
+      "molecular_formula": "C30H48O3",
+      "molecular_weight": "456.7",
+      "iupac_name": "(1R,3aS,5aR,5bR,7aR,9S,11aR,11bR,13aR,13bR)-9-hydroxy-5a,5b,8,8,11a-pentamethyl-1-prop-1-en-2-yl-1,2,3,4,5,6,7,7a,9,10,11,11b,12,13,13a,13b-hexadecahydrocyclopenta[a]chrysene-3a-carboxylic acid"
+    },
+    {
+      "query_name": "Wedelolactone",
+      "pubchem_cid": 5281813,
+      "canonical_smiles": "COC1=CC(=C2C(=C1)OC(=O)C3=C2OC4=CC(=C(C=C43)O)O)O",
+      "molecular_formula": "C16H10O7",
+      "molecular_weight": "314.25",
+      "iupac_name": "1,8,9-trihydroxy-3-methoxy-[1]benzofuro[3,2-c]chromen-6-one"
+    },
+    {
+      "query_name": "Apigenin",
+      "pubchem_cid": 5280443,
+      "canonical_smiles": "C1=CC(=CC=C1C2=CC(=O)C3=C(C=C(C=C3O2)O)O)O",
+      "molecular_formula": "C15H10O5",
+      "molecular_weight": "270.24",
+      "iupac_name": "5,7-dihydroxy-2-(4-hydroxyphenyl)chromen-4-one"
+    },
+    {
+      "query_name": "Luteolin",
+      "pubchem_cid": 5280445,
+      "canonical_smiles": "C1=CC(=C(C=C1C2=CC(=O)C3=C(C=C(C=C3O2)O)O)O)O",
+      "molecular_formula": "C15H10O6",
+      "molecular_weight": "286.24",
+      "iupac_name": "2-(3,4-dihydroxyphenyl)-5,7-dihydroxychromen-4-one"
+    },
+    {
+      "query_name": "Kaempferol",
+      "pubchem_cid": 5280863,
+      "canonical_smiles": "C1=CC(=CC=C1C2=C(C(=O)C3=C(C=C(C=C3O2)O)O)O)O",
+      "molecular_formula": "C15H10O6",
+      "molecular_weight": "286.24",
+      "iupac_name": "3,5,7-trihydroxy-2-(4-hydroxyphenyl)chromen-4-one"
+    },
+    {
+      "query_name": "Niazimicin",
+      "pubchem_cid": 5471459,
+      "canonical_smiles": "CCOC(=S)NCC1=CC=C(C=C1)OC2C(C(C(C(O2)C)O)O)O",
+      "molecular_formula": "C16H23NO6S",
+      "molecular_weight": "357.4",
+      "iupac_name": "O-ethyl N-[[4-(3,4,5-trihydroxy-6-methyloxan-2-yl)oxyphenyl]methyl]carbamothioate"
+    },
+    {
+      "query_name": "Rutin",
+      "pubchem_cid": 5280805,
+      "canonical_smiles": "CC1C(C(C(C(O1)OCC2C(C(C(C(O2)OC3=C(OC4=CC(=CC(=C4C3=O)O)O)C5=CC(=C(C=C5)O)O)O)O)O)O)O)O",
+      "molecular_formula": "C27H30O16",
+      "molecular_weight": "610.5",
+      "iupac_name": "2-(3,4-dihydroxyphenyl)-5,7-dihydroxy-3-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-[[(2R,3R,4R,5R,6S)-3,4,5-trihydroxy-6-methyloxan-2-yl]oxymethyl]oxan-2-yl]oxychromen-4-one"
+    },
+    {
+      "query_name": "Catechin",
+      "pubchem_cid": 9064,
+      "canonical_smiles": "C1C(C(OC2=CC(=CC(=C21)O)O)C3=CC(=C(C=C3)O)O)O",
+      "molecular_formula": "C15H14O6",
+      "molecular_weight": "290.27",
+      "iupac_name": "(2R,3S)-2-(3,4-dihydroxyphenyl)-3,4-dihydro-2H-chromene-3,5,7-triol"
+    },
+    {
+      "query_name": "Epicatechin",
+      "pubchem_cid": 72276,
+      "canonical_smiles": "C1C(C(OC2=CC(=CC(=C21)O)O)C3=CC(=C(C=C3)O)O)O",
+      "molecular_formula": "C15H14O6",
+      "molecular_weight": "290.27",
+      "iupac_name": "(2R,3R)-2-(3,4-dihydroxyphenyl)-3,4-dihydro-2H-chromene-3,5,7-triol"
+    },
+    {
+      "query_name": "Cinnamaldehyde",
+      "pubchem_cid": 637511,
+      "canonical_smiles": "C1=CC=C(C=C1)C=CC=O",
+      "molecular_formula": "C9H8O",
+      "molecular_weight": "132.16",
+      "iupac_name": "(E)-3-phenylprop-2-enal"
+    },
+    {
+      "query_name": "Glycyrrhizin",
+      "pubchem_cid": 14982,
+      "canonical_smiles": "CC1(C2CCC3(C(C2(CCC1OC4C(C(C(C(O4)C(=O)O)O)O)OC5C(C(C(C(O5)C(=O)O)O)O)O)C)C(=O)C=C6C3(CCC7(C6CC(CC7)(C)C(=O)O)C)C)C)C",
+      "molecular_formula": "C42H62O16",
+      "molecular_weight": "822.9",
+      "iupac_name": "(2S,3S,4S,5R,6R)-6-[(2S,3R,4S,5S,6S)-2-[[(3S,4aR,6aR,6bS,8aS,11S,12aR,14aR,14bS)-11-carboxy-4,4,6a,6b,8a,11,14b-heptamethyl-14-oxo-2,3,4a,5,6,7,8,9,10,12,12a,14a-dodecahydro-1H-picen-3-yl]oxy]-6-carboxy-4,5-dihydroxyoxan-3-yl]oxy-3,4,5-trihydroxyoxane-2-carboxylic acid"
+    },
+    {
+      "query_name": "Liquiritigenin",
+      "pubchem_cid": 114829,
+      "canonical_smiles": "C1C(OC2=C(C1=O)C=CC(=C2)O)C3=CC=C(C=C3)O",
+      "molecular_formula": "C15H12O4",
+      "molecular_weight": "256.25",
+      "iupac_name": "(2S)-7-hydroxy-2-(4-hydroxyphenyl)-2,3-dihydrochromen-4-one"
+    },
+    {
+      "query_name": "Aloe-emodin",
+      "pubchem_cid": 10207,
+      "canonical_smiles": "C1=CC2=C(C(=C1)O)C(=O)C3=C(C2=O)C=C(C=C3O)CO",
+      "molecular_formula": "C15H10O5",
+      "molecular_weight": "270.24",
+      "iupac_name": "1,8-dihydroxy-3-(hydroxymethyl)anthracene-9,10-dione"
+    },
+    {
+      "query_name": "Emodin",
+      "pubchem_cid": 3220,
+      "canonical_smiles": "CC1=CC2=C(C(=C1)O)C(=O)C3=C(C2=O)C=C(C=C3O)O",
+      "molecular_formula": "C15H10O5",
+      "molecular_weight": "270.24",
+      "iupac_name": "1,3,8-trihydroxy-6-methylanthracene-9,10-dione"
+    },
+    {
+      "query_name": "Chrysophanol",
+      "pubchem_cid": 10208,
+      "canonical_smiles": "CC1=CC2=C(C(=C1)O)C(=O)C3=C(C2=O)C=CC=C3O",
+      "molecular_formula": "C15H10O4",
+      "molecular_weight": "254.24",
+      "iupac_name": "1,8-dihydroxy-3-methylanthracene-9,10-dione"
+    },
+    {
+      "query_name": "Hesperidin",
+      "pubchem_cid": 10621,
+      "canonical_smiles": "CC1C(C(C(C(O1)OCC2C(C(C(C(O2)OC3=CC(=C4C(=O)CC(OC4=C3)C5=CC(=C(C=C5)OC)O)O)O)O)O)O)O)O",
+      "molecular_formula": "C28H34O15",
+      "molecular_weight": "610.6",
+      "iupac_name": "(2S)-5-hydroxy-2-(3-hydroxy-4-methoxyphenyl)-7-[(2S,3R,4S,5S,6R)-3,4,5-trihydroxy-6-[[(2R,3R,4R,5R,6S)-3,4,5-trihydroxy-6-methyloxan-2-yl]oxymethyl]oxan-2-yl]oxy-2,3-dihydrochromen-4-one"
+    },
+    {
+      "query_name": "Naringin",
+      "pubchem_cid": 442428,
+      "canonical_smiles": "CC1C(C(C(C(O1)OC2C(C(C(OC2OC3=CC(=C4C(=O)CC(OC4=C3)C5=CC=C(C=C5)O)O)CO)O)O)O)O)O",
+      "molecular_formula": "C27H32O14",
+      "molecular_weight": "580.5",
+      "iupac_name": "(2S)-7-[(2S,3R,4S,5S,6R)-4,5-dihydroxy-6-(hydroxymethyl)-3-[(2S,3R,4R,5R,6S)-3,4,5-trihydroxy-6-methyloxan-2-yl]oxyoxan-2-yl]oxy-5-hydroxy-2-(4-hydroxyphenyl)-2,3-dihydrochromen-4-one"
+    },
+    {
+      "query_name": "Punicalagin",
+      "pubchem_cid": 16129719,
+      "canonical_smiles": "C1C(C(OC(=O)C2=CC(=C(C(=C2C3=C(C(=C4C5=C3C(=O)OC6=C(C(=C(C7=C(C(=C(C=C7C(=O)O1)O)O)O)C(=C56)C(=O)O4)O)O)O)O)O)O)O)C8C(OC(=O)C9=CC(=C(C(=C9C1=C(C(=C(C=C1C(=O)O8)O)O)O)O)O)O)C=O)O",
+      "molecular_formula": "C48H28O30",
+      "molecular_weight": "1084.7",
+      "iupac_name": "3,4,5,16,17,18-hexahydroxy-8,13-dioxo-11-(3,4,5,11,17,18,19,22,23,34,35-undecahydroxy-8,14,26,31-tetraoxo-9,13,25,32-tetraoxaheptacyclo[25.8.0.02,7.015,20.021,30.024,29.028,33]pentatriaconta-1(35),2,4,6,15,17,19,21,23,27,29,33-dodecaen-10-yl)-9,12-dioxatricyclo[12.4.0.02,7]octadeca-1(18),2,4,6,14,16-hexaene-10-carbaldehyde"
+    }
+  ],
+  "unresolved": [
     {
       "query_name": "Oleanolic acid",
       "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
     },
     {
-      "query_name": "Rosmarinic acid",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Eugenol",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Piperine",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Gingerol",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Shogaol",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Azadirachtin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Nimbin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Reserpine",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Ajmalicine",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Guggulsterone",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Bacoside A3",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
       "query_name": "Gymnemic acid",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Shatavarin IV",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Diosgenin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Trigonelline",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Solasodine",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Colchicine",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+      "error": "HTTPError 404: PUGREST.NotFound {\n  \"Fault\": {\n    \"Code\": \"PUGREST.NotFound\",\n    \"Message\": \"No CID found\",\n    \"Details\": [\n      \"No CID found that matches the given name\"\n    ]\n  }\n}\n"
     },
     {
       "query_name": "Vasicine",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Vasicinone",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Embelin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Plumbagin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Lupeol",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Betulinic acid",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Wedelolactone",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Apigenin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Luteolin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Kaempferol",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Niazimicin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Rutin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Catechin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Epicatechin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Cinnamaldehyde",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Glycyrrhizin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Liquiritigenin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Aloe-emodin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Emodin",
       "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
     },
     {
@@ -311,26 +499,10 @@
       "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
     },
     {
-      "query_name": "Chrysophanol",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Hesperidin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Naringin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
-      "query_name": "Punicalagin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
-    },
-    {
       "query_name": "Ellagic acid tannin",
-      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+      "error": "HTTPError 404: PUGREST.NotFound {\n  \"Fault\": {\n    \"Code\": \"PUGREST.NotFound\",\n    \"Message\": \"No CID found\",\n    \"Details\": [\n      \"No CID found that matches the given name\"\n    ]\n  }\n}\n"
     }
   ],
-  "retrieved_at": "2026-09-22T07:29:33.830877+00:00",
+  "retrieved_at": "2026-09-22T07:38:14.276263+00:00",
   "source": "PubChem PUG-REST"
 }

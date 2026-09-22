@@ -2,11 +2,12 @@
   {
     "ref_number": 1,
     "original_ref_title": "Future of Ayurveda-inspired drug discovery perspective",
-    "matched_title": "Integrating Artificial Intelligence Into Drug Discovery From Medicinal Plants: Current Applications and Infrastructural Challenges.",
-    "doi": "10.1111/cbdd.70372",
-    "pmid": "42535626",
-    "pub_year": "2026",
-    "match_plausible": false
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "Europe PMC query failed or returned nothing: unexpected Europe PMC response shape: 'resultList'"
   },
   {
     "ref_number": 2,
@@ -52,7 +53,7 @@
     "pmid": null,
     "pub_year": null,
     "match_plausible": false,
-    "note": "Europe PMC query failed or returned nothing: unexpected Europe PMC response shape: 'resultList'"
+    "note": "Europe PMC query failed or returned nothing: no results returned by Europe PMC"
   },
   {
     "ref_number": 7,
@@ -67,21 +68,21 @@
   {
     "ref_number": 8,
     "original_ref_title": "Expanded curation base 100+ books traditional Indian medicine 7,000+ published articles largest digital resource of its kind",
+    "matched_title": "Abstracts of the 7th World Parkinson Congress.",
+    "doi": "10.1177/1877718x261451755",
+    "pmid": "42175618",
+    "pub_year": "2026",
+    "match_plausible": false
+  },
+  {
+    "ref_number": 9,
+    "original_ref_title": "Traditional Chinese Medicine Systems Pharmacology database 499 herbs registered Chinese Pharmacopoeia 29,384 ingredients 3,311 targets 837 diseases 12 ADME properties oral bioavailability half-life Caco-2 permeability blood-brain-barrier permeability Lipinski's rule-of-five",
     "matched_title": null,
     "doi": null,
     "pmid": null,
     "pub_year": null,
     "match_plausible": false,
     "note": "Europe PMC query failed or returned nothing: unexpected Europe PMC response shape: 'resultList'"
-  },
-  {
-    "ref_number": 9,
-    "original_ref_title": "Traditional Chinese Medicine Systems Pharmacology database 499 herbs registered Chinese Pharmacopoeia 29,384 ingredients 3,311 targets 837 diseases 12 ADME properties oral bioavailability half-life Caco-2 permeability blood-brain-barrier permeability Lipinski's rule-of-five",
-    "matched_title": "TCMSP: a database of systems pharmacology for drug discovery from herbal medicines.",
-    "doi": "10.1186/1758-2946-6-13",
-    "pmid": "24735618",
-    "pub_year": "2014",
-    "match_plausible": true
   },
   {
     "ref_number": 10,
@@ -100,7 +101,7 @@
     "pmid": null,
     "pub_year": null,
     "match_plausible": false,
-    "note": "Europe PMC query failed or returned nothing: no results returned by Europe PMC"
+    "note": "Europe PMC query failed or returned nothing: unexpected Europe PMC response shape: 'resultList'"
   },
   {
     "ref_number": 12,
@@ -124,12 +125,11 @@
   {
     "ref_number": 14,
     "original_ref_title": "Hybrid AutoDock/Vina scoring function",
-    "matched_title": null,
-    "doi": null,
-    "pmid": null,
-    "pub_year": null,
-    "match_plausible": false,
-    "note": "Europe PMC query failed or returned nothing: unexpected Europe PMC response shape: 'resultList'"
+    "matched_title": "Attracting Cavities 3.0: faster and more versatile molecular docking for the SwissDock webserver.",
+    "doi": "10.1093/bioinformatics/btag466",
+    "pmid": "42635243",
+    "pub_year": "2026",
+    "match_plausible": false
   },
   {
     "ref_number": 15,
@@ -144,12 +144,11 @@
   {
     "ref_number": 16,
     "original_ref_title": "TLR4 binding-affinity ML study",
-    "matched_title": null,
-    "doi": null,
-    "pmid": null,
-    "pub_year": null,
-    "match_plausible": false,
-    "note": "Europe PMC query failed or returned nothing: unexpected Europe PMC response shape: 'resultList'"
+    "matched_title": "MAP Crosslinker Chirality Regulates Macrophage Polarization Through MD-2 Engagement and Enables Tunable Immunomodulation Through Novel Peptide Design.",
+    "doi": "10.1002/adhm.71572",
+    "pmid": "42596107",
+    "pub_year": "2026",
+    "match_plausible": false
   },
   {
     "ref_number": 17,
@@ -342,7 +341,7 @@
     "pmid": null,
     "pub_year": null,
     "match_plausible": false,
-    "note": "Europe PMC query failed or returned nothing: unexpected Europe PMC response shape: 'resultList'"
+    "note": "Europe PMC query failed or returned nothing: no results returned by Europe PMC"
   },
   {
     "ref_number": 37,
