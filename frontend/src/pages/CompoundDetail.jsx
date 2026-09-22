@@ -76,7 +76,7 @@ export default function CompoundDetail() {
             role="tab"
             aria-selected={section === s.id}
             onClick={() => setSection(s.id)}
-            className={`flex-1 whitespace-nowrap rounded-2xl px-4 py-2.5 text-sm font-medium transition active:scale-[0.98] ${section === s.id ? 'bg-forest-700 text-white shadow-card' : 'text-forest-800 hover:bg-cream-100 dark:text-cream-100 dark:hover:bg-white/10'}`}
+            className={`shrink-0 flex-1 min-w-[120px] sm:min-w-0 whitespace-nowrap rounded-2xl px-4 py-2.5 text-sm font-medium transition active:scale-[0.98] ${section === s.id ? 'bg-forest-700 text-white shadow-card' : 'text-forest-800 hover:bg-cream-100 dark:text-cream-100 dark:hover:bg-white/10'}`}
           >
             {s.label}
           </button>

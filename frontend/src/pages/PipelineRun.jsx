@@ -108,7 +108,7 @@ export default function PipelineRun() {
               ))}
             </select>
           </div>
-          <div className="md:col-span-5 flex gap-2">
+          <div className="md:col-span-5 flex flex-col sm:flex-row gap-2">
             <button onClick={runPipeline} disabled={running} className="btn-primary flex-1">
               {running ? <span className="spinner" /> : '▶'} {running ? 'Working…' : 'Start my analysis'}
             </button>

@@ -74,7 +74,7 @@ export default function Results() {
             role="tab"
             aria-selected={tab === t.id}
             onClick={() => setTab(t.id)}
-            className={`flex flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-2.5 text-sm font-medium transition active:scale-[0.98] ${tab === t.id ? 'bg-forest-700 text-white shadow-card' : 'text-forest-800 hover:bg-cream-100 dark:text-cream-100 dark:hover:bg-white/10'}`}
+            className={`flex flex-1 shrink-0 min-w-[130px] sm:min-w-0 items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 py-2.5 text-sm font-medium transition active:scale-[0.98] ${tab === t.id ? 'bg-forest-700 text-white shadow-card' : 'text-forest-800 hover:bg-cream-100 dark:text-cream-100 dark:hover:bg-white/10'}`}
           >
             <span>{t.icon}</span>{t.label}
           </button>

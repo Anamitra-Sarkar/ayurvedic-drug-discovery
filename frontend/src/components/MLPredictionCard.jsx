@@ -40,10 +40,10 @@ export default function MLPredictionCard({ prediction, loading }) {
 
   return (
     <div className="card overflow-hidden">
-      <div className="px-5 py-4 border-b border-forest-900/10 bg-gold-50/50 flex items-center justify-between dark:bg-white/5">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-2xl bg-gold-500 text-white flex items-center justify-center">✨</div>
-          <div>
+      <div className="px-4 py-3 sm:px-5 sm:py-4 border-b border-forest-900/10 bg-gold-50/50 flex flex-wrap items-center justify-between gap-2 dark:bg-white/5">
+        <div className="flex min-w-0 flex-1 items-center gap-2.5">
+          <div className="w-9 h-9 shrink-0 rounded-2xl bg-gold-500 text-white flex items-center justify-center">✨</div>
+          <div className="min-w-0">
             <div className="font-display font-semibold text-[15px] text-forest-950 dark:text-cream-50">
               Strength prediction
               <HowCalculated title="strength prediction">
@@ -53,7 +53,7 @@ export default function MLPredictionCard({ prediction, loading }) {
             <div className="text-[11px] text-forest-700/75 dark:text-cream-100/60">Our model’s best guess · based on {prediction.featuresUsed || 'many'} chemical patterns</div>
           </div>
         </div>
-        <ConfidenceBadge tier="ML_PREDICTION" />
+        <div className="shrink-0"><ConfidenceBadge tier="ML_PREDICTION" size="sm" /></div>
       </div>
 
       <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">

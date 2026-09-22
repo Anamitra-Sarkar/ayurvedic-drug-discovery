@@ -30,10 +30,10 @@ export default function DockingResults({ result, loading }) {
 
   return (
     <div className="card overflow-hidden">
-      <div className="px-5 py-4 border-b border-forest-900/10 bg-forest-50/60 flex items-center justify-between dark:bg-white/5">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-2xl bg-forest-700 text-white flex items-center justify-center">🧩</div>
-          <div>
+      <div className="px-4 py-3 sm:px-5 sm:py-4 border-b border-forest-900/10 bg-forest-50/60 flex flex-wrap items-center justify-between gap-2 dark:bg-white/5">
+        <div className="flex min-w-0 flex-1 items-center gap-2.5">
+          <div className="w-9 h-9 shrink-0 rounded-2xl bg-forest-700 text-white flex items-center justify-center">🧩</div>
+          <div className="min-w-0">
             <div className="font-display font-semibold text-[15px] text-forest-950 dark:text-cream-50">
               Shape fit test
               <HowCalculated title="shape fit test">
@@ -45,7 +45,7 @@ export default function DockingResults({ result, loading }) {
             </div>
           </div>
         </div>
-        <ConfidenceBadge tier="DOCKING_RESULT" />
+        <div className="shrink-0"><ConfidenceBadge tier="DOCKING_RESULT" size="sm" /></div>
       </div>
 
       {meter != null && (
@@ -64,29 +64,30 @@ export default function DockingResults({ result, loading }) {
       )}
 
       <div className="grid grid-cols-3 divide-x divide-forest-900/10 border-b border-forest-900/10 mt-4">
-        <div className="p-4 text-center">
-          <div className="text-[10px] tracking-widest uppercase text-forest-700/70 dark:text-cream-100/60">Best fit score</div>
-          <div className="font-display font-bold text-lg text-forest-950 dark:text-cream-50 mt-1">{result.affinity_kcal_mol}</div>
-          <div className="text-[10px] text-forest-700/60 dark:text-cream-100/50 mt-1">Lower = snugger (a guess)</div>
+        <div className="p-2 sm:p-4 text-center">
+          <div className="text-[9px] sm:text-[10px] tracking-widest uppercase text-forest-700/70 dark:text-cream-100/60">Best fit score</div>
+          <div className="font-display font-bold text-base sm:text-lg text-forest-950 dark:text-cream-50 mt-1 break-words">{result.affinity_kcal_mol}</div>
+          <div className="text-[9px] sm:text-[10px] text-forest-700/60 dark:text-cream-100/50 mt-1">Lower = snugger (a guess)</div>
         </div>
-        <div className="p-4 text-center">
-          <div className="text-[10px] tracking-widest uppercase text-forest-700/70 dark:text-cream-100/60">
+        <div className="p-2 sm:p-4 text-center">
+          <div className="text-[9px] sm:text-[10px] tracking-widest uppercase text-forest-700/70 dark:text-cream-100/60">
             Steadiness
             <HowCalculated title="steadiness">How much the best poses wobble compared with each other. Steadier poses are a little more reassuring — but still only computer guesses.</HowCalculated>
           </div>
-          <div className="font-display font-bold text-lg text-forest-950 dark:text-cream-50 mt-1">{result.rmsd ?? '0.00'}</div>
-          <div className="text-[10px] text-forest-700/60 dark:text-cream-100/50 mt-1">How steady the pose looks</div>
+          <div className="font-display font-bold text-base sm:text-lg text-forest-950 dark:text-cream-50 mt-1 break-words">{result.rmsd ?? '0.00'}</div>
+          <div className="text-[9px] sm:text-[10px] text-forest-700/60 dark:text-cream-100/50 mt-1">How steady the pose looks</div>
         </div>
-        <div className="p-4 text-center">
-          <div className="text-[10px] tracking-widest uppercase text-forest-700/70 dark:text-cream-100/60">Fit styles</div>
-          <div className="font-display font-bold text-lg text-forest-950 dark:text-cream-50 mt-1">{result.poseCluster ?? poses.length}</div>
-          <div className="text-[10px] text-forest-700/60 dark:text-cream-100/50 mt-1">Different ways it can sit</div>
+        <div className="p-2 sm:p-4 text-center">
+          <div className="text-[9px] sm:text-[10px] tracking-widest uppercase text-forest-700/70 dark:text-cream-100/60">Fit styles</div>
+          <div className="font-display font-bold text-base sm:text-lg text-forest-950 dark:text-cream-50 mt-1">{result.poseCluster ?? poses.length}</div>
+          <div className="text-[9px] sm:text-[10px] text-forest-700/60 dark:text-cream-100/50 mt-1">Different ways it can sit</div>
         </div>
       </div>
 
-      <div className="p-5">
+      <div className="p-4 sm:p-5">
         <div className="text-[11px] tracking-wide font-semibold text-forest-800 dark:text-cream-100 mb-2 uppercase">Best attempts</div>
-        <div className="rounded-2xl border border-forest-900/10 overflow-hidden">
+        <div className="overflow-x-auto rounded-2xl border border-forest-900/10">
+          <div className="min-w-[420px]">
           <div className="grid grid-cols-4 bg-cream-50 border-b border-forest-900/10 text-[10px] tracking-widest uppercase text-forest-700/60 px-3 py-2 dark:bg-white/5">
             <span>Try</span><span>Fit score</span><span>Wobble (low)</span><span>Wobble (high)</span>
           </div>
@@ -95,6 +96,7 @@ export default function DockingResults({ result, loading }) {
               <span>#{i + 1}</span><span className={p.affinity < -7 ? 'text-forest-700 font-bold' : ''}>{p.affinity}</span><span>{p.rmsd_lb}</span><span>{p.rmsd_ub}</span>
             </div>
           ))}
+          </div>
         </div>
 
         {interactions.length > 0 && (

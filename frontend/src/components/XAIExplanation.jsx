@@ -33,18 +33,20 @@ export default function XAIExplanation({ explanation, loading }) {
           hovertemplate: '%{y}<br>Push=%{x:.3f}<extra></extra>',
         }];
 
+        const isNarrow = typeof window !== 'undefined' && window.innerWidth < 640;
         const layout = {
-          title: { text: `What pushed the prediction up or down`, font: { size: 12, family: 'Inter' } },
-          margin: { l: 150, r: 20, t: 40, b: 30 },
-          height: 300,
-          xaxis: { title: 'Push on the strength score →', zeroline: true, gridcolor: '#eee9d6' },
-          yaxis: { automargin: true },
+          title: { text: `What pushed the prediction up or down`, font: { size: isNarrow ? 11 : 12, family: 'Inter' } },
+          margin: { l: isNarrow ? 108 : 150, r: 12, t: 40, b: 30 },
+          height: isNarrow ? 340 : 300,
+          autosize: true,
+          xaxis: { title: 'Push on the strength score →', zeroline: true, gridcolor: '#eee9d6', tickfont: { size: isNarrow ? 9 : 11 } },
+          yaxis: { automargin: true, tickfont: { size: isNarrow ? 9 : 11 } },
           plot_bgcolor: 'rgba(0,0,0,0)',
           paper_bgcolor: 'rgba(0,0,0,0)',
           font: { family: 'Inter, sans-serif', size: 11 },
         };
 
-        const config = { responsive: true, displayModeBar: false };
+        const config = { responsive: true, displayModeBar: false, useResizeHandler: true };
         if (plotRef.current) {
           Plotly.newPlot(plotRef.current, data, layout, config);
           setPlotlyReady(true);
@@ -69,10 +71,10 @@ export default function XAIExplanation({ explanation, loading }) {
 
   return (
     <div className="card overflow-hidden">
-      <div className="px-5 py-4 border-b border-forest-900/10 bg-cream-50/70 flex items-center justify-between dark:bg-white/5">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-2xl bg-clay-500 text-white flex items-center justify-center">💡</div>
-          <div>
+      <div className="px-4 py-3 sm:px-5 sm:py-4 border-b border-forest-900/10 bg-cream-50/70 flex flex-wrap items-center justify-between gap-2 dark:bg-white/5">
+        <div className="flex min-w-0 flex-1 items-center gap-2.5">
+          <div className="w-9 h-9 shrink-0 rounded-2xl bg-clay-500 text-white flex items-center justify-center">💡</div>
+          <div className="min-w-0">
             <div className="font-display font-semibold text-[15px] text-forest-950 dark:text-cream-50">
               Why this result?
               <HowCalculated title="why this result">
@@ -82,14 +84,15 @@ export default function XAIExplanation({ explanation, loading }) {
             <div className="text-[11px] text-forest-700/75 dark:text-cream-100/60">Which chemical patterns mattered most · {explanation.topFeatures?.length} patterns</div>
           </div>
         </div>
-        <ConfidenceBadge tier="XAI_INTERPRETATION" />
+        <div className="shrink-0"><ConfidenceBadge tier="XAI_INTERPRETATION" size="sm" /></div>
       </div>
 
-      <div className="p-5">
-        <div ref={plotRef} className="w-full rounded-2xl border border-forest-900/10 bg-white dark:bg-white/5" />
+      <div className="p-4 sm:p-5">
+        <div ref={plotRef} className="w-full min-h-[280px] overflow-hidden rounded-2xl border border-forest-900/10 bg-white dark:bg-white/5" />
         {!plotlyReady && <div className="text-[11px] text-forest-700/60 dark:text-cream-100/50 mt-2">Drawing the chart… the table below always works.</div>}
 
-        <div className="mt-4 rounded-2xl border border-forest-900/10 overflow-hidden">
+        <div className="mt-4 overflow-x-auto rounded-2xl border border-forest-900/10">
+          <div className="min-w-[560px]">
           <div className="grid grid-cols-12 bg-cream-50 text-[10px] tracking-widest uppercase text-forest-700/60 px-3 py-2 border-b border-forest-900/10 dark:bg-white/5">
             <span className="col-span-5">Pattern</span><span className="col-span-2">Value</span><span className="col-span-2">Push</span><span className="col-span-3">What it means</span>
           </div>
@@ -101,6 +104,7 @@ export default function XAIExplanation({ explanation, loading }) {
               <span className="col-span-3 text-[11px] text-forest-800/75 dark:text-cream-100/70 leading-tight">{plainDescription(f.description)}</span>
             </div>
           ))}
+          </div>
         </div>
 
         <div className="mt-4 rounded-2xl bg-cream-50 border border-forest-900/10 p-3 dark:bg-white/5">

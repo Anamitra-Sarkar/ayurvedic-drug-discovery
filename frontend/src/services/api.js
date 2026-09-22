@@ -169,7 +169,7 @@ const MOCK_LIT = {
 export const apiClient = {
   async searchCompounds(query, filters = {}) {
     try {
-      const res = await api.get('/compounds/search', { params: { q: query, ...filters } });
+      const res = await api.get('/database/search', { params: { q: query, ...filters } });
       return res.data;
     } catch (e) {
       console.warn('Backend unreachable, using mock IMPPAT data');

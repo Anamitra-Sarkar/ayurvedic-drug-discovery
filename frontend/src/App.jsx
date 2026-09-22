@@ -94,7 +94,7 @@ function Layout({ children }) {
               className="lg:hidden rounded-full border border-forest-900/10 bg-white px-3.5 py-2 text-sm dark:bg-white/10 dark:border-white/10"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-expanded={menuOpen}
-              aria-label="Open menu"
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             >
               {menuOpen ? '✕' : '☰'}
             </button>
@@ -102,7 +102,7 @@ function Layout({ children }) {
         </div>
 
         {menuOpen && (
-          <nav className="modal-panel lg:hidden border-t border-forest-900/10 bg-cream-50 px-4 py-3 dark:bg-forest-950 dark:border-white/10" aria-label="Mobile">
+          <nav className="modal-panel lg:hidden border-t border-forest-900/10 bg-cream-50 px-4 py-3 dark:bg-forest-950 dark:border-white/10 max-h-[70vh] overflow-y-auto" aria-label="Mobile">
             <div className="grid gap-1">
               {[{ to: '/', label: 'Home' }, ...NAV].map((link) => (
                 <NavLink
@@ -113,6 +113,7 @@ function Layout({ children }) {
                   {link.label}
                 </NavLink>
               ))}
+              <Link to="/compounds" className="btn-primary mt-2 w-full sm:hidden">Get Started</Link>
             </div>
           </nav>
         )}
@@ -189,11 +190,11 @@ function LegacyCompound() {
 
 function NotFound() {
   return (
-    <div className="card p-10 text-center page-wrap">
+      <div className="card p-6 sm:p-10 text-center page-wrap">
       <div className="text-4xl">🧭</div>
       <h1 className="font-display text-2xl font-semibold mt-3">Hmm, this path wandered off</h1>
       <p className="text-sm text-forest-700/70 dark:text-cream-100/60 mt-2">The page you’re looking for isn’t here — but the plant library is wide open.</p>
-      <div className="mt-5 flex justify-center gap-2">
+      <div className="mt-5 flex flex-wrap justify-center gap-2">
         <Link to="/" className="btn-primary">Back home</Link>
         <Link to="/compounds" className="btn-secondary">Explore compounds</Link>
       </div>

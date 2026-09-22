@@ -27,10 +27,10 @@ export default function LiteraturePanel({ literature, loading, query }) {
 
   return (
     <div className="card overflow-hidden">
-      <div className="px-5 py-4 border-b border-forest-900/10 bg-forest-50/70 flex items-center justify-between dark:bg-white/5">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-2xl bg-forest-700 text-white flex items-center justify-center">📖</div>
-          <div>
+      <div className="px-4 py-3 sm:px-5 sm:py-4 border-b border-forest-900/10 bg-forest-50/70 flex flex-wrap items-center justify-between gap-2 dark:bg-white/5">
+        <div className="flex min-w-0 flex-1 items-center gap-2.5">
+          <div className="w-9 h-9 shrink-0 rounded-2xl bg-forest-700 text-white flex items-center justify-center">📖</div>
+          <div className="min-w-0">
             <div className="font-display font-semibold text-[15px] text-forest-950 dark:text-cream-50">
               What does published research say?
               <HowCalculated title="research roundup">
@@ -42,7 +42,7 @@ export default function LiteraturePanel({ literature, loading, query }) {
             </div>
           </div>
         </div>
-        <ConfidenceBadge tier="LITERATURE_DERIVED" />
+        <div className="shrink-0"><ConfidenceBadge tier="LITERATURE_DERIVED" size="sm" /></div>
       </div>
 
       <div className="p-5">

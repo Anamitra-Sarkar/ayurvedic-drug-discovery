@@ -58,11 +58,11 @@ export default function Targets() {
       </div>
 
       {loading ? (
-        <div className="grid gap-4 md:grid-cols-2"><SkeletonCard /><SkeletonCard /></div>
+        <div className="grid gap-4 sm:grid-cols-2"><SkeletonCard /><SkeletonCard /></div>
       ) : !shapes || shapes.length === 0 ? (
         <EmptyState icon="🧬" title="Shapes are loading" hint="Please check back in a moment — the catalogue is still waking up." />
       ) : (
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2">
           {shapes.map((s) => (
             <div key={s.code} className="card card-lift p-6">
               <div className="flex items-start justify-between gap-3">
@@ -80,7 +80,7 @@ export default function Targets() {
               ) : (
                 <p className="mt-2 text-xs text-forest-700/60 dark:text-cream-100/50">Preview entry — real fit scores load after analysis.</p>
               )}
-              <div className="mt-4 flex gap-2">
+              <div className="mt-4 flex flex-wrap gap-2">
                 <Link to="/ranking" className="btn-primary !px-5 !py-2 !text-xs">See shortlist →</Link>
                 <Link to="/pipeline" className="btn-secondary !px-5 !py-2 !text-xs">Test a compound</Link>
               </div>

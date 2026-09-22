@@ -58,7 +58,7 @@ export default function CompoundCard({ compound, compact = false, onSelect }) {
           </div>
         )}
 
-        <div className="mt-4 grid grid-cols-4 gap-2">
+        <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
           <div className="rounded-xl bg-cream-50 border border-forest-900/10 p-2 dark:bg-white/5">
             <div className="text-[9px] tracking-widest text-forest-700/60 dark:text-cream-100/50 uppercase">
               Oil–water mix
@@ -103,9 +103,9 @@ export default function CompoundCard({ compound, compact = false, onSelect }) {
               )}
             </div>
 
-            <div className="mt-4 flex items-center justify-between">
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
               <span className="text-[11px] text-forest-700/60 dark:text-cream-100/50">From the plant library · first step</span>
-              <Link to={`/compounds/${compound.id}`} className="btn-secondary !px-4 !py-1.5 !text-xs">
+              <Link to={`/compounds/${compound.id}`} className="btn-secondary shrink-0 !px-4 !py-1.5 !text-xs">
                 See details →
               </Link>
             </div>

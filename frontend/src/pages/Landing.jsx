@@ -35,23 +35,23 @@ export default function Landing() {
       {/* Hero */}
       <section className="relative overflow-hidden rounded-[2rem] bg-forest-950 text-cream-50">
         <div className="hero-pattern absolute inset-0" aria-hidden="true" />
-        <div className="relative grid gap-8 p-8 md:grid-cols-2 md:p-14 items-center min-h-[480px]">
-          <div>
+        <div className="relative grid gap-8 p-6 sm:p-8 md:grid-cols-2 md:p-14 items-center min-h-[480px]">
+          <div className="min-w-0">
             <span className="inline-flex items-center gap-2 rounded-full border border-cream-50/25 bg-white/10 px-3.5 py-1.5 text-[11px] tracking-widest uppercase">
               🌱 Rooted in Ayurveda · guided by computers
             </span>
-            <h1 className="font-display text-4xl md:text-[3.4rem] font-semibold leading-[1.05] mt-5">
+            <h1 className="font-display text-3xl sm:text-4xl md:text-[3.4rem] font-semibold leading-[1.05] mt-5 break-words">
               Discover promising natural compounds, <span className="text-gold-300">gently explained.</span>
             </h1>
             <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-cream-100/85">
               Discover promising natural compounds from Ayurvedic medicine using computer simulations.
               Search familiar plants, preview 3D shape fits, and read honest, plain-word summaries of what the computer found.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/compounds" className="inline-flex items-center gap-2 rounded-full bg-gold-400 px-7 py-3.5 text-sm font-bold text-forest-950 transition hover:bg-gold-300 hover:shadow-lift active:scale-[0.97]">
+            <div className="mt-8 flex flex-col sm:flex-row sm:flex-wrap gap-3">
+              <Link to="/compounds" className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-gold-400 px-7 py-3.5 text-sm font-bold text-forest-950 transition hover:bg-gold-300 hover:shadow-lift active:scale-[0.97]">
                 Explore Compounds →
               </Link>
-              <Link to="/pipeline" className="inline-flex items-center gap-2 rounded-full border border-cream-50/30 px-7 py-3.5 text-sm font-semibold text-cream-50 transition hover:bg-white/10 active:scale-[0.97]">
+              <Link to="/pipeline" className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-cream-50/30 px-7 py-3.5 text-sm font-semibold text-cream-50 transition hover:bg-white/10 active:scale-[0.97]">
                 Run an Analysis
               </Link>
             </div>

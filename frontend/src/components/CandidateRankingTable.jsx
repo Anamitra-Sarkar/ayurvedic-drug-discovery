@@ -65,7 +65,65 @@ export default function CandidateRankingTable({ ranking, loading, onSelect }) {
       </div>
 
       <div className="overflow-x-auto">
-        <div className="min-w-[980px]">
+        <p className="px-5 pt-2 text-[11px] text-forest-700/60 dark:text-cream-100/50 md:hidden">Swipe sideways to see all columns →</p>
+        {/* Mobile card layout (below md) — same data, stacked */}
+        <div className="px-4 py-3 space-y-3 md:hidden">
+          {candidates.map((c, idx) => (
+            <div key={c.compound.id} className={`rounded-2xl border border-forest-900/10 p-3 ${idx === 0 ? 'bg-gold-50/60 dark:bg-gold-400/5' : 'bg-white dark:bg-transparent'}`}>
+              <div className="flex items-center gap-2 min-w-0">
+                <span className={`w-7 h-7 shrink-0 rounded-full flex items-center justify-center text-xs font-bold ${idx === 0 ? 'bg-gold-500 text-white' : idx < 3 ? 'bg-forest-700 text-white' : 'bg-cream-200 text-forest-700 dark:bg-white/10 dark:text-cream-100'}`}>{c.rank}</span>
+                <div className="min-w-0 flex-1">
+                  <div className="font-display font-semibold text-sm text-forest-950 dark:text-cream-50 truncate">{c.compound.name}</div>
+                  <div className="text-[11px] text-forest-700/60 dark:text-cream-100/50 truncate">{c.compound.id} · {c.compound.plant?.slice(0, 28)}</div>
+                </div>
+                <ConfidenceBadge tier="DATABASE_DERIVED" size="sm" showLabel={false} />
+              </div>
+              <div className="mt-2 grid grid-cols-2 gap-2">
+                <div className="rounded-xl bg-forest-50 border border-forest-900/10 p-2 dark:bg-white/5">
+                  <div className="text-[10px] text-forest-700">Balance {c.database?.qed?.toFixed(2)}</div>
+                  <div className="text-[11px] text-forest-800/80 dark:text-cream-100/70 mt-0.5 truncate">{c.compound.formula}</div>
+                </div>
+                <div className="rounded-xl bg-cream-100 border border-gold-300/50 p-2 dark:bg-white/5">
+                  <div className="text-xs font-bold text-forest-800 dark:text-cream-50">{c.docking?.affinity_kcal_mol?.toFixed(1)} fit score</div>
+                  <div className="text-[10px] text-forest-700/70 dark:text-cream-100/60 mt-0.5">{fitVerdict(c.docking?.affinity_kcal_mol)}</div>
+                </div>
+                <div className="rounded-xl bg-gold-50 border border-gold-300/50 p-2 dark:bg-white/5">
+                  <div className="text-xs font-bold text-forest-800 dark:text-cream-50">Strength {c.ml?.pKd_pred?.toFixed(1)}</div>
+                  <div className="text-[10px] text-forest-700/70 dark:text-cream-100/60 mt-0.5">Trust {Math.round((c.ml?.applicability || 0) * 100)}%</div>
+                </div>
+                <div className="rounded-xl bg-forest-50 border border-forest-900/10 p-2 dark:bg-white/5">
+                  <div className="text-[10px] text-forest-700 dark:text-cream-100/70 truncate">Why: {plainTop(c.xai?.topFeature)}</div>
+                  <div className="text-[10px] text-forest-700/70 dark:text-cream-100/60 mt-0.5">{c.literature?.citations} papers · {Math.round((c.literature?.faithfulness || 0) * 100)}% grounded</div>
+                </div>
+              </div>
+              <button onClick={() => setExpanded(expanded === c.compound.id ? null : c.compound.id)} className="mt-2 w-full rounded-full border border-forest-900/10 bg-white py-2 text-[12px] font-medium text-forest-700 active:scale-[0.98] dark:bg-white/5 dark:text-cream-100">
+                {expanded === c.compound.id ? 'Hide breakdown ▲' : 'See breakdown ▼'}
+              </button>
+              {expanded === c.compound.id && (
+                <div className="mt-2 rounded-2xl border border-forest-900/10 bg-cream-50 p-3 dark:bg-white/5">
+                  <TierSeparator tiersPresent={c.tiersPresent} />
+                  <div className="grid grid-cols-1 gap-2 mt-2">
+                    {[
+                      { tier: 'DATABASE_DERIVED', val: `Balance ${c.database?.qed?.toFixed(2)} · ${c.compound.plant}` },
+                      { tier: 'DOCKING_RESULT', val: `${c.docking?.affinity_kcal_mol} fit score` },
+                      { tier: 'ML_PREDICTION', val: `Strength ${c.ml?.pKd_pred}` },
+                      { tier: 'XAI_INTERPRETATION', val: `${plainTop(c.xai?.topFeature)}` },
+                      { tier: 'LITERATURE_DERIVED', val: `${c.literature?.citations} papers` },
+                    ].map((row) => (
+                      <div key={row.tier} className="rounded-xl bg-white border border-forest-900/10 p-2 dark:bg-white/5">
+                        <ConfidenceBadge tier={row.tier} size="sm" />
+                        <div className="text-[11px] text-forest-800/80 dark:text-cream-100/70 mt-1.5 leading-snug">{row.val}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <button onClick={() => onSelect?.(c.compound)} className="btn-primary mt-3 w-full !px-4 !py-2 !text-xs">View compound →</button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        {/* Wide grid table for md screens and up (horizontally scrollable) */}
+        <div className="hidden md:block min-w-[980px]">
           <div className="grid grid-cols-12 gap-0 bg-cream-50 border-b border-forest-900/10 text-[10px] tracking-widest uppercase text-forest-700/60 px-4 py-2.5 dark:bg-white/5">
             <span className="col-span-1">#</span>
             <span className="col-span-3">Compound</span>
@@ -125,7 +183,7 @@ export default function CandidateRankingTable({ ranking, loading, onSelect }) {
               {expanded === c.compound.id && (
                 <div className="col-span-12 mt-3 rounded-2xl border border-forest-900/10 bg-cream-50 p-3 dark:bg-white/5">
                   <TierSeparator tiersPresent={c.tiersPresent} />
-                  <div className="grid grid-cols-5 gap-2 mt-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 mt-2">
                     {[
                       { tier: 'DATABASE_DERIVED', val: `Balance ${c.database?.qed?.toFixed(2)} · ${c.compound.plant}` },
                       { tier: 'DOCKING_RESULT', val: `${c.docking?.affinity_kcal_mol} fit score` },
@@ -152,7 +210,7 @@ export default function CandidateRankingTable({ ranking, loading, onSelect }) {
 
       <div className="px-5 py-3 bg-cream-50 border-t border-forest-900/10 flex items-center justify-between flex-wrap gap-2 dark:bg-white/5">
         <span className="text-[11px] text-forest-700/70 dark:text-cream-100/60">A shortlist for researchers — every pick still needs lab testing.</span>
-        <button className="btn-secondary !px-3 !py-1 !text-[11px]">Download list</button>
+        <button className="btn-secondary !px-3 !py-1 !text-[11px] shrink-0">Download list</button>
       </div>
     </div>
   );

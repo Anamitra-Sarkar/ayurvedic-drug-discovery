@@ -49,7 +49,7 @@ export default function Compounds() {
           <div className="rounded-3xl bg-cream-50 p-2 dark:bg-white/5">
             <CompoundCard compound={picked} />
           </div>
-          <div className="flex gap-2 p-3">
+          <div className="flex gap-2 p-3 flex-col sm:flex-row">
             <Link to={`/compounds/${picked.id}`} className="btn-primary flex-1 !py-2.5">Open full page →</Link>
             <button onClick={() => setPicked(null)} className="btn-secondary">Close</button>
           </div>
@@ -57,7 +57,7 @@ export default function Compounds() {
       )}
 
       {loading ? (
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <SkeletonCard /><SkeletonCard /><SkeletonCard />
         </div>
       ) : list.length === 0 ? (
@@ -69,14 +69,14 @@ export default function Compounds() {
         />
       ) : (
         <>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="font-display text-lg font-semibold text-forest-950 dark:text-cream-50">
               {results?.query ? `Matches for “${results.query}”` : 'Popular right now'}
             </h2>
             <span className="text-xs text-forest-700/60 dark:text-cream-100/50">{list.length} shown · from the plant library</span>
           </div>
           {searching && <LoadingSpinner label="Searching the plant library…" />}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {list.map((c) => (
               <CompoundCard key={c.id} compound={c} onSelect={setPicked} />
             ))}

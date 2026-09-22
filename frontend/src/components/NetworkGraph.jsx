@@ -149,15 +149,15 @@ export default function NetworkGraph({ networkData, loading }) {
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white shadow-card overflow-hidden">
-      <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-green-700 text-white flex items-center justify-center">🕸️</div>
-          <div>
-            <div className="font-display font-semibold text-sm">Triphala plant map</div>
-            <div className="font-mono text-[11px] text-slate-500">Plant connections — 3 plants • 174 bioactives • 6 targets • {filtered.edges.length} edges</div>
+      <div className="px-4 py-3 border-b border-slate-100 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex min-w-0 items-center gap-2.5">
+          <div className="w-8 h-8 shrink-0 rounded-lg bg-green-700 text-white flex items-center justify-center">🕸️</div>
+          <div className="min-w-0">
+            <div className="font-display font-semibold text-sm truncate">Triphala plant map</div>
+            <div className="font-mono text-[10px] sm:text-[11px] text-slate-500 leading-snug">Plant connections — 3 plants • 174 bioactives • 6 targets • {filtered.edges.length} edges</div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-1.5 overflow-x-auto">
           <ConfidenceBadge tier="DATABASE_DERIVED" size="sm" />
           <ConfidenceBadge tier="LITERATURE_DERIVED" size="sm" />
         </div>
@@ -172,14 +172,14 @@ export default function NetworkGraph({ networkData, loading }) {
         ].map(b=>(
           <button key={b.id} onClick={()=>setFilter(b.id)} className={`px-3 py-1.5 rounded-full text-xs font-medium border ${filter===b.id ? 'bg-slate-900 text-white border-slate-900' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'}`}>{b.label}</button>
         ))}
-        <div className="ml-auto flex items-center gap-2">
-          <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Filter nodes..." className="px-3 py-1.5 rounded-full border border-slate-200 bg-white font-mono text-xs w-[180px]" />
+        <div className="w-full sm:w-auto sm:ml-auto flex items-center gap-2">
+          <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Filter nodes..." className="px-3 py-1.5 rounded-full border border-slate-200 bg-white font-mono text-xs w-full sm:w-[180px]" />
         </div>
       </div>
 
       <div className="relative bg-[#fcfcfa] border-b border-slate-100">
-        <canvas ref={canvasRef} className="w-full" style={{height: 420, display:'block'}} />
-        <div className="absolute top-3 left-3 rounded-xl bg-white border border-slate-200 shadow-sm p-2.5 space-y-1.5">
+        <canvas ref={canvasRef} className="w-full min-h-[300px]" style={{height: 'clamp(300px, 70vw, 420px)', display:'block'}} />
+        <div className="absolute top-3 left-3 max-w-[calc(100%-24px)] rounded-xl bg-white/95 border border-slate-200 shadow-sm p-2 sm:p-2.5 space-y-1 sm:space-y-1.5">
           <div className="font-mono text-[10px] tracking-widest text-slate-500">Map key</div>
           <div className="flex items-center gap-2 text-[11px] font-mono"><span className="w-2.5 h-2.5 rounded-full bg-[#16a34a]" /> Plant</div>
           <div className="flex items-center gap-2 text-[11px] font-mono"><span className="w-2 h-2 rounded-full bg-[#7c3aed]" /> Natural compound</div>
@@ -190,7 +190,7 @@ export default function NetworkGraph({ networkData, loading }) {
         <div className="absolute bottom-3 right-3 rounded-full bg-white border border-slate-200 px-3 py-1 font-mono text-[10px] text-slate-500">Interactive map • research preview only</div>
       </div>
 
-      <div className="p-4 grid grid-cols-3 gap-3">
+      <div className="p-3 sm:p-4 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
         <div className="rounded-xl bg-slate-50 border border-slate-200 p-3 text-center">
           <div className="font-mono text-[10px] tracking-widest text-slate-500">Plants (Triphala)</div>
           <div className="font-mono text-lg font-bold mt-1">{stats?.plants || 3}</div>

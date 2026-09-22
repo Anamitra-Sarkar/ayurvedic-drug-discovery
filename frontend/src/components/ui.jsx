@@ -65,7 +65,7 @@ export function ConfidenceBadge({ tier, size = 'md', showTooltip = true, showLab
         <span className="h-1.5 w-1.5 rounded-full" style={{ background: meta.color }} />
       </span>
       {showTooltip && hover && (
-        <div className="modal-panel absolute left-0 top-full z-50 mt-2 w-[320px] rounded-2xl border border-forest-900/10 bg-white p-4 text-left shadow-lift dark:bg-forest-900 dark:border-white/10">
+        <div className="modal-panel absolute left-0 top-full z-50 mt-2 w-[min(320px,calc(100vw-3rem))] max-w-[calc(100vw-3rem)] rounded-2xl border border-forest-900/10 bg-white p-4 text-left shadow-lift dark:bg-forest-900 dark:border-white/10">
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl text-lg" style={{ background: `${meta.color}15` }}>{meta.icon}</div>
             <div>
@@ -132,14 +132,14 @@ export function Modal({ onClose, title, children, wide = false }) {
 
   return (
     <div
-      className="modal-backdrop fixed inset-0 z-[80] flex items-center justify-center bg-forest-950/50 p-4 backdrop-blur-sm"
+      className="modal-backdrop fixed inset-0 z-[80] flex items-end justify-center bg-forest-950/50 p-3 backdrop-blur-sm sm:items-center sm:p-4"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-label={title}
     >
       <div
-        className={`modal-panel w-full ${wide ? 'max-w-2xl' : 'max-w-md'} rounded-3xl border border-forest-900/10 bg-white p-6 shadow-lift dark:bg-forest-900 dark:border-white/10`}
+        className={`modal-panel w-full ${wide ? 'max-w-2xl' : 'max-w-md'} max-h-[90vh] overflow-y-auto rounded-3xl border border-forest-900/10 bg-white p-5 shadow-lift sm:p-6 dark:bg-forest-900 dark:border-white/10`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-3">

@@ -40,11 +40,11 @@ export default function SearchBar({ onSearch, loading, results, onSelect }) {
             aria-label="Search plants or compounds"
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <select
             value={plantFilter}
             onChange={(e) => setPlantFilter(e.target.value)}
-            className="px-3 py-2.5 rounded-2xl border border-forest-900/10 bg-white text-sm dark:bg-white/5 dark:border-white/10 dark:text-cream-50"
+            className="min-w-0 flex-1 px-3 py-2.5 rounded-2xl border border-forest-900/10 bg-white text-sm dark:bg-white/5 dark:border-white/10 dark:text-cream-50"
             aria-label="Filter by plant"
           >
             <option value="">All plants</option>
@@ -55,7 +55,7 @@ export default function SearchBar({ onSearch, loading, results, onSelect }) {
             <option>Terminalia bellirica</option>
             <option>Berberis aristata</option>
           </select>
-          <button disabled={loading} type="submit" className="btn-primary !py-2.5">
+          <button disabled={loading} type="submit" className="btn-primary w-full sm:w-auto shrink-0 !py-2.5">
             {loading ? <span className="spinner" /> : 'Search'}
           </button>
         </div>
@@ -65,7 +65,7 @@ export default function SearchBar({ onSearch, loading, results, onSelect }) {
       </form>
 
       {showResults && (
-        <div className="modal-panel absolute z-30 mt-2 w-full rounded-3xl border border-forest-900/10 bg-white shadow-lift overflow-hidden max-h-[420px] flex flex-col dark:bg-forest-900 dark:border-white/10">
+        <div className="modal-panel absolute z-30 mt-2 w-full rounded-3xl border border-forest-900/10 bg-white shadow-lift overflow-hidden max-h-[60vh] sm:max-h-[420px] flex flex-col dark:bg-forest-900 dark:border-white/10">
           <div className="px-4 py-2.5 border-b border-forest-900/10 bg-cream-50 flex items-center justify-between dark:bg-white/5">
             <div className="text-[11px] tracking-wide text-forest-700 dark:text-cream-100/70">
               Plant library · {results?.count ?? data.length} matches
@@ -82,11 +82,11 @@ export default function SearchBar({ onSearch, loading, results, onSelect }) {
                 <div className="text-xs text-forest-700/70 dark:text-cream-100/60 mt-1">Try “Ashwagandha”, “Turmeric”, or part of a name — spelling can be tricky.</div>
               </div>
             ) : data.map((c) => (
-              <button key={c.id} onClick={() => { onSelect?.(c); setShowResults(false); }} className="w-full text-left px-4 py-3 border-b last:border-0 border-forest-900/5 hover:bg-forest-50/60 dark:hover:bg-white/5 flex items-center justify-between gap-3 transition active:scale-[0.99]">
+                <button key={c.id} onClick={() => { onSelect?.(c); setShowResults(false); }} className="w-full text-left px-3 sm:px-4 py-3 border-b last:border-0 border-forest-900/5 hover:bg-forest-50/60 dark:hover:bg-white/5 flex items-center justify-between gap-3 transition active:scale-[0.99]">
                 <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 min-w-0 flex-wrap">
                     <span className="font-display font-semibold text-sm text-forest-950 dark:text-cream-50 truncate">{c.name}</span>
-                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-cream-100 border border-forest-900/10 dark:bg-white/10">{c.id}</span>
+                    <span className="text-[10px] shrink-0 px-1.5 py-0.5 rounded bg-cream-100 border border-forest-900/10 dark:bg-white/10">{c.id}</span>
                     {c.drugLikeness?.qed && (
                       <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-forest-50 border border-forest-200 text-forest-700">
                         Balance {c.drugLikeness.qed.toFixed(2)}
@@ -95,7 +95,7 @@ export default function SearchBar({ onSearch, loading, results, onSelect }) {
                   </div>
                   <div className="text-[11px] text-forest-700/70 dark:text-cream-100/60 truncate mt-0.5">{c.plant} · {c.formula} · {c.ayurvedicName}</div>
                 </div>
-                <span className="text-[11px] font-medium text-forest-700">View →</span>
+                <span className="text-[11px] shrink-0 font-medium text-forest-700">View →</span>
               </button>
             ))}
           </div>

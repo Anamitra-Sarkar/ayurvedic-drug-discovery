@@ -160,22 +160,22 @@ $$$$
   return (
     <div className="rounded-2xl border border-slate-200 bg-white shadow-card overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-slate-50/60">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-violet-600 text-white flex items-center justify-center text-sm">🧬</div>
-          <div>
-            <div className="font-display font-semibold text-sm">3D protein shape + compound</div>
-            <div className="font-mono text-[11px] text-slate-500">{shapeTitle(dockingResult?.target)} • {dockingResult?.affinity_kcal_mol ? `${dockingResult.affinity_kcal_mol} kcal/mol` : 'pose preview'}</div>
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 border-b border-slate-100 bg-slate-50/60">
+        <div className="flex min-w-0 flex-1 items-center gap-3">
+          <div className="w-8 h-8 shrink-0 rounded-lg bg-violet-600 text-white flex items-center justify-center text-sm">🧬</div>
+          <div className="min-w-0">
+            <div className="font-display font-semibold text-sm truncate">3D protein shape + compound</div>
+            <div className="font-mono text-[11px] text-slate-500 truncate">{shapeTitle(dockingResult?.target)} • {dockingResult?.affinity_kcal_mol ? `${dockingResult.affinity_kcal_mol} kcal/mol` : 'pose preview'}</div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           <ConfidenceBadge tier="DOCKING_RESULT" size="sm" />
         </div>
       </div>
 
-      {/* Viewer */}
+      {/* Viewer — fluid width, clamped height so it fits phones and desktops */}
       <div className="relative bg-[#f8faf6]">
-        <div ref={containerRef} style={{ width: '100%', height: height, position: 'relative' }} />
+        <div ref={containerRef} className="molecule-viewer w-full min-h-[300px] h-[62vw] max-h-[440px] sm:h-[380px] sm:max-h-none lg:h-[440px]" style={{ height: `clamp(300px, 62vw, ${height}px)`, width: '100%', position: 'relative' }} />
         {isLoading && (
           <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex items-center justify-center">
             <div className="flex flex-col items-center gap-2">
@@ -199,8 +199,8 @@ $$$$
 
       {/* Controls */}
       {showControls && (
-        <div className="px-4 py-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-1.5">
+        <div className="px-4 py-3 border-t border-slate-100 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 -mx-1 px-1">
             {[
               { id: 'stick', label: 'Sticks' },
               { id: 'sphere', label: 'Balls' },
@@ -210,7 +210,7 @@ $$$$
               <button
                 key={b.id}
                 onClick={()=>setStyle(b.id)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium border transition ${style===b.id ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`}
+                className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border transition ${style===b.id ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`}
               >
                 {b.label}
               </button>
