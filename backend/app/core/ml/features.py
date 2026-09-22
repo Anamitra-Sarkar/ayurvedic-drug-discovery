@@ -183,8 +183,10 @@ def compute_qsar_descriptors_rdkit(smiles: str) -> Dict[str, float]:
             "num_radical_electrons": Descriptors.NumRadicalElectrons(mol),
             "bertz_ct": Descriptors.BertzCT(mol),
             "balaban_j": Descriptors.BalabanJ(mol),
-            "bcut2d_mwhi": Descriptors.BCUT2D_MWHI if hasattr(Descriptors, 'BCUT2D_MWHI') else Descriptors.MolWt(mol)/10.0,
-            "qed_score": 0.5,  # placeholder; would need QED module
+            "bcut2d_mwhi": (
+                Descriptors.BCUT2D_MWHI(mol) if hasattr(Descriptors, 'BCUT2D_MWHI') else Descriptors.MolWt(mol) / 10.0
+            ),
+            "qed_score": Descriptors.qed(mol) if hasattr(Descriptors, 'qed') else 0.5,
         }
     except Exception:
         return compute_qsar_descriptors_fallback(smiles)
