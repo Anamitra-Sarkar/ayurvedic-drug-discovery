@@ -14,13 +14,21 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
+/* Any element rendering unrounded/oversized content (long numbers, wide
+   fixed-width children) that overflows the viewport width forces mobile
+   browsers to auto-zoom-out to fit it - seen as the whole page suddenly
+   "zooming out" once real data loaded. This is the safety net on top of
+   fixing the actual oversized content (see DockingResults.jsx's fmt()). */
 body {
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #FDFBF5;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 .dark body {
@@ -105,6 +113,12 @@ body {
 ::-webkit-scrollbar-thumb { background: #B0DBBE; border-radius: 8px; }
 ::-webkit-scrollbar-thumb:hover { background: #7FC297; }
 .dark ::-webkit-scrollbar-thumb { background: #0C4A3E; }
+
+/* Horizontally-scrolling nav strips (result tabs, filter pills) stay
+   swipeable on mobile but skip the visible scrollbar track/thumb, which
+   looked out of place under a row of rounded pill buttons. */
+.scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
 
 /* 3Dmol container */
 .molecule-viewer canvas { border-radius: 16px; }

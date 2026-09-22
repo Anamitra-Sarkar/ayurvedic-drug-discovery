@@ -85,7 +85,7 @@ export default function Results() {
       </div>
 
       {/* Tabs */}
-      <div className="card flex gap-1.5 overflow-x-auto p-2" role="tablist" aria-label="Result sections">
+      <div className="card flex gap-1.5 overflow-x-auto scrollbar-hide p-2" role="tablist" aria-label="Result sections">
         {TABS.map((t) => (
           <button
             key={t.id}

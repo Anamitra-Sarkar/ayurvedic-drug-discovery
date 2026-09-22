@@ -223,7 +223,7 @@ $$$$
       {/* Controls */}
       {showControls && (
         <div className="px-4 py-3 border-t border-slate-100 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 -mx-1 px-1">
+          <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide pb-0.5 -mx-1 px-1">
             {[
               { id: 'stick', label: 'Sticks' },
               { id: 'sphere', label: 'Balls' },
@@ -246,8 +246,11 @@ $$$$
         </div>
       )}
 
-      {/* Interactions */}
-      {dockingResult?.interactions && (
+      {/* Interactions - only when there's real per-residue contact data;
+          the backend's docking response doesn't populate this yet (only
+          aggregate hydrophobic/hbond counts), so an empty array is the
+          normal case and shouldn't render an empty-looking section. */}
+      {dockingResult?.interactions?.length > 0 && (
         <div className="px-4 py-3 bg-violet-50/60 border-t border-violet-100">
           <div className="font-mono text-[11px] tracking-widest text-violet-800 font-semibold mb-2">Where it seems to touch</div>
           <div className="flex flex-wrap gap-2">

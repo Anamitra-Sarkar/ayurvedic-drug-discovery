@@ -99,7 +99,7 @@ export default function CompoundDetail() {
         </p>
       </div>
 
-      <div className="card flex gap-1.5 overflow-x-auto p-2" role="tablist" aria-label="Compound sections">
+      <div className="card flex gap-1.5 overflow-x-auto scrollbar-hide p-2" role="tablist" aria-label="Compound sections">
         {SECTIONS.map((s) => (
           <button
             key={s.id}

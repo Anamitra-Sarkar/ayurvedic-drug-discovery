@@ -5,6 +5,12 @@
 import { ConfidenceBadge, HowCalculated, ResearchNote } from './ui.jsx';
 import { fitScoreToMeter, fitVerdict } from '../utils/friendly.js';
 
+// Real docking/RMSD values come back as raw floats with 15+ significant
+// digits (e.g. -6.347847183429078) - displayed as-is they overflow their
+// grid cell and visually run into the next column, worst on mobile. Round
+// for DISPLAY only; the real underlying value is unchanged.
+const fmt = (n) => (typeof n === 'number' ? n.toFixed(2) : n ?? '—');
+
 export default function DockingResults({ result, loading }) {
   if (loading) {
     return (
@@ -41,7 +47,7 @@ export default function DockingResults({ result, loading }) {
               </HowCalculated>
             </div>
             <div className="text-[11px] text-forest-700/75 dark:text-cream-100/60">
-              {fitVerdict(result.affinity_kcal_mol)} · score {result.affinity_kcal_mol}
+              {fitVerdict(result.affinity_kcal_mol)} · score {fmt(result.affinity_kcal_mol)}
             </div>
           </div>
         </div>
@@ -66,7 +72,7 @@ export default function DockingResults({ result, loading }) {
       <div className="grid grid-cols-3 divide-x divide-forest-900/10 border-b border-forest-900/10 mt-4">
         <div className="p-2 sm:p-4 text-center">
           <div className="text-[9px] sm:text-[10px] tracking-widest uppercase text-forest-700/70 dark:text-cream-100/60">Best fit score</div>
-          <div className="font-display font-bold text-base sm:text-lg text-forest-950 dark:text-cream-50 mt-1 break-words">{result.affinity_kcal_mol}</div>
+          <div className="font-display font-bold text-base sm:text-lg text-forest-950 dark:text-cream-50 mt-1 break-words">{fmt(result.affinity_kcal_mol)}</div>
           <div className="text-[9px] sm:text-[10px] text-forest-700/60 dark:text-cream-100/50 mt-1">Lower = snugger (a guess)</div>
         </div>
         <div className="p-2 sm:p-4 text-center">
@@ -74,7 +80,7 @@ export default function DockingResults({ result, loading }) {
             Steadiness
             <HowCalculated title="steadiness">How much the best poses wobble compared with each other. Steadier poses are a little more reassuring — but still only computer guesses.</HowCalculated>
           </div>
-          <div className="font-display font-bold text-base sm:text-lg text-forest-950 dark:text-cream-50 mt-1 break-words">{result.rmsd ?? '0.00'}</div>
+          <div className="font-display font-bold text-base sm:text-lg text-forest-950 dark:text-cream-50 mt-1 break-words">{fmt(result.rmsd ?? 0)}</div>
           <div className="text-[9px] sm:text-[10px] text-forest-700/60 dark:text-cream-100/50 mt-1">How steady the pose looks</div>
         </div>
         <div className="p-2 sm:p-4 text-center">
@@ -93,7 +99,7 @@ export default function DockingResults({ result, loading }) {
           </div>
           {poses.map((p, i) => (
             <div key={i} className={`grid grid-cols-4 px-3 py-2 text-xs border-b last:border-0 border-forest-900/5 ${i === 0 ? 'bg-forest-50/60 font-semibold dark:bg-white/5' : 'bg-white dark:bg-transparent'}`}>
-              <span>#{i + 1}</span><span className={p.affinity < -7 ? 'text-forest-700 font-bold' : ''}>{p.affinity}</span><span>{p.rmsd_lb}</span><span>{p.rmsd_ub}</span>
+              <span>#{i + 1}</span><span className={p.affinity < -7 ? 'text-forest-700 font-bold' : ''}>{fmt(p.affinity)}</span><span>{fmt(p.rmsd_lb)}</span><span>{fmt(p.rmsd_ub)}</span>
             </div>
           ))}
           </div>

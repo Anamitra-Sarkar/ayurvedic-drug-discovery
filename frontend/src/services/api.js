@@ -176,6 +176,12 @@ function normalizeCompound(rec, fallbackId) {
   const r = rec ?? {};
   const plants = Array.isArray(r.plant_sources) ? r.plant_sources.join(', ') : (r.plant ?? '');
   const uses = Array.isArray(r.therapeutic_uses) ? r.therapeutic_uses.join(', ') : (r.traditionalUse ?? '');
+  // Real backend field is drug_likeness (snake_case, real RDKit descriptors:
+  // logP, tpsa, num_hbd, num_hba, qed_score) - CompoundCard.jsx reads flat
+  // logP/tpsa/hbd/hba plus a camelCase drugLikeness object, so these never
+  // showed up (rendered as "—") despite being real computed values.
+  const dlRaw = r.drug_likeness ?? r.drugLikeness ?? {};
+  const r5 = dlRaw.lipinski_rule_of_five ?? {};
   return {
     ...r,
     id: r.compound_id ?? r.imppat_id ?? r.id ?? fallbackId,
@@ -185,6 +191,15 @@ function normalizeCompound(rec, fallbackId) {
     formula: r.molecular_formula ?? r.formula,
     mw: r.molecular_weight ?? r.mw,
     evidenceTier: r.evidence_tier ?? r.evidenceTier ?? 'DATABASE_DERIVED',
+    logP: dlRaw.logP ?? dlRaw.logp ?? r.logP,
+    tpsa: dlRaw.tpsa ?? r.tpsa,
+    hbd: dlRaw.num_hbd ?? dlRaw.hbd ?? r.hbd,
+    hba: dlRaw.num_hba ?? dlRaw.hba ?? r.hba,
+    drugLikeness: {
+      qed: dlRaw.qed_score ?? dlRaw.qed ?? r.drugLikeness?.qed,
+      ruleOfFivePass: r5.passes ?? r.drugLikeness?.ruleOfFivePass,
+      lipinski: typeof r5.violations === 'number' ? 4 - r5.violations : r.drugLikeness?.lipinski,
+    },
   };
 }
 
@@ -260,6 +275,34 @@ function normalizeExplanation(r) {
     ...e,
     topFeatures,
     summary: e.metadata?.textual_interpretation ?? e.summary,
+  };
+}
+
+/** Real LiteratureAgent.answer_question()'s route returns {content:{answer,
+ * retrieval_details}, citations:[{title,authors,year,doi,journal}],
+ * confidence, metadata}; LiteraturePanel.jsx reads a flat {synthesis,
+ * citations:[{title,authors,relevance,doi,excerpt}], faithfulness,
+ * retrievedDocs, query}. The real answer was already being computed
+ * honestly (including a correct "the corpus has nothing on this" refusal)
+ * but never reached the UI because of this shape mismatch. */
+function normalizeLiterature(r) {
+  const lit = r ?? {};
+  const content = lit.content ?? {};
+  const byId = {};
+  (content.retrieval_details || []).forEach((d) => { byId[d.doc_id] = d; });
+  const citations = (lit.citations || []).map((c) => ({
+    ...c,
+    authors: Array.isArray(c.authors) ? c.authors.join(', ') : c.authors,
+    relevance: byId[c.id]?.score ?? lit.confidence ?? 0,
+    excerpt: c.snippet || byId[c.id]?.highlights?.join(' ') || null,
+  }));
+  return {
+    ...lit,
+    query: content.query ?? lit.query,
+    synthesis: content.answer ?? lit.synthesis,
+    citations,
+    faithfulness: typeof content.hallucination_rate === 'number' ? 1 - content.hallucination_rate : lit.faithfulness,
+    retrievedDocs: content.retrieval_details?.length ?? lit.metadata?.num_retrieved ?? lit.retrievedDocs,
   };
 }
 
@@ -352,7 +395,7 @@ export const apiClient = {
     try {
       // Real route is GET /literature/query with params q + top_k.
       const res = await api.get('/literature/query', { params: { q: query, top_k: topK } });
-      return res.data;
+      return normalizeLiterature(res.data);
     } catch (e) {
       if (DEV) {
         console.warn('[DEV fallback] queryLiterature — local sample data, never served in production');
