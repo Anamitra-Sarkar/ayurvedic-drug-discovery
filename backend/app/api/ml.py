@@ -82,8 +82,15 @@ async def explain_prediction(req: MLRequest):
         # real method on an XAIAgent wired to the real trained model.
         agent = XAIAgent(ml_agent=ml_agent)
         docking_result = {"affinity": req.docking_affinity} if req.docking_affinity is not None else None
-        expl = agent.explain_prediction(smiles=req.smiles, docking_result=docking_result, return_evidence_tagged=False)
-        return expl.__dict__ if hasattr(expl, "__dict__") else expl
+        # NOTE: expl.__dict__ (return_evidence_tagged=False) leaves raw numpy
+        # arrays nested inside shap_explanation/lime_explanation, which
+        # FastAPI's jsonable_encoder cannot serialize (500: "cannot convert
+        # dictionary update sequence element #0 to a sequence" - dict()/vars()
+        # both fail on an ndarray). XAIExplanationResult.to_evidence_tagged()
+        # already does the numpy->list conversion properly; use that + its
+        # own to_dict(), same pattern as EvidenceTaggedOutput elsewhere.
+        expl = agent.explain_prediction(smiles=req.smiles, docking_result=docking_result, return_evidence_tagged=True)
+        return expl.to_dict() if hasattr(expl, "to_dict") else expl
     except Exception as e:
         # Honest failure - no fabricated SHAP values.
         return {
