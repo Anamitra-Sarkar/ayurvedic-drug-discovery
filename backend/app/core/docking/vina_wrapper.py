@@ -270,12 +270,17 @@ class VinaWrapper:
             os.close(fd)
             config.write(config_file)
 
-            # Build command: vina --config conf.txt --log log.txt
+            # Build command: vina --config conf.txt
+            # NOTE: AutoDock Vina 1.2.x removed the --log CLI flag that existed
+            # in 1.1.x (confirmed by actually running the real binary: it
+            # rejects --log with "Command line parse error: unrecognised
+            # option '--log'" and dumps usage). Capture stdout/stderr instead
+            # and write it to log_file ourselves for anything that inspects
+            # that path.
             log_file = config.log_file or config_file.replace(".txt", ".log")
             cmd = [
                 self.vina_binary,
                 "--config", config_file,
-                "--log", log_file
             ]
 
             logger.info(f"Running Vina: {' '.join(cmd)}")
@@ -287,9 +292,10 @@ class VinaWrapper:
             )
 
             raw_log = proc.stdout + "\n" + proc.stderr
-            # Also read log_file if exists
-            if os.path.exists(log_file):
-                raw_log += "\n" + Path(log_file).read_text()
+            try:
+                Path(log_file).write_text(raw_log)
+            except OSError:
+                pass
 
             # Parse poses
             poses = self._parse_log(raw_log)

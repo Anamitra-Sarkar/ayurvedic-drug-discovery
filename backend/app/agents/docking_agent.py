@@ -501,16 +501,42 @@ TORSDOF 2
             bs = {**bs, **binding_site}
             log_parts.append(f"Binding site overridden: {binding_site}")
 
-        # For real implementation, would download PDB and convert.
-        # Here mock: create dummy PDBQT
         pdb_path = str(self.work_dir / f"{pdb_id}.pdb")
         pdbqt_path = str(self.work_dir / f"{pdb_id}.pdbqt")
+        cx, cy, cz = bs.get("center_x", 0), bs.get("center_y", 0), bs.get("center_z", 0)
+        real_structure_obtained = False
 
         if not os.path.exists(pdb_path):
-            # Write minimal PDB with binding site center as dummy ATOM region
-            cx, cy, cz = bs.get("center_x", 0), bs.get("center_y", 0), bs.get("center_z", 0)
+            # 1. Look for a real, already-fetched structure (Phase B's
+            #    data/raw/pdb/{PDB_ID}.pdb, fetched from RCSB in CI - see
+            #    docs/DATA_PROVENANCE.md) before attempting a live fetch.
+            repo_root = Path(__file__).resolve().parent.parent.parent.parent
+            local_real_pdb = repo_root / "data" / "raw" / "pdb" / f"{pdb_id.upper()}.pdb"
+            if local_real_pdb.exists():
+                try:
+                    Path(pdb_path).write_bytes(local_real_pdb.read_bytes())
+                    real_structure_obtained = True
+                    log_parts.append(f"Used real structure from {local_real_pdb}")
+                except OSError as e:
+                    log_parts.append(f"Failed to copy local real PDB: {e}")
+            if not real_structure_obtained:
+                # 2. Fall back to a live RCSB fetch.
+                try:
+                    import urllib.request
+                    url = f"https://files.rcsb.org/download/{pdb_id.upper()}.pdb"
+                    with urllib.request.urlopen(url, timeout=15) as resp:
+                        body = resp.read()
+                    if body and b"ATOM" in body:
+                        Path(pdb_path).write_bytes(body)
+                        real_structure_obtained = True
+                        log_parts.append(f"Fetched real structure live from {url}")
+                except Exception as e:  # noqa: BLE001 - network fallback, never fatal
+                    log_parts.append(f"Live RCSB fetch failed: {e}")
+
+        if not os.path.exists(pdb_path):
+            # 3. Honest last-resort mock - clearly labeled, never presented as real.
             dummy_pdb = f"""HEADER    MOCK PROTEIN {pdb_id} {gene}
-REMARK    Mock structure for Ayurvedic pipeline. Replace with real PDB fetch.
+REMARK    Mock structure - no real PDB available locally or via live RCSB fetch.
 ATOM      1  CA  ALA A   1      {cx:8.3f}{cy:8.3f}{cz:8.3f}  1.00 20.00           C
 ATOM      2  CA  TYR A  58      {cx+1:8.3f}{cy+1:8.3f}{cz+0.5:8.3f}  1.00 20.00           C
 ATOM      3  CA  PHE A  77      {cx-1:8.3f}{cy+2:8.3f}{cz-0.5:8.3f}  1.00 20.00           C
@@ -518,18 +544,37 @@ TER
 END
 """
             Path(pdb_path).write_text(dummy_pdb)
-            log_parts.append(f"Created mock PDB at {pdb_path}")
+            log_parts.append(f"Created mock PDB at {pdb_path} (no real structure available)")
+        else:
+            real_structure_obtained = True
 
         if not os.path.exists(pdbqt_path):
-            # Mock PDBQT
-            dummy_pdbqt = f"""REMARK Mock receptor PDBQT for {pdb_id} {gene}
+            import shutil
+            import subprocess
+            obabel_bin = shutil.which("obabel")
+            converted = False
+            if real_structure_obtained and obabel_bin:
+                try:
+                    proc = subprocess.run(
+                        [obabel_bin, pdb_path, "-O", pdbqt_path, "-xr"],
+                        capture_output=True, text=True, timeout=60,
+                    )
+                    if proc.returncode == 0 and os.path.exists(pdbqt_path) and os.path.getsize(pdbqt_path) > 0:
+                        converted = True
+                        log_parts.append(f"OpenBabel receptor PDBQT conversion success: {pdbqt_path}")
+                    else:
+                        log_parts.append(f"OpenBabel receptor conversion failed: {proc.stderr[:200]}")
+                except Exception as e:  # noqa: BLE001
+                    log_parts.append(f"OpenBabel receptor conversion exception: {e}")
+            if not converted:
+                dummy_pdbqt = f"""REMARK Mock receptor PDBQT for {pdb_id} {gene}
 REMARK Binding site center {cx} {cy} {cz}
 ROOT
 ATOM      1  CA  ALA A   1       0.000   0.000   0.000  0.00  0.00     0.000 C
 ENDROOT
 """
-            Path(pdbqt_path).write_text(dummy_pdbqt)
-            log_parts.append(f"Created mock PDBQT at {pdbqt_path}")
+                Path(pdbqt_path).write_text(dummy_pdbqt)
+                log_parts.append(f"Created mock PDBQT at {pdbqt_path}")
 
         return PreparedProtein(
             pdb_id=pdb_id,
