@@ -111,22 +111,22 @@ export default function Results() {
       ) : (
         <div key={tab} className="page-wrap">
           {tab === 'overview' && (
-            <div className="grid gap-5 lg:grid-cols-2">
+            <div className="grid gap-5 lg:grid-cols-2 min-w-0">
               {compound && <CompoundCard compound={compound} />}
-              <div className="space-y-5">
+              <div className="space-y-5 min-w-0">
                 <DockingResults result={fit} />
                 <MLPredictionCard prediction={guess} />
               </div>
             </div>
           )}
           {tab === 'shape' && (
-            <div className="grid gap-5 lg:grid-cols-5">
-              <div className="lg:col-span-3"><MoleculeViewer dockingResult={fit} proteinPDB={fit?.protein_pdb} ligandPDB={fit?.ligand_pdb} height={440} /></div>
-              <div className="lg:col-span-2"><DockingResults result={fit} /></div>
+            <div className="grid gap-5 lg:grid-cols-5 min-w-0">
+              <div className="lg:col-span-3 min-w-0"><MoleculeViewer dockingResult={fit} proteinPDB={fit?.protein_pdb} ligandPDB={fit?.ligand_pdb} height={440} /></div>
+              <div className="lg:col-span-2 min-w-0"><DockingResults result={fit} /></div>
             </div>
           )}
           {tab === 'why' && (
-            <div className="grid gap-5 lg:grid-cols-2">
+            <div className="grid gap-5 lg:grid-cols-2 min-w-0">
               <MLPredictionCard prediction={guess} />
               <XAIExplanation explanation={why} />
             </div>

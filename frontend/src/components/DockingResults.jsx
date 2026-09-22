@@ -56,7 +56,7 @@ export default function DockingResults({ result, loading }) {
 
       {meter != null && (
         <div className="px-5 pt-4">
-          <div className="flex items-center justify-between text-[11px] text-forest-700 dark:text-cream-100/70 mb-1.5">
+          <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-0.5 text-[11px] text-forest-700 dark:text-cream-100/70 mb-1.5">
             <span className="font-semibold tracking-wide uppercase">Match strength</span>
             <span>{meter}/100 · {fitVerdict(result.affinity_kcal_mol)}</span>
           </div>

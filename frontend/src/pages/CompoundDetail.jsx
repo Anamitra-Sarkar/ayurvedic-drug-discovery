@@ -36,12 +36,16 @@ export default function CompoundDetail() {
     setLoading(true);
     setError(null);
     try {
-      const [c, d, m, x, l] = await Promise.all([
-        apiClient.getCompound(id),
-        apiClient.runDocking(id, '6LU7'),
-        apiClient.predictAffinity(id, '6LU7'),
-        apiClient.explainPrediction(id, '6LU7'),
-        apiClient.queryLiterature(`${id} natural compound plant`),
+      // Docking/ML/XAI need a real SMILES string, not the compound ID -
+      // resolve the compound first (same fix already applied to Results.jsx;
+      // this page had the same bug independently, never touched before).
+      const c = await apiClient.getCompound(id);
+      const smiles = c?.smiles;
+      const [d, m, x, l] = await Promise.all([
+        smiles ? apiClient.runDocking(smiles, '6LU7', id) : Promise.resolve(null),
+        smiles ? apiClient.predictAffinity(smiles, '6LU7') : Promise.resolve(null),
+        smiles ? apiClient.explainPrediction(smiles, '6LU7') : Promise.resolve(null),
+        apiClient.queryLiterature(`${c?.name || id} natural compound plant`),
       ]);
       setCompound(c); setFit(d); setGuess(m); setWhy(x); setPapers(l);
     } catch (e) {
@@ -115,9 +119,9 @@ export default function CompoundDetail() {
 
       <div key={section} className="page-wrap">
         {section === 'story' && (
-          <div className="grid gap-5 lg:grid-cols-2">
+          <div className="grid gap-5 lg:grid-cols-2 min-w-0">
             {compound && <CompoundCard compound={compound} />}
-            <div className="space-y-5">
+            <div className="space-y-5 min-w-0">
               <div className="card p-6">
                 <h2 className="font-display text-lg font-semibold text-forest-950 dark:text-cream-50">🌿 The plant story</h2>
                 <p className="mt-2 text-sm leading-relaxed text-forest-900/85 dark:text-cream-100/80">
@@ -132,13 +136,13 @@ export default function CompoundDetail() {
           </div>
         )}
         {section === 'shape' && (
-          <div className="grid gap-5 lg:grid-cols-5">
-            <div className="lg:col-span-3"><MoleculeViewer dockingResult={fit} height={440} /></div>
-            <div className="lg:col-span-2"><DockingResults result={fit} /></div>
+          <div className="grid gap-5 lg:grid-cols-5 min-w-0">
+            <div className="lg:col-span-3 min-w-0"><MoleculeViewer dockingResult={fit} proteinPDB={fit?.protein_pdb} ligandPDB={fit?.ligand_pdb} height={440} /></div>
+            <div className="lg:col-span-2 min-w-0"><DockingResults result={fit} /></div>
           </div>
         )}
         {section === 'scores' && (
-          <div className="grid gap-5 lg:grid-cols-2">
+          <div className="grid gap-5 lg:grid-cols-2 min-w-0">
             <MLPredictionCard prediction={guess} />
             <XAIExplanation explanation={why} />
           </div>

@@ -105,8 +105,8 @@ export default function CandidateRankingTable({ ranking, loading, onSelect }) {
                   <div className="grid grid-cols-1 gap-2 mt-2">
                     {[
                       { tier: 'DATABASE_DERIVED', val: `Balance ${c.database?.qed?.toFixed(2)} · ${c.compound.plant}` },
-                      { tier: 'DOCKING_RESULT', val: `${c.docking?.affinity_kcal_mol} fit score` },
-                      { tier: 'ML_PREDICTION', val: `Strength ${c.ml?.pKd_pred}` },
+                      { tier: 'DOCKING_RESULT', val: `${c.docking?.affinity_kcal_mol?.toFixed(2)} fit score` },
+                      { tier: 'ML_PREDICTION', val: `Strength ${c.ml?.pKd_pred?.toFixed(2)}` },
                       { tier: 'XAI_INTERPRETATION', val: `${plainTop(c.xai?.topFeature)}` },
                       { tier: 'LITERATURE_DERIVED', val: `${c.literature?.citations} papers` },
                     ].map((row) => (
@@ -186,8 +186,8 @@ export default function CandidateRankingTable({ ranking, loading, onSelect }) {
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 mt-2">
                     {[
                       { tier: 'DATABASE_DERIVED', val: `Balance ${c.database?.qed?.toFixed(2)} · ${c.compound.plant}` },
-                      { tier: 'DOCKING_RESULT', val: `${c.docking?.affinity_kcal_mol} fit score` },
-                      { tier: 'ML_PREDICTION', val: `Strength ${c.ml?.pKd_pred}` },
+                      { tier: 'DOCKING_RESULT', val: `${c.docking?.affinity_kcal_mol?.toFixed(2)} fit score` },
+                      { tier: 'ML_PREDICTION', val: `Strength ${c.ml?.pKd_pred?.toFixed(2)}` },
                       { tier: 'XAI_INTERPRETATION', val: `${plainTop(c.xai?.topFeature)}` },
                       { tier: 'LITERATURE_DERIVED', val: `${c.literature?.citations} papers` },
                     ].map((row) => (

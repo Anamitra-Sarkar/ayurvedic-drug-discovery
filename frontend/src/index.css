@@ -45,6 +45,15 @@ body {
   .card {
     @apply rounded-3xl border bg-white shadow-card transition-all duration-300;
     border-color: rgb(7 42 36 / 0.08);
+    /* Grid/flex items default to min-width:auto (their content's intrinsic
+       min-content width), which "wins" over an inner overflow-x-auto
+       scroller's constraint and forces the WHOLE page wider than the
+       viewport - the real cause of results getting cut off on narrow
+       screens (a card containing e.g. DockingResults' min-w-[420px] table
+       was silently pushing its entire grid row, and the page, past 100vw).
+       min-width:0 lets a card actually shrink to the viewport; its own
+       overflow-x-auto children still scroll internally as designed. */
+    min-width: 0;
   }
   .dark .card {
     @apply bg-forest-900 shadow-none;
