@@ -298,6 +298,32 @@ class InteractionAnalysisAgent:
 
         return explanation
 
+    def run_node(self, state: Dict[str, Any]) -> Dict[str, Any]:
+        """Orchestrator state-dict adapter. Calls the real analyze_batch()."""
+        from app.agents.evidence_tiers import EvidenceTier, TieredOutput
+        target_protein = state.get("target_protein", self.default_target)
+        docked = state.get("docking_results", {}).get("results", [])
+        if not docked:
+            content = {"count": 0, "profiles": [], "note": "No docking results to analyze"}
+            tiered_out = TieredOutput(tier=EvidenceTier.DOCKING_RESULT, content=content, confidence=0.1, metadata={"count": 0})
+        else:
+            try:
+                ev = self.analyze_batch(docked, protein_target=target_protein)
+                content = ev.data
+                tiered_out = TieredOutput(
+                    tier=EvidenceTier.DOCKING_RESULT,
+                    content=content,
+                    confidence=0.7,
+                    metadata={"count": content.get("count", 0), "method": content.get("method")},
+                )
+            except Exception as e:
+                logger.warning(f"InteractionAnalysisAgent.run_node failed: {e}")
+                content = {"count": 0, "profiles": [], "error": str(e)}
+                tiered_out = TieredOutput(tier=EvidenceTier.DOCKING_RESULT, content=content, confidence=0.0, metadata={"error": str(e)})
+        tiered = state.get("tiered_outputs", [])
+        tiered.append(tiered_out.to_dict())
+        return {**state, "interaction_results": content, "tiered_outputs": tiered}
+
 # Module-level convenience
 _default_agent = None
 
