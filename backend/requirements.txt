@@ -57,7 +57,12 @@ lime==0.2.0.1  # imported in app/core/xai/lime_explainer.py, optional — falls 
 
 # --- Docking (python bindings, actually imported) ---
 # - backend/app/agents/other_agents.py: `import vina` (try/except in _check_vina, after shutil.which("vina") binary check)
-vina==1.2.5  # imported in app/agents/other_agents.py, optional — falls back to physics-inspired mock scoring
+# vina==1.2.5  # python bindings for other_agents.py (DEAD CODE, not imported by
+# orchestrator since Phase A - real docking uses the actual `vina` CLI binary via
+# subprocess in docking_agent.py/vina_wrapper.py, not this pip package). Commented
+# out: it requires system boost-dev headers to build from source and breaks CI/fresh
+# installs otherwise. Install with `apt-get install libboost-all-dev && pip install vina`
+# only if you specifically need other_agents.py's python-vina-bindings code path.
 # External system binaries (NOT pip packages — do not pip-install as such):
 # - AutoDock Vina binary (`vina` / `vina_1.2.5` / `autodock_vina`) invoked via subprocess in
 #   backend/app/core/docking/vina_wrapper.py (VinaBinaryDetector.find_binary + subprocess.run) and
