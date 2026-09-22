@@ -4,6 +4,7 @@
  */
 import { useState } from 'react';
 import { ConfidenceBadge, HowCalculated, Modal, ResearchNote } from './ui.jsx';
+import MarkdownLite from '../utils/markdownLite.jsx';
 
 export default function LiteraturePanel({ literature, loading, query }) {
   const [activePaper, setActivePaper] = useState(null);
@@ -56,7 +57,7 @@ export default function LiteraturePanel({ literature, loading, query }) {
 
         <div className="mt-4 rounded-2xl bg-white border border-forest-900/10 p-4 dark:bg-transparent">
           <div className="text-[10px] tracking-widest uppercase font-bold text-forest-800 dark:text-cream-100">What the papers say (their words)</div>
-          <p className="mt-2 text-sm text-forest-950/90 dark:text-cream-50/90 leading-relaxed">{literature.synthesis}</p>
+          <MarkdownLite text={literature.synthesis} className="mt-2 text-forest-950/90 dark:text-cream-50/90" />
         </div>
 
         <div className="mt-4">
