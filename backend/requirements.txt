@@ -7,7 +7,7 @@ uvicorn[standard]==0.32.0
 pydantic==2.9.2
 pydantic-settings==2.6.0
 python-multipart==0.0.18
-httpx==0.27.2
+httpx==0.27.2  # unused in current codebase, verify before removing
 
 # --- Cheminformatics ---
 rdkit-pypi==2022.9.5 ; python_version < "3.12"
@@ -16,32 +16,61 @@ rdkit-pypi==2022.9.5 ; python_version < "3.12"
 
 # --- Scientific / ML ---
 numpy==1.26.4
-pandas==2.2.3
+pandas==2.2.3  # unused in current codebase, verify before removing
 scikit-learn==1.5.2
 scipy==1.14.1
 shap==0.46.0
 joblib==1.4.2
+# Optional gradient-boosting backends actually imported (with sklearn fallback if absent):
+# - backend/app/core/ml/models.py: `import xgboost as xgb` (try/except, XGBOOST_AVAILABLE flag)
+# - backend/app/core/ml/models.py: `import lightgbm as lgb` (try/except, LGBM_AVAILABLE flag)
+xgboost==2.1.2  # imported in app/core/ml/models.py, optional — falls back to sklearn GradientBoosting/HistGradientBoosting
+lightgbm==4.5.0  # imported in app/core/ml/models.py, optional — falls back to sklearn ensembles
 
 # --- RAG / NLP ---
 sentence-transformers==3.2.1
 faiss-cpu==1.9.0.post1
-transformers==4.46.2
-torch==2.4.1
+transformers==4.46.2  # unused in current codebase, verify before removing
+torch==2.4.1  # unused in current codebase, verify before removing
 # Fallback: scikit-learn TF-IDF used if sentence-transformers/faiss unavailable
 
 # --- Orchestration / LLM ---
-langgraph==0.2.28
-langchain==0.3.7
-langchain-core==0.3.15
-langchain-community==0.3.7
-langchain-openai==0.2.12
+langgraph==0.2.28  # unused in current codebase, verify before removing
+langchain==0.3.7  # unused in current codebase, verify before removing
+langchain-core==0.3.15  # unused in current codebase, verify before removing
+langchain-community==0.3.7  # unused in current codebase, verify before removing
+langchain-openai==0.2.12  # unused in current codebase, verify before removing
+# Direct OpenAI client actually imported (with mock-LLM fallback if absent):
+# - backend/app/core/rag/generator.py: `import openai` (try/except, OPENAI_AVAILABLE flag)
+openai==1.55.3  # imported in app/core/rag/generator.py, optional — falls back to mock generator without API key
 
 # --- Utils ---
-python-dotenv==1.0.1
-tqdm==4.67.0
-py3Dmol==2.0.4
-biopython==1.84
+python-dotenv==1.0.1  # unused in current codebase, verify before removing
+tqdm==4.67.0  # unused in current codebase, verify before removing
+py3Dmol==2.0.4  # unused in current codebase, verify before removing
+biopython==1.84  # unused in current codebase, verify before removing
 openbabel-wheel==3.1.1.22  # optional, for format conversion fallback
+
+# --- XAI (actually imported, with custom fallback if absent) ---
+# - backend/app/core/xai/lime_explainer.py: `import lime` / `import lime.lime_tabular` (try/except, LIME_AVAILABLE flag)
+lime==0.2.0.1  # imported in app/core/xai/lime_explainer.py, optional — falls back to custom local-surrogate explainer
+
+# --- Docking (python bindings, actually imported) ---
+# - backend/app/agents/other_agents.py: `import vina` (try/except in _check_vina, after shutil.which("vina") binary check)
+vina==1.2.5  # imported in app/agents/other_agents.py, optional — falls back to physics-inspired mock scoring
+# External system binaries (NOT pip packages — do not pip-install as such):
+# - AutoDock Vina binary (`vina` / `vina_1.2.5` / `autodock_vina`) invoked via subprocess in
+#   backend/app/core/docking/vina_wrapper.py (VinaBinaryDetector.find_binary + subprocess.run) and
+#   detected via shutil.which("vina") in backend/app/agents/other_agents.py. Install separately
+#   (e.g. conda: conda install -c conda-forge autodock-vina, or GitHub ccsb-scripps/AutoDock-Vina releases).
+# - OpenBabel `obabel` binary invoked via subprocess (shutil.which("obabel")) in
+#   backend/app/agents/docking_agent.py for PDB->PDBQT conversion; openbabel-wheel above provides it.
+# - `meeko` is mentioned only in comments (backend/app/agents/docking_agent.py PDBQT prep path) and is
+#   never imported (`import meeko` not found) nor invoked via subprocess; only needed if you adopt the
+#   RDKit->meeko PDBQT prep path (pip install meeko).
+# - `plip` (Protein-Ligand Interaction Profiler) is never imported (`from plip` / `import plip` not found)
+#   nor invoked as a binary; interaction analysis is an internal PLIP-mimetic rule-based implementation in
+#   backend/app/core/docking/interactions.py, so no plip install required.
 
 # --- Testing / Dev ---
 pytest==8.3.3
