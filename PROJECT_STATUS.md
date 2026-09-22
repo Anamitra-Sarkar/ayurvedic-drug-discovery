@@ -197,6 +197,61 @@ agent orchestrator wiring), Phase F (frontend — still plain JS, not verified a
 backend), Phase G (Docker build/test suite not run), Phase H remainder (HF model+Space
 upload, Vercel deploy).
 
+**Update (~14:00 UTC, same session)**: Phase D model trained for real on Kaggle
+(RandomForest, real PDBBind data, modest honest metrics - MAE 1.35, R² 0.01, see the
+HF model card), interaction agent wired (9 nodes, zero failures), Phase F/G/H all
+substantially completed:
+- Full frontend redesign shipped (landing page, botanical theme, plain-language copy,
+  animations) via opencode - real `npm run build` success confirmed via GitHub Actions CI
+  (not local, per user's low-RAM-machine constraint).
+- Deployed live: GitHub Actions CI green, HF model uploaded (bhumika's account), HF Space
+  backend live (Docker SDK), Vercel frontend live. See `docs/DEPLOYMENT_VERIFICATION.md`.
+- User did a live walkthrough via Claude-in-Chrome and found REAL bugs static review
+  missed: (1) Vercel SPA routing 404'd on direct URL nav (missing `vercel.json` rewrite -
+  fixed), (2) puter.js consent popup was intrusive - user asked for full removal, done
+  (HeroArt now always uses the hand-crafted gradient, no runtime AI image call), (3) a
+  **serious fabrication bug**: `/api/literature/query`'s real backend route called a
+  method that doesn't exist on `LiteratureAgent` (`agent.query(...)` - real method is
+  `answer_question(...)`), so it silently fell into a hardcoded except-block returning
+  FAKE citations (REF_004/007/012) and a templated fake answer for every single query,
+  regardless of content - found via live testing (identical response to different
+  queries), fixed to call the real method.
+- Comprehensive audit + fix pass (delegated to opencode/agy per explicit user
+  instruction to conserve Claude usage): mobile/device responsiveness across every page
+  (real card-based mobile table layout, clamped 3D-viewer sizing, scrollable nav, etc.),
+  and a "dummyness" audit of `frontend/src/services/api.js` that found it had a
+  MOCK_*-presented-as-real fallback for EVERY API function, tagged with real-looking
+  evidence tiers - fixed by gating all mock data behind `import.meta.env.DEV` (never
+  served in production) and re-throwing real errors instead. Also found and fixed 4 more
+  real frontend↔backend endpoint mismatches (`/compounds/:id` route didn't exist -
+  added a real one; `/xai/explain`→`/ml/explain`; `/network/triphala`→`/database/triphala`;
+  `/literature/query` POST→GET) plus a genuinely-wired real `/candidates/rank` endpoint
+  built on `DockingAgent.rank_eleven_candidates()`.
+- **Groq LLM wiring for RAG** (user requested, since credits are tight everywhere):
+  `CitationGroundedGenerator` now supports Groq's OpenAI-compatible API via
+  `GROQ_API_KEY`. First deploy attempt silently kept using the honest mock because the
+  hardcoded model name `llama-3.3-70b-versatile` 404'd (Groq deprecated/renamed it) -
+  found via reading live HF Space container logs (`hf spaces logs <space> -n 200`, NOT
+  the `--type` flag which doesn't exist), fixed by querying Groq's real live model list
+  (`GET https://api.groq.com/openai/v1/models`) and switching to `openai/gpt-oss-120b`
+  (verified with a real completion call before deploying). **Confirmed live**: real,
+  natural-language, markdown-formatted LLM answers now returned by
+  `/api/literature/query`, not the mock template.
+- **agy CLI note**: `--dangerously-skip-permissions` / `--mode accept-edits` are both
+  blocked by Claude Code's own harness-level "Create Unsafe Agents" classifier, separate
+  from any user permission setting - user explicitly allowed it mid-session and it then
+  worked. If a fresh session hits this same block, tell the user it needs their
+  Claude Code permission settings (not just a spoken "yes") - Claude cannot self-grant it.
+- **HF Space secrets note**: use `hf spaces secrets add/ls/delete <space> -s KEY=VALUE`
+  (proper CLI) rather than the raw `/secrets` POST endpoint - both work, but the CLI is
+  easier to verify with `hf spaces secrets ls`. A Space needs an explicit
+  `restart` (`hf spaces restart` or the `/restart` API) after adding/changing a secret -
+  don't assume the next natural rebuild alone picks it up promptly.
+- Still open from this update: opencode's error-state UI task (making the 5 frontend
+  pages handle a real API failure gracefully instead of an infinite spinner, now that
+  fake fallback data is gone) was dispatched but not yet confirmed complete as of this
+  entry - check git status/diff on `frontend/src/pages/*.jsx` and `ui.jsx` next.
+
 ---
 
 ## 🔧 LESSONS / DO NOT REPEAT
