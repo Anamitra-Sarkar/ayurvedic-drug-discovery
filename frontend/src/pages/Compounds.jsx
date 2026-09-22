@@ -13,21 +13,46 @@ export default function Compounds() {
   const [loading, setLoading] = useState(true);
   const [searching, setSearching] = useState(false);
   const [picked, setPicked] = useState(null);
+  const [error, setError] = useState(null);
+  const [lastSearch, setLastSearch] = useState({ q: '', filters: {} });
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
+  const loadInitial = async () => {
+    setLoading(true);
+    setError(null);
+    try {
       const res = await apiClient.searchCompounds('', {});
       setResults(res);
+    } catch {
+      setError('We could not load the plant library right now. Please try again in a moment.');
+    } finally {
       setLoading(false);
-    })();
+    }
+  };
+
+  useEffect(() => {
+    loadInitial();
   }, []);
 
   const handleSearch = async (q, filters) => {
     setSearching(true);
-    const res = await apiClient.searchCompounds(q, filters);
-    setResults(res);
-    setSearching(false);
+    setError(null);
+    setLastSearch({ q, filters });
+    try {
+      const res = await apiClient.searchCompounds(q, filters);
+      setResults(res);
+    } catch {
+      setError('We could not finish that search right now. Please try again in a moment.');
+    } finally {
+      setSearching(false);
+    }
+  };
+
+  const handleRetry = () => {
+    if (results === null && !searching) {
+      loadInitial();
+    } else {
+      handleSearch(lastSearch.q, lastSearch.filters);
+    }
   };
 
   const list = results?.data || [];
@@ -60,6 +85,13 @@ export default function Compounds() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <SkeletonCard /><SkeletonCard /><SkeletonCard />
         </div>
+      ) : error && list.length === 0 ? (
+        <EmptyState
+          icon="😕"
+          title="Something didn't load"
+          hint={error}
+          action={<button className="btn-secondary" onClick={handleRetry}>Try again</button>}
+        />
       ) : list.length === 0 ? (
         <EmptyState
           icon="🌱"
@@ -69,6 +101,14 @@ export default function Compounds() {
         />
       ) : (
         <>
+          {error && (
+            <EmptyState
+              icon="😕"
+              title="That search didn't go through"
+              hint={error}
+              action={<button className="btn-secondary" onClick={handleRetry}>Try again</button>}
+            />
+          )}
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="font-display text-lg font-semibold text-forest-950 dark:text-cream-50">
               {results?.query ? `Matches for “${results.query}”` : 'Popular right now'}

@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CandidateRankingTable from '../components/CandidateRankingTable.jsx';
-import { Page, LoadingSpinner } from '../components/ui.jsx';
+import { Page, LoadingSpinner, EmptyState } from '../components/ui.jsx';
 import { PROTEIN_SHAPES, proteinShapeName } from '../utils/friendly.js';
 import { apiClient } from '../services/api.js';
 
@@ -12,14 +12,23 @@ export default function Ranking() {
   const [shape, setShape] = useState('6LU7');
   const [ranking, setRanking] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const load = async (target) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const r = await apiClient.getRankedCandidates(target, 8);
+      setRanking(r);
+    } catch {
+      setError('We could not load the shortlist right now. Please try again in a moment.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const r = await apiClient.getRankedCandidates(shape, 8);
-      setRanking(r);
-      setLoading(false);
-    })();
+    load(shape);
   }, [shape]);
 
   return (
@@ -46,7 +55,15 @@ export default function Ranking() {
       </div>
 
       {loading && <LoadingSpinner label="Ordering the shortlist…" />}
-      <CandidateRankingTable ranking={ranking} loading={loading} onSelect={() => {}} />
+      {!loading && error && (
+        <EmptyState
+          icon="😕"
+          title="Something didn't load"
+          hint={error}
+          action={<button className="btn-secondary" onClick={() => load(shape)}>Try again</button>}
+        />
+      )}
+      {!error && <CandidateRankingTable ranking={ranking} loading={loading} onSelect={() => {}} />}
 
       <div className="flex flex-wrap gap-2">
         <Link to="/network" className="btn-secondary !text-xs">See how plants connect →</Link>

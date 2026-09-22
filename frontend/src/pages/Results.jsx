@@ -11,7 +11,7 @@ import DockingResults from '../components/DockingResults.jsx';
 import MLPredictionCard from '../components/MLPredictionCard.jsx';
 import XAIExplanation from '../components/XAIExplanation.jsx';
 import LiteraturePanel from '../components/LiteraturePanel.jsx';
-import { Page, LoadingSpinner, SkeletonCard, ResearchNote } from '../components/ui.jsx';
+import { Page, LoadingSpinner, SkeletonCard, ResearchNote, EmptyState } from '../components/ui.jsx';
 import { proteinShapeName } from '../utils/friendly.js';
 
 const TABS = [
@@ -32,10 +32,12 @@ export default function Results() {
   const [why, setWhy] = useState(null);
   const [papers, setPapers] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
+  const load = async () => {
+    setLoading(true);
+    setError(null);
+    try {
       const [c, d, m, x, l] = await Promise.all([
         apiClient.getCompound(id),
         apiClient.runDocking(id, shapeCode),
@@ -44,8 +46,20 @@ export default function Results() {
         apiClient.queryLiterature(`${id} natural compound protein`),
       ]);
       setCompound(c); setFit(d); setGuess(m); setWhy(x); setPapers(l);
+    } catch (e) {
+      const status = e?.response?.status;
+      if (status === 404) {
+        setError('We could not find that result.');
+      } else {
+        setError('We could not load these results right now. Please try again in a moment.');
+      }
+    } finally {
       setLoading(false);
-    })();
+    }
+  };
+
+  useEffect(() => {
+    load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, shapeCode]);
 
@@ -83,6 +97,13 @@ export default function Results() {
 
       {loading ? (
         <div className="space-y-4"><SkeletonCard /><LoadingSpinner label="Gathering the four result tabs…" /></div>
+      ) : error ? (
+        <EmptyState
+          icon="😕"
+          title="Something didn't load"
+          hint={error}
+          action={<button className="btn-secondary" onClick={load}>Try again</button>}
+        />
       ) : (
         <div key={tab} className="page-wrap">
           {tab === 'overview' && (

@@ -11,7 +11,7 @@ import DockingResults from '../components/DockingResults.jsx';
 import MLPredictionCard from '../components/MLPredictionCard.jsx';
 import XAIExplanation from '../components/XAIExplanation.jsx';
 import LiteraturePanel from '../components/LiteraturePanel.jsx';
-import { Page, LoadingSpinner, SkeletonCard, ResearchNote } from '../components/ui.jsx';
+import { Page, LoadingSpinner, SkeletonCard, ResearchNote, EmptyState } from '../components/ui.jsx';
 import { ConfidenceLegend } from '../components/ui.jsx';
 
 const SECTIONS = [
@@ -30,10 +30,12 @@ export default function CompoundDetail() {
   const [why, setWhy] = useState(null);
   const [papers, setPapers] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
+  const load = async () => {
+    setLoading(true);
+    setError(null);
+    try {
       const [c, d, m, x, l] = await Promise.all([
         apiClient.getCompound(id),
         apiClient.runDocking(id, '6LU7'),
@@ -42,8 +44,20 @@ export default function CompoundDetail() {
         apiClient.queryLiterature(`${id} natural compound plant`),
       ]);
       setCompound(c); setFit(d); setGuess(m); setWhy(x); setPapers(l);
+    } catch (e) {
+      const status = e?.response?.status;
+      if (status === 404) {
+        setError('We could not find that compound.');
+      } else {
+        setError('We could not load this compound right now. Please try again in a moment.');
+      }
+    } finally {
       setLoading(false);
-    })();
+    }
+  };
+
+  useEffect(() => {
+    load();
   }, [id]);
 
   if (loading) {
@@ -51,6 +65,22 @@ export default function CompoundDetail() {
       <Page className="space-y-4">
         <SkeletonCard />
         <LoadingSpinner label={`Opening ${id}…`} />
+      </Page>
+    );
+  }
+
+  if (error) {
+    return (
+      <Page className="space-y-4">
+        <EmptyState
+          icon="😕"
+          title="Something didn't load"
+          hint={error}
+          action={<button className="btn-secondary" onClick={load}>Try again</button>}
+        />
+        <div className="flex flex-wrap gap-2">
+          <Link to="/compounds" className="btn-secondary !text-xs">← Back to compounds</Link>
+        </div>
       </Page>
     );
   }

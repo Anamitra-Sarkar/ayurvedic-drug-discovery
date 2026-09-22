@@ -3,20 +3,29 @@
  */
 import { useEffect, useState } from 'react';
 import NetworkGraph from '../components/NetworkGraph.jsx';
-import { Page, LoadingSpinner } from '../components/ui.jsx';
+import { Page, LoadingSpinner, EmptyState } from '../components/ui.jsx';
 import { apiClient } from '../services/api.js';
 
 export default function Network() {
   const [network, setNetwork] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
+  const load = async () => {
+    setLoading(true);
+    setError(null);
+    try {
       const n = await apiClient.getTriphalaNetwork();
       setNetwork(n);
+    } catch {
+      setError('We could not draw the plant map right now. Please try again in a moment.');
+    } finally {
       setLoading(false);
-    })();
+    }
+  };
+
+  useEffect(() => {
+    load();
   }, []);
 
   return (
@@ -29,7 +38,15 @@ export default function Network() {
         </p>
       </div>
       {loading && <LoadingSpinner label="Drawing the plant map…" />}
-      <NetworkGraph networkData={network} loading={loading} />
+      {!loading && error && (
+        <EmptyState
+          icon="😕"
+          title="Something didn't load"
+          hint={error}
+          action={<button className="btn-secondary" onClick={load}>Try again</button>}
+        />
+      )}
+      {!error && <NetworkGraph networkData={network} loading={loading} />}
       <div className="card p-5">
         <h2 className="font-display text-lg font-semibold text-forest-950 dark:text-cream-50">How to read this map 🌿</h2>
         <ul className="mt-2 space-y-1.5 text-sm text-forest-800/80 dark:text-cream-100/70 leading-relaxed">
