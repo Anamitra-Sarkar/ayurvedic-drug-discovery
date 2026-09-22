@@ -40,17 +40,24 @@ async def run_pipeline(request: PipelineRequest, background_tasks: BackgroundTas
     AYUSH-64 justification enforced.
     """
     try:
-        from app.agents.orchestrator import AyurvedicOrchestrator
-        orchestrator = AyurvedicOrchestrator()
-        result = await orchestrator.run_pipeline_async(
-            plant_names=request.plant_names,
-            phytochemical_names=request.phytochemical_names,
-            protein_target=request.protein_target,
-            top_n=request.top_n,
-            include_xai=request.include_xai,
-            include_literature=request.include_literature
+        import asyncio
+        from app.agents.orchestrator import AyurvedicDiscoveryOrchestrator
+        orchestrator = AyurvedicDiscoveryOrchestrator()
+        target_plant = (request.plant_names or ["Withania somnifera"])[0]
+        summary = await asyncio.to_thread(
+            orchestrator.run_pipeline,
+            target_plant=target_plant,
+            target_protein=request.protein_target,
         )
-        return result
+        final_state = summary.get("final_state", {})
+        return PipelineResponse(
+            request_id=summary["pipeline_id"],
+            status=summary["status"],
+            candidates=final_state.get("ranked_candidates", [])[: request.top_n],
+            evidence_summary=summary.get("evidence_tier_summary", {}),
+            validation_report=final_state.get("validation_report", {}),
+            report_path=summary.get("final_output_path"),
+        )
     except Exception as e:
         # Fallback mock for demo if agents not fully initialized
         logger.warning(f"Pipeline fallback mock due to: {e}")
