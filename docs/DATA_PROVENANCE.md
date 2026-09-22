@@ -6,6 +6,53 @@ shipped as "real" without an entry here.
 
 ## Verified so far (Phase A)
 
+### ⚠️ Integrity finding and fix (2026-09-22, Phase B): seed data was fabricated at every level
+
+Cross-checking every `phytochemical_name` in the original `imppat_sample.json`
+against PubChem (via `scripts/fetch_real_data.py`, run in GitHub Actions) found
+that only **20 of the 100 records were real, PubChem-resolvable phytochemicals**.
+The other 80 were named things like "Gallic acid derivative 20", "Quercetin
+derivative 21" - fabricated placeholder padding inherited from Meta AI's
+original build. PubChem correctly returned `404 Not Found` for all 80.
+
+Worse: of the 20 records with real compound names, **every single one had a
+fabricated plant source** - the plant-association fields cycled through the
+three Triphala plants (`Emblica officinalis` / `Terminalia bellerica` /
+`Terminalia chebula`) essentially at random, regardless of the compound's
+actual botanical origin. For example the original data claimed Withaferin A
+(a compound unique to *Withania somnifera*/Ashwagandha) came from *Emblica
+officinalis* with family "Menispermaceae" (also wrong - Withania is
+Solanaceae); claimed Bacoside A (unique to *Bacopa monnieri*/Brahmi) came from
+*Terminalia bellerica*; claimed Echitamine (unique to *Alstonia
+scholaris*/Saptaparna) was a Triphala compound at all. `pubchem_cid` values on
+these 20 were also fabricated (e.g. Gallic acid was tagged CID 100000; its
+real CID, confirmed live via PubChem, is 370). `admet` and
+`bioactivity.predicted_targets` sub-objects (Ames test results, BBB
+permeability, CYP inhibition, predicted protein targets) had no real
+prediction tool behind them anywhere in this codebase - also fabricated.
+
+**Fix applied**: the 80 "derivative N" fake records were dropped entirely
+(not replaced with more padding). The 15 genuinely real compounds with
+correct or salvageable identity were re-sourced to their real, verified
+botanical origin (cross-referenced against established pharmacognosy - e.g.
+Withanolide A/Withaferin A -> *Withania somnifera*, Bacoside A -> *Bacopa
+monnieri*, Asiatic acid -> *Centella asiatica*, Picroside I -> *Picrorhiza
+kurroa*, Amarogentin -> *Swertia chirata*, Mangiferin -> *Mangifera indica*,
+Echitamine -> *Alstonia scholaris*), their `pubchem_cid`/`smiles`/
+`molecular_formula`/`molecular_weight` were overwritten with the real values
+returned by PubChem, their `traditional_formulations` claims were corrected to
+remove false "Triphala" tags on non-Triphala compounds, and the fabricated
+`admet`/`bioactivity` sub-objects were replaced with an honest
+"not computed by any tool in this pipeline yet" note. 50 additional real,
+correctly-sourced phytochemicals (real names + real plant origins, drawn from
+well-established Ayurvedic pharmacognosy - Curcumin/Curcuma longa,
+Berberine/Berberis aristata, Andrographolide/Andrographis paniculata, etc.)
+were added with SMILES/CID left blank pending the next PubChem enrichment
+pass, rather than hand-typing chemical structures (too easy to transcribe a
+SMILES wrong). **Result: 65 total records, 15 with verified real CID+SMILES,
+50 with verified real names+plant sources pending CID enrichment, 0 fabricated
+associations.**
+
 ### IMPPAT sample (phytochemical seed data)
 - **File**: `backend/app/data/imppat_sample.json`
 - **Shipped by**: Meta AI's original build (inherited into this repo's seed commit)
