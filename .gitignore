@@ -11,10 +11,8 @@ build/
 .mypy_cache/
 .DS_Store
 *.log
-data/raw/
 data/processed/
 data/external/
-!data/raw/.gitkeep
 !data/processed/.gitkeep
 !data/external/.gitkeep
 backend/data/checkpoints/
