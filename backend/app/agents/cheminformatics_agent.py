@@ -634,6 +634,23 @@ class CheminformaticsAgent:
     def get_stats(self) -> Dict[str, Any]:
         return dict(self.stats)
 
+    def run_node(self, state: Dict[str, Any]) -> Dict[str, Any]:
+        """Orchestrator state-dict adapter. Calls the real batch_process()."""
+        from app.agents.evidence_tiers import EvidenceTier, TieredOutput
+        phytos = state.get("database_results", {}).get("phytochemicals", [])
+        te = self.batch_process(phytos, include_3d=False, include_filters=True, include_pains=True)
+        content = te.data
+        content["compounds"] = content.get("results_unwrapped", [])
+        tiered_out = TieredOutput(
+            tier=EvidenceTier.DATABASE_DERIVED,
+            content=content,
+            confidence=0.85 if content["compounds"] else 0.2,
+            metadata=te.metadata,
+        )
+        tiered = state.get("tiered_outputs", [])
+        tiered.append(tiered_out.to_dict())
+        return {**state, "cheminformatics_results": content, "tiered_outputs": tiered}
+
 # Singleton convenience
 _default_chem_agent: Optional[CheminformaticsAgent] = None
 

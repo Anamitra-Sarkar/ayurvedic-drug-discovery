@@ -21,6 +21,7 @@ Integration:
 from __future__ import annotations
 
 import json
+import logging
 import warnings
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -707,3 +708,31 @@ class XAIAgent:
             },
         )
         return EvidenceValidator.validate(out)
+
+    def run_node(self, state: Dict[str, Any]) -> Dict[str, Any]:
+        """Orchestrator state-dict adapter. Calls the real explain_prediction(), honest if no trained model."""
+        from app.agents.evidence_tiers import EvidenceTier, TieredOutput
+        if self.ml_agent is None or getattr(self.ml_agent, "best_model", None) is None:
+            content = {"status": "no_trained_model", "message": "XAI unavailable: MLAgent has no trained model.", "explanations": []}
+            tiered_out = TieredOutput(tier=EvidenceTier.XAI_INTERPRETATION, content=content, confidence=0.0, metadata={"available": False})
+            tiered = state.get("tiered_outputs", [])
+            tiered.append(tiered_out.to_dict())
+            return {**state, "xai_results": content, "tiered_outputs": tiered}
+
+        target_protein = state.get("target_protein", "6LU7")
+        ml_preds = state.get("ml_predictions", [])
+        explanations = []
+        for p in ml_preds[:5]:
+            smi = p.get("smiles", "") if isinstance(p, dict) else ""
+            if not smi:
+                continue
+            try:
+                expl = self.explain_prediction(smiles=smi, protein_target=target_protein, return_evidence_tagged=False)
+                explanations.append(expl.__dict__ if hasattr(expl, "__dict__") else expl)
+            except Exception as e:
+                logging.getLogger(__name__).warning(f"XAI explanation failed for {smi}: {e}")
+        content = {"explanations": explanations, "count": len(explanations)}
+        tiered_out = TieredOutput(tier=EvidenceTier.XAI_INTERPRETATION, content=content, confidence=0.7 if explanations else 0.1, metadata={"count": len(explanations)})
+        tiered = state.get("tiered_outputs", [])
+        tiered.append(tiered_out.to_dict())
+        return {**state, "xai_results": content, "tiered_outputs": tiered}

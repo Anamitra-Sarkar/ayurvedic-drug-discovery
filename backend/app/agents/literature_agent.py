@@ -318,14 +318,17 @@ class LiteratureAgent:
         logger.info(f"[{self.agent_name}] Running node with {len(queries)} queries")
 
         results = {}
+        tiered_outputs = state.get("tiered_outputs", [])
         for q in queries[:6]:  # limit to 6 to prevent too much compute
             tiered = self.answer_question(q, top_k=4)
             results[q] = tiered.to_dict()
+            tiered_outputs.append(tiered.to_dict())
 
         new_state = {
             **state,
             "literature_results": results,
-            "literature_corpus_stats": self.get_corpus_stats()
+            "literature_corpus_stats": self.get_corpus_stats(),
+            "tiered_outputs": tiered_outputs
         }
         return new_state
 

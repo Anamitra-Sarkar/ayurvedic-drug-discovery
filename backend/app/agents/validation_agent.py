@@ -345,11 +345,22 @@ class ValidationAgent:
                 continue
 
             meta = out.metadata if isinstance(out.metadata, dict) else {}
-            score = meta.get("docking_score", out.content.get("docking_score") if isinstance(out.content, dict) else -7.0)
-            rmsd = meta.get("pose_rmsd", meta.get("rmsd", 1.5))
-            interactions = meta.get("interactions", [])
-            clashes = meta.get("steric_clashes", 0)
-            strain = meta.get("ligand_strain_energy", 2.0)
+            content = out.content if isinstance(out.content, dict) else {}
+            score = meta.get("docking_score")
+            if score is None:
+                score = content.get("docking_score", content.get("best_score", -7.0))
+            if score is None:
+                score = -7.0
+            rmsd = meta.get("pose_rmsd", meta.get("rmsd"))
+            if rmsd is None:
+                rmsd = 1.5
+            interactions = meta.get("interactions") or []
+            clashes = meta.get("steric_clashes")
+            if clashes is None:
+                clashes = 0
+            strain = meta.get("ligand_strain_energy")
+            if strain is None:
+                strain = 2.0
 
             # Quality heuristics per REF_019
             quality = "low"
@@ -516,8 +527,8 @@ class ValidationAgent:
             is_valid=len([i for i in hall_issues if i.severity in ("critical","high")])==0,
             issues=hall_issues,
             confidence=1.0 if hall_report.get("hallucination_detected",0)==0 else 0.3,
-            checks_passed=[f"hall_free_{d['query']}" for d in hall_report.get("details",[]) if d.get("valid")],
-            checks_failed=[f"hall_detected_{d['query']}" for d in hall_report.get("details",[]) if not d.get("valid")]
+            checks_passed=[f"hall_free_{d.get('query','unknown')}" for d in hall_report.get("details",[]) if d.get("valid")],
+            checks_failed=[f"hall_detected_{d.get('query','unknown')}" for d in hall_report.get("details",[]) if d.get("valid") is False]
         )
 
         # 5. Docking pose quality

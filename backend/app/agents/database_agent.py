@@ -201,11 +201,17 @@ class DatabaseAgent:
             if not self.raw_data:
                 with open(load_path, "r", encoding="utf-8") as f:
                     self.raw_data = json.load(f)
-            
-            self.plants = self.raw_data.get("plants", [])
-            self.phytochemicals = self.raw_data.get("phytochemicals", [])
-            self.formulations = self.raw_data.get("formulations", {})
-            
+
+            if isinstance(self.raw_data, list):
+                # Real imppat_sample.json ships as a flat list of one row per
+                # (plant, phytochemical) pair, not the {"plants":[...], "phytochemicals":[...]}
+                # shape the rest of this class was written against. Derive it.
+                self._normalize_flat_records(self.raw_data)
+            else:
+                self.plants = self.raw_data.get("plants", [])
+                self.phytochemicals = self.raw_data.get("phytochemicals", [])
+                self.formulations = self.raw_data.get("formulations", {})
+
             # Build indexes
             self._build_indexes()
             
@@ -219,7 +225,10 @@ class DatabaseAgent:
                 "phytochemical_count": len(self.phytochemicals),
                 "formulations": list(self.formulations.keys()),
                 "loaded_at": self.loaded_at,
-                "source_version": self.raw_data.get("metadata", {}).get("version", "unknown")
+                "source_version": (
+                    self.raw_data.get("metadata", {}).get("version", "unknown")
+                    if isinstance(self.raw_data, dict) else "imppat_sample_flat_v1"
+                )
             }
             
             return self._wrap_database_output(
@@ -255,6 +264,59 @@ class DatabaseAgent:
             }
         }
     
+    def _normalize_flat_records(self, records: List[Dict[str, Any]]) -> None:
+        """Derive self.plants/self.phytochemicals/self.formulations from the real
+        imppat_sample.json schema: a flat list of one row per (plant, phytochemical) pair
+        with keys plant_botanical_name, plant_common_name, phytochemical_name, smiles, etc.
+        """
+        plants_by_botanical: Dict[str, Dict[str, Any]] = {}
+        phytochemicals: List[Dict[str, Any]] = []
+        formulations: Dict[str, List[str]] = {}
+
+        for rec in records:
+            botanical = rec.get("plant_botanical_name", "")
+            common = rec.get("plant_common_name", "")
+            if botanical and botanical not in plants_by_botanical:
+                plants_by_botanical[botanical] = {
+                    "botanical_name": botanical,
+                    "common_name": common,
+                    "ayurvedic_name": common,
+                    "family": rec.get("plant_family", ""),
+                    "therapeutic_uses": [],
+                }
+            if botanical:
+                existing_uses = set(plants_by_botanical[botanical].get("therapeutic_uses", []))
+                existing_uses.update(rec.get("therapeutic_uses", []) or [])
+                plants_by_botanical[botanical]["therapeutic_uses"] = sorted(existing_uses)
+
+            compound_name = rec.get("phytochemical_name", "")
+            phytochemicals.append({
+                "compound_id": rec.get("imppat_id") or rec.get("id"),
+                "compound_name": compound_name,
+                "smiles": rec.get("smiles") or rec.get("canonical_smiles", ""),
+                "canonical_smiles": rec.get("canonical_smiles", ""),
+                "molecular_formula": rec.get("molecular_formula", ""),
+                "molecular_weight": rec.get("molecular_weight"),
+                "pubchem_cid": rec.get("pubchem_cid"),
+                "therapeutic_uses": rec.get("therapeutic_uses", []) or [],
+                "plant_sources": [botanical] if botanical else [],
+                "ayurvedic_properties": rec.get("ayurvedic_properties", {}),
+                "traditional_formulations": rec.get("traditional_formulations", []) or [],
+                "plant_parts": rec.get("plant_parts", []) or [],
+                "admet": rec.get("admet", {}),
+                "drug_likeness": rec.get("drug_likeness", {}),
+                "bioactivity": rec.get("bioactivity", {}),
+            })
+
+            for form in (rec.get("traditional_formulations", []) or []):
+                bucket = formulations.setdefault(form, [])
+                if compound_name and compound_name not in bucket:
+                    bucket.append(compound_name)
+
+        self.plants = list(plants_by_botanical.values())
+        self.phytochemicals = phytochemicals
+        self.formulations = formulations
+
     def _build_indexes(self):
         """Build search indexes for performance"""
         self._plant_name_index.clear()
@@ -1001,6 +1063,23 @@ class DatabaseAgent:
         if not self.phytochemicals:
             self.load_data()
         return self.phytochemicals
+
+    def run_node(self, state: Dict[str, Any]) -> Dict[str, Any]:
+        """Orchestrator state-dict adapter. Calls the real get_phytochemicals_for_plant()."""
+        from app.agents.evidence_tiers import EvidenceTier, TieredOutput
+        target_plant = state.get("target_plant", "Withania somnifera")
+        te = self.get_phytochemicals_for_plant(target_plant, include_descriptors=True)
+        content = te.data
+        phytos = content.get("phytochemicals", [])
+        tiered_out = TieredOutput(
+            tier=EvidenceTier.DATABASE_DERIVED,
+            content=content,
+            confidence=0.9 if phytos else 0.2,
+            metadata=te.metadata,
+        )
+        tiered = state.get("tiered_outputs", [])
+        tiered.append(tiered_out.to_dict())
+        return {**state, "database_results": content, "tiered_outputs": tiered}
 
 # Singleton convenience instance (optional)
 _default_agent: Optional[DatabaseAgent] = None

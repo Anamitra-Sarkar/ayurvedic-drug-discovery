@@ -971,3 +971,30 @@ class MLAgent:
             },
         )
         return EvidenceValidator.validate(out)
+
+    def run_node(self, state: Dict[str, Any]) -> Dict[str, Any]:
+        """Orchestrator state-dict adapter. Calls the real batch_predict(), honest about untrained state."""
+        from app.agents.evidence_tiers import EvidenceTier, TieredOutput
+        target_protein = state.get("target_protein", "6LU7")
+        docked = state.get("docking_results", {}).get("results", [])
+        predictions: List[Dict[str, Any]] = []
+        if not self.is_trained_:
+            content = {
+                "status": "model_not_trained",
+                "message": "MLAgent has no trained model in backend/app/models/trained/ - predictions unavailable until a real model is trained (see ml/notebooks/).",
+                "predictions": [],
+            }
+            tiered_out = TieredOutput(tier=EvidenceTier.ML_PREDICTION, content=content, confidence=0.0, metadata={"trained": False})
+        else:
+            batch_inputs = [
+                {"smiles": d.get("smiles", ""), "protein_target": target_protein, "docking_result": {"affinity": d.get("docking_score")}}
+                for d in docked if d.get("smiles")
+            ]
+            preds = self.batch_predict(batch_inputs, return_evidence_tagged=False)
+            for p in preds:
+                predictions.append(p.__dict__ if hasattr(p, "__dict__") else p)
+            content = {"predictions": predictions, "count": len(predictions)}
+            tiered_out = TieredOutput(tier=EvidenceTier.ML_PREDICTION, content=content, confidence=0.75 if predictions else 0.1, metadata={"trained": True, "count": len(predictions)})
+        tiered = state.get("tiered_outputs", [])
+        tiered.append(tiered_out.to_dict())
+        return {**state, "ml_predictions": predictions, "ml_results": content, "tiered_outputs": tiered}

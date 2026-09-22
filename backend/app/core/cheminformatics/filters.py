@@ -369,12 +369,6 @@ def admet_heuristic_filters(descriptors: Dict[str, Any]) -> Dict[str, Any]:
         "disclaimer": "[DATABASE_DERIVED + COMPUTED] Heuristic only. Not experimental ADMET. NOT clinical proof."
     }
 
-def comprehensive_drug_likeness assessment(descriptors: Dict[str, Any], smiles: str) -> Dict[str, Any]:
-    """
-    This function name with space intentionally avoided - use alias below
-    """
-    pass
-
 def comprehensive_drug_likeness_assessment(descriptors: Dict[str, Any], smiles: str) -> Dict[str, Any]:
     """
     Run all filters and provide composite summary.

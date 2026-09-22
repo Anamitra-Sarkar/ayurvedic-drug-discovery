@@ -29,7 +29,11 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
 
 from app.agents.evidence_tiers import EvidenceTier, TieredOutput, global_registry
-from app.agents.other_agents import DatabaseAgent, CheminformaticsAgent, DockingAgent, MLAgent, XAIAgent
+from app.agents.database_agent import DatabaseAgent
+from app.agents.cheminformatics_agent import CheminformaticsAgent
+from app.agents.docking_agent import DockingAgent
+from app.agents.ml_agent import MLAgent
+from app.agents.xai_agent import XAIAgent
 from app.agents.literature_agent import LiteratureAgent
 from app.agents.validation_agent import ValidationAgent
 from app.agents.report_agent import ReportAgent
@@ -137,16 +141,15 @@ class AyurvedicDiscoveryOrchestrator:
 
         # Initialize all 7+ agents
         logger.info(f"[{self.orchestrator_name}] Initializing agents...")
-        self.agents = {
-            "database": DatabaseAgent(),
-            "cheminformatics": CheminformaticsAgent(),
-            "docking": DockingAgent(),
-            "ml": MLAgent(),
-            "xai": XAIAgent(),
-            "literature": LiteratureAgent(),
-            "validation": ValidationAgent(),
-            "report": ReportAgent()
-        }
+        self.agents = {}
+        self.agents["database"] = DatabaseAgent()
+        self.agents["cheminformatics"] = CheminformaticsAgent()
+        self.agents["docking"] = DockingAgent()
+        self.agents["ml"] = MLAgent()
+        self.agents["xai"] = XAIAgent(ml_agent=self.agents["ml"])
+        self.agents["literature"] = LiteratureAgent()
+        self.agents["validation"] = ValidationAgent()
+        self.agents["report"] = ReportAgent()
 
         # Define graph - LangGraph style nodes and edges
         self.nodes: Dict[str, NodeDefinition] = {

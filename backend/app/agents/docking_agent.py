@@ -951,6 +951,30 @@ ENDROOT
             gene_symbol=target
         )
 
+    def run_node(self, state: Dict[str, Any]) -> Dict[str, Any]:
+        """Orchestrator state-dict adapter. Calls the real batch_docking()."""
+        from app.agents.evidence_tiers import EvidenceTier, TieredOutput
+        compounds = state.get("cheminformatics_results", {}).get("compounds", [])
+        library = [
+            {
+                "id": c.get("compound_id") or c.get("compound_name", "unknown"),
+                "name": c.get("compound_name", "unknown"),
+                "smiles": c.get("smiles", ""),
+            }
+            for c in compounds if c.get("smiles")
+        ]
+        target_protein = state.get("target_protein", "6LU7")
+        if not library:
+            content = {"results": [], "num_docked": 0, "note": "No compounds with valid SMILES to dock"}
+            tiered_out = TieredOutput(tier=EvidenceTier.DOCKING_RESULT, content=content, confidence=0.1, metadata={"num_docked": 0})
+        else:
+            te = self.batch_docking(phytochemical_library=library, protein_pdb_id=target_protein)
+            content = te.data
+            tiered_out = TieredOutput(tier=EvidenceTier.DOCKING_RESULT, content=content, confidence=0.7, metadata=te.metadata)
+        tiered = state.get("tiered_outputs", [])
+        tiered.append(tiered_out.to_dict())
+        return {**state, "docking_results": content, "tiered_outputs": tiered}
+
 # --- Init file helpers ---
 
 # Ensure directories exist importability

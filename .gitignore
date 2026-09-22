@@ -17,3 +17,5 @@ data/external/
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 !data/external/.gitkeep
+backend/data/checkpoints/
+backend/data/reports/
