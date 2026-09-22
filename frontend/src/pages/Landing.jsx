@@ -2,46 +2,15 @@
  * Landing.jsx — "/" plain-language hero + feature highlights.
  * First thing anyone sees. No jargon.
  */
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Page } from '../components/ui.jsx';
 
 function HeroArt() {
-  const [img, setImg] = useState(null);
-  const [tried, setTried] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    const timer = setTimeout(() => setTried(true), 12000);
-    (async () => {
-      try {
-        if (!window.puter?.ai?.txt2img) { setTried(true); return; }
-        const el = await window.puter.ai.txt2img(
-          'Serene botanical illustration, ashwagandha and turmeric plants with soft leaves, deep emerald green and warm gold palette, cream background, elegant minimal consumer-wellness style, no text',
-          { model: 'default' }
-        );
-        if (cancelled) return;
-        const src = el?.src || el?.url || null;
-        if (src) setImg(src);
-      } catch {
-        /* fall back to hand-crafted gradient */
-      } finally {
-        if (!cancelled) { setTried(true); clearTimeout(timer); }
-      }
-    })();
-    return () => { cancelled = true; clearTimeout(timer); };
-  }, []);
-
   return (
     <div className="hero-pattern relative overflow-hidden rounded-[2rem] leaf-shape">
-      {img ? (
-        <img src={img} alt="Botanical illustration of healing plants" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
-      ) : (
-        <div className="absolute inset-0 flex items-center justify-end pr-10 opacity-90" aria-hidden="true">
-          {!tried && <span className="text-cream-50/70 text-sm">Painting something lovely…</span>}
-          <div className="hidden md:block text-[120px] animate-float-slow select-none">🌿</div>
-        </div>
-      )}
+      <div className="absolute inset-0 flex items-center justify-end pr-10 opacity-90" aria-hidden="true">
+        <div className="hidden md:block text-[120px] animate-float-slow select-none">🌿</div>
+      </div>
       <div className="absolute inset-0 bg-gradient-to-r from-forest-950/60 via-forest-950/20 to-transparent" />
     </div>
   );
