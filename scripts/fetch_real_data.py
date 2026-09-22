@@ -59,7 +59,8 @@ PDB_PROVENANCE_OUT = PDB_DIR / "PROVENANCE.json"
 LIT_OUT = LIT_DIR / "europepmc_verification.json"
 
 REQUEST_TIMEOUT = 30
-POLITENESS_DELAY = 0.3
+POLITENESS_DELAY = 1.0
+MAX_RETRIES_ON_BUSY = 4
 USER_AGENT = "ayurvedic-drug-discovery-fetch/1.0 (github-actions; contact: repo-maintainer)"
 
 STOPWORDS = {
@@ -73,8 +74,7 @@ def utc_now_iso() -> str:
     return datetime.datetime.now(datetime.timezone.utc).isoformat()
 
 
-def http_get(url: str, timeout: int = REQUEST_TIMEOUT) -> tuple[int | None, bytes | None, str | None]:
-    """GET a URL with stdlib urllib. Returns (status, body, error)."""
+def _http_get_once(url: str, timeout: int) -> tuple[int | None, bytes | None, str | None]:
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "*/*"})
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
@@ -91,8 +91,29 @@ def http_get(url: str, timeout: int = REQUEST_TIMEOUT) -> tuple[int | None, byte
         return None, None, f"{type(exc).__name__}: {exc}"
 
 
+def http_get(url: str, timeout: int = REQUEST_TIMEOUT) -> tuple[int | None, bytes | None, str | None]:
+    """GET a URL with stdlib urllib. Returns (status, body, error).
+
+    Retries with exponential backoff on HTTP 503 (server busy) - a retry is
+    honest (same real endpoint, deferred), unlike substituting fabricated data.
+    """
+    attempt = 0
+    while True:
+        status, body, err = _http_get_once(url, timeout)
+        if status == 503 and attempt < MAX_RETRIES_ON_BUSY:
+            wait = 2 ** attempt * 2
+            log.info("HTTP 503 (server busy), retrying in %ds (attempt %d/%d): %s", wait, attempt + 1, MAX_RETRIES_ON_BUSY, url)
+            time.sleep(wait)
+            attempt += 1
+            continue
+        return status, body, err
+
+
 def http_get_json(url: str, timeout: int = REQUEST_TIMEOUT):
-    """GET a URL and parse the body as JSON. Returns (data, error)."""
+    """GET a URL and parse the body as JSON. Returns (data, error).
+
+    503 retry-with-backoff is handled inside http_get() itself.
+    """
     status, body, err = http_get(url, timeout=timeout)
     if err is not None and body is None:
         return None, err
