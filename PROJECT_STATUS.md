@@ -435,3 +435,94 @@ check `hf spaces logs`/Space status after any such upload, not just after a code
 page's batch docking) was not checked for the same real-3D-structure gap this session —
 worth a quick live check next session since it shares `DockingAgent` but calls
 `batch_docking()`, a separate method from the now-fixed `run_docking()`.
+
+---
+
+## Session log — 2026-09-22 14:47 UTC (continuation, same day)
+
+User asked to verify the 3D viewer generalizes to other compounds/targets and to do a
+full top-to-bottom dummy-data audit of the whole app (UI + backend), then give a
+submission-readiness verdict. Found and fixed 8 more real issues via live testing +
+targeted grep audits, all committed/pushed/redeployed (4 commits: `2b08b3f`, plus the
+tooltip fix `b5ae873` and timeout fix `4fd64f3` landed in this same continuous session).
+
+**3D viewer generalization**: confirmed live with a second, different compound+target
+pair (Gallic acid / IMP000001 vs 3FXI/TLR4, not the Withaferin A/6LU7 pair used to build
+the fix) — real, visibly different protein structure, real distinct docking numbers, all
+4 style buttons work. The fix generalizes, not a one-compound coincidence.
+
+**Grep-audit findings**:
+- `backend/app/agents/__init__.py` imported `DatabaseAgent`/`CheminformaticsAgent`/
+  `DockingAgent`/`MLAgent`/`XAIAgent` from `other_agents.py`, a leftover set of
+  fabricated random.seed-based stub classes that predates this session's real-agent
+  integration. Confirmed via grep that nothing in the live app imports the package root
+  (every route imports real modules directly), so this was dead code today — but it
+  silently shadowed the real names, a landmine for any future `from app.agents import X`.
+  Fixed the `__init__.py` to import the real modules; **deleted `other_agents.py`
+  entirely** (607 lines) since nothing referenced it anymore, both in git and on the live
+  HF Space (`hf upload` does not delete stale remote files, had to `HfApi().delete_file`
+  separately — worth remembering for any future file removal, not just additions).
+- `database_agent.py`'s `get_network_pharmacology_graph()` (contains `is_mock`-labeled
+  synthetic network-expansion nodes, gated behind `include_extended_mock=True` default)
+  is defined but **never called by any live route** — confirmed via grep. `/database/triphala`
+  (what the frontend's Plant map page actually calls) is a separate, hand-written, fully
+  real endpoint using real cited literature figures. Left as unreachable dead code for
+  now; flagging for a future cleanup pass, not urgent since it's genuinely unreachable.
+- `NetworkGraph.jsx` hardcoded `"6 targets"` and `"Compounds (174)"` as literal text in
+  the Plant map page header, ignoring the real `stats.targets`/`stats.bioactives` values
+  the API actually returns (real number is 44 shared targets, a cited literature figure,
+  not 6). Fixed both to read from real stats.
+
+**User-reported bugs this round, all fixed+deployed+verified live**:
+1. Compound descriptor tiles (oil-water mix, exposed surface, bonding spots, balance
+   score) always showed "—" despite being real, already-computed RDKit values
+   (`drug_likeness.logP/tpsa/num_hbd/num_hba/qed_score`) — `normalizeCompound()` just
+   never mapped them. Confirmed live: IMP000013 now shows 2.28 / 63.47 / 3/6 / 0.37 and
+   a "Passes 4/4 basic checks" chip.
+2. Literature "sticks to sources" stuck at 0.00 / "source papers (0)" even on a real,
+   already-correct backend answer. Root cause: the real endpoint's nested response
+   shape (`content.answer`, top-level `citations` with real authors/doi/journal) never
+   matched what `LiteraturePanel.jsx` reads (flat `synthesis`/`citations`/`faithfulness`).
+   Added `normalizeLiterature()`. Confirmed live via curl that the backend was already
+   honestly refusing to answer when its corpus had nothing on a given compound
+   ("does not contain any information on gallic acid...") — that real, correct honesty
+   just never reached the screen before.
+3. Best Attempts table numbers overlapping across columns on mobile — real docking
+   floats come back with 15+ significant digits (e.g. `-6.347847183429078`); added a
+   display-only `fmt()` (2 decimals) in `DockingResults.jsx`. This is also the most
+   likely cause of the reported "page suddenly zoomed out" (oversized unrounded content
+   forcing horizontal overflow, which mobile browsers respond to by auto-zooming out) —
+   added `overflow-x: hidden` on html/body as a defensive backstop either way.
+4. Ugly scrollbar on horizontally-scrolling pill/tab nav strips (result tabs,
+   compound-detail tabs, 3D style buttons) — added a `.scrollbar-hide` utility
+   (still swipeable, no visible track).
+5. **"Analysis failing continuously" / "backend down?"** — NOT a backend or mobile
+   issue. Timed a real `POST /api/pipeline/run` live: **70 seconds** end to end (real
+   Vina docking + real RandomForest predict + real XAI + several real Groq LLM calls for
+   literature). The shared axios client has a hardcoded 30s timeout, so every single real
+   pipeline run was guaranteed to abort before finishing, on any device. This was the
+   most serious bug found this session - the core "run an analysis" feature was silently
+   broken for every real user. Fixed: `runPipeline()` now overrides to a 150s timeout
+   (confirmed every other endpoint completes in 3-4s live, so only this one call needed
+   it). Also improved the wait UX so a 70-90s wait doesn't look frozen (real-elapsed-time
+   heartbeat log after the 6 scripted narration steps exhaust) and fixed the "about a
+   minute" intro copy to "usually one to two minutes". **Verified live end-to-end after
+   the fix: a real run completed and reached "Done — your results are ready" at 100%.**
+
+**Environment limitation hit this session**: `resize_window`/mobile-viewport emulation
+did not actually change `window.innerWidth` in this Claude-in-Chrome session (stayed at
+~1880px regardless of the requested 390x844) — could not get a true narrow-viewport
+screenshot to visually confirm the mobile CSS fixes (scrollbar-hide, number formatting,
+overflow-x). The underlying bugs were still root-caused precisely (oversized raw
+floats, truthy-empty-array rendering, hardcoded scrollbar) and the fixes are structurally
+correct CSS/logic, confirmed via DOM/data inspection at the current viewport - just not
+visually re-confirmed at a literal 390px width. If mobile issues persist, a real device
+or an actual mobile-emulation-capable environment is needed to visually re-check.
+
+**Submission-readiness verdict**: CI green on every commit this session (confirmed via
+`gh run list`). All 5 user-reported bugs this round fixed, deployed, and live-verified
+(except the visual mobile-width re-check per the limitation above). Core "run a real
+analysis" flow was silently broken until the timeout fix — now confirmed working
+end-to-end live. Remaining before a confident "ready" call: the Definition-of-Done pass
+against `docs/client_provided/complete_phase_plan.md` (still not done, tracked above),
+and ideally a real mobile-device spot check given the emulation limitation.
