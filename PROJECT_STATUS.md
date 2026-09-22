@@ -256,10 +256,25 @@ upload, Vercel deploy).
       interaction agent wired, all verified via actual execution, not just review.
 - [ ] Phase E: RAG groundedness/hallucination metric formalization, orchestrator
       checkpointing/retry re-verification after all the node changes.
-- [ ] Phase F: frontend — convert JSX→TSX incrementally (Minimax's TS/vitest/eslint tooling
-      already identified as the source to port in the original plan), wire Plotly.js/3Dmol.js
-      to the REAL backend endpoints (not mock JSON), verify in an actual browser.
-- [ ] Phase G: Docker Compose build+run verification, backend pytest suite run, final
+- [ ] Phase F: frontend redesign IN PROGRESS via GitHub Copilot CLI (`copilot -p ... --allow-all-tools`,
+      user's own Copilot credits, ~200 available, burn fast - use sparingly, one big
+      well-scoped prompt rather than many small ones). Task given: real multi-page routing
+      (landing page + ~8 other pages, currently everything may be on one page), beautiful
+      Tailwind theme (botanical/herbal color palette, good fonts, smooth animations/popup
+      transitions), plain-language UI copy (no technical jargon - "Match Strength" not
+      "Docking Score" etc, translate but don't change underlying data/API calls), optional
+      puter.js (`https://js.puter.com/v2/`, key in API_Keys_and_Secrets/puter-js-api.txt)
+      for a hero image/decoration, and a real `npm run build` verification. Check
+      `git status`/`git diff frontend/` and the copilot session output when resuming -
+      log file was `/tmp/.../scratchpad/copilot_frontend.log` (scratchpad, may be gone in a
+      new session - re-run `git log`/`git diff` on frontend/ instead if that log is gone).
+      JSX→TSX conversion (Minimax's TS/vitest/eslint tooling) is a nice-to-have, not required.
+- [x] ~~Docker Compose build verification~~ — SKIPPED per explicit user instruction
+      (too heavy/data-consuming on this connection). Docker files remain as-is, untested.
+      Two delegated attempts (agy, opencode) also didn't produce useful output before
+      this was deprioritized - not worth re-attempting unless user asks again.
+- [ ] Backend pytest suite run (partially fixed by agy+Claude - 2 stale test assertions
+      corrected to real 65-record count; re-run to confirm current pass rate), final
       `SCIENTIFIC_LIMITATIONS.md`/`FINAL_REPORT.md` synthesis from real verified artifacts only.
 - [ ] Phase H remainder: HF Hub model upload (bhumika's account, `bhumika-hf.txt` token),
       HF Space for backend (Docker SDK), Vercel frontend deploy, end-to-end live verification
