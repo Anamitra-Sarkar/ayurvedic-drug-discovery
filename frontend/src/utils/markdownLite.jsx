@@ -8,7 +8,11 @@
  */
 
 /** Inline bold/italic markers plus literal sup/sub HTML tags (the LLM
- * emits real <sup>/<sub> for chemistry notation, not markdown for these). */
+ * emits real <sup>/<sub> for chemistry notation, not markdown for these).
+ * Recurses into each match's captured text so nesting (e.g. a bold title
+ * that itself contains a real <sup>pro</sup>) renders correctly instead of
+ * leaking the inner tag as literal text - a single non-recursive pass would
+ * swallow it as part of the outer bold span's plain-string content. */
 function renderInline(text, keyPrefix) {
   const parts = [];
   const re = /\*\*(.+?)\*\*|\*(.+?)\*|_(.+?)_|<sup>(.+?)<\/sup>|<sub>(.+?)<\/sub>/g;
@@ -18,10 +22,10 @@ function renderInline(text, keyPrefix) {
   while ((m = re.exec(text)) !== null) {
     if (m.index > lastIndex) parts.push(text.slice(lastIndex, m.index));
     const k = `${keyPrefix}-${key++}`;
-    if (m[1] !== undefined) parts.push(<strong key={k}>{m[1]}</strong>);
-    else if (m[2] !== undefined || m[3] !== undefined) parts.push(<em key={k}>{m[2] ?? m[3]}</em>);
-    else if (m[4] !== undefined) parts.push(<sup key={k}>{m[4]}</sup>);
-    else parts.push(<sub key={k}>{m[5]}</sub>);
+    if (m[1] !== undefined) parts.push(<strong key={k}>{renderInline(m[1], k)}</strong>);
+    else if (m[2] !== undefined || m[3] !== undefined) parts.push(<em key={k}>{renderInline(m[2] ?? m[3], k)}</em>);
+    else if (m[4] !== undefined) parts.push(<sup key={k}>{renderInline(m[4], k)}</sup>);
+    else parts.push(<sub key={k}>{renderInline(m[5], k)}</sub>);
     lastIndex = re.lastIndex;
   }
   if (lastIndex < text.length) parts.push(text.slice(lastIndex));
