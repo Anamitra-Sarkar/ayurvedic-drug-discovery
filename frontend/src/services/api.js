@@ -301,6 +301,15 @@ export const apiClient = {
     }
   },
 
+  async getTargets() {
+    try {
+      const res = await api.get('/pipeline/targets');
+      return res.data;
+    } catch {
+      return null; // callers fall back to a clearly-marked starter list
+    }
+  },
+
   async runPipeline(payload) {
     try {
       const res = await api.post('/pipeline/run', payload);

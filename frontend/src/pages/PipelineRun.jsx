@@ -1,12 +1,16 @@
-
 /**
- * PipelineRun.jsx
- * Interactive pipeline execution view - demonstrates agentic orchestration
+ * PipelineRun.jsx — "/pipeline" guided analysis flow, plain language.
+ * Same staged mock progression + real apiClient.runPipeline call.
  */
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import PipelineFlow from '../components/PipelineFlow.jsx';
+import { Page, ResearchNote } from '../components/ui.jsx';
+import { ConfidenceBadge } from '../components/ui.jsx';
+import { PROTEIN_SHAPES, FRIENDLY_STEPS } from '../utils/friendly.js';
 import { apiClient } from '../services/api.js';
-import EvidenceTierBadge from '../components/EvidenceTierBadge.jsx';
+
+const STEP_TIER = { i: 'DATABASE_DERIVED', ii: 'DATABASE_DERIVED', iii: 'DOCKING_RESULT', iv: 'ML_PREDICTION', v: 'XAI_INTERPRETATION', vi: 'LITERATURE_DERIVED' };
 
 export default function PipelineRun() {
   const [compoundId, setCompoundId] = useState('IMPHY000123');
@@ -17,116 +21,141 @@ export default function PipelineRun() {
   const [activeLayer, setActiveLayer] = useState('i');
   const [running, setRunning] = useState(false);
 
-  const addLog = (tier, message) => {
-    setLogs(prev=> [...prev, { time: new Date().toLocaleTimeString(), tier, message }]);
+  const addLog = (stepId, message) => {
+    setLogs((prev) => [...prev, { time: new Date().toLocaleTimeString(), stepId, message }]);
   };
 
   const runPipeline = async () => {
     setRunning(true);
     setLogs([]);
-    setStatus({ progress: 0, stage: 'Initializing...' });
-    addLog('DATABASE_DERIVED', `Querying IMPPAT for ${compoundId}... SMILES retrieved, evidenceTier=DATABASE_DERIVED`);
+    setStatus({ progress: 0, stage: 'Warming up…' });
+    addLog('i', `Finding ${compoundId} in the plant library…`);
 
-    await new Promise(r=>setTimeout(r, 600));
+    await new Promise((r) => setTimeout(r, 600));
     setActiveLayer('i');
-    setStatus({ progress: 15, stage: 'Layer i complete — IMPPAT data' });
-    addLog('DATABASE_DERIVED', 'IMPPAT → 1 compound, plant metadata, traditional use');
+    setStatus({ progress: 15, stage: 'Step 1 done — found in the library' });
+    addLog('i', 'Found the plant, the compound and its traditional background.');
 
-    await new Promise(r=>setTimeout(r, 500));
+    await new Promise((r) => setTimeout(r, 500));
     setActiveLayer('ii');
-    addLog('DATABASE_DERIVED', 'Layer ii — RDKit: SMILES → ECFP4 2048-bit, MolLogP, TPSA, QED, Lipinski — tier remains DATABASE_DERIVED');
-    setStatus({ progress: 35, stage: 'Layer ii — RDKit descriptors' });
+    addLog('ii', 'Step 2 — measuring basic chemical properties (size, balance, surface).');
+    setStatus({ progress: 35, stage: 'Step 2 — chemical check' });
 
-    await new Promise(r=>setTimeout(r, 800));
+    await new Promise((r) => setTimeout(r, 800));
     setActiveLayer('iii');
-    addLog('DOCKING_RESULT', `Layer iii — AutoDock Vina docking to ${target}: Grid box centered, physics-inspired scoring (or real Vina if binary). ΔG predicted, tier=DOCKING_RESULT`);
-    setStatus({ progress: 55, stage: 'Layer iii — Docking (Vina mock fallback)' });
+    addLog('iii', `Step 3 — trying the compound inside the ${target} protein shape from many angles.`);
+    setStatus({ progress: 55, stage: 'Step 3 — shape fit test' });
 
-    await new Promise(r=>setTimeout(r, 700));
+    await new Promise((r) => setTimeout(r, 700));
     setActiveLayer('iv');
-    addLog('ML_PREDICTION', 'Layer iv — Supervised ML affinity: ECFP4 → RF model affinity-v1.2 → pKd + applicability domain, tier=ML_PREDICTION');
-    setStatus({ progress: 75, stage: 'Layer iv — ML prediction' });
+    addLog('iv', 'Step 4 — the model predicts a strength score and checks its trust level.');
+    setStatus({ progress: 75, stage: 'Step 4 — strength prediction' });
 
-    await new Promise(r=>setTimeout(r, 600));
+    await new Promise((r) => setTimeout(r, 600));
     setActiveLayer('v');
-    addLog('XAI_INTERPRETATION', 'Layer v — SHAP TreeSHAP attributions: lactone chemotype + aromatic rings drive prediction, tier=XAI_INTERPRETATION');
-    setStatus({ progress: 88, stage: 'Layer v — SHAP XAI' });
+    addLog('v', 'Step 5 — showing which chemical patterns pushed the guess up or down.');
+    setStatus({ progress: 88, stage: 'Step 5 — why this result?' });
 
-    await new Promise(r=>setTimeout(r, 600));
+    await new Promise((r) => setTimeout(r, 600));
     setActiveLayer('vi');
-    addLog('LITERATURE_DERIVED', 'Layer vi — RAG: sentence-transformers + FAISS (TF-IDF fallback) retrieval → 3 citations, faithfulness 0.87, tier=LITERATURE_DERIVED, synthesis includes AYUSH-64 precedent');
-    setStatus({ progress: 100, stage: 'Complete — all tiers separated, ranking generated' });
+    addLog('vi', 'Step 6 — comparing with published papers and gathering sources.');
+    setStatus({ progress: 100, stage: 'Done — your results are ready 🎉' });
 
     try {
       const job = await apiClient.runPipeline({ compound_id: compoundId, target });
-      setJobId(job.jobId || 'mock-'+Date.now());
-    } catch {}
+      setJobId(job.jobId || 'demo-' + Date.now());
+    } catch { /* demo mode continues */ }
     setRunning(false);
   };
 
+  const stepName = (id) => FRIENDLY_STEPS.find((s) => s.id === id)?.name || id;
+
   return (
-    <div className="space-y-6">
-      <div className="rounded-2xl bg-white border border-slate-200 p-5 shadow-card">
-        <div className="font-display font-bold text-lg">Pipeline Run — LangGraph-style Orchestrator</div>
-        <div className="font-mono text-xs text-slate-500 mt-1">Demonstrates 6-layer flow with evidence tier enforcement, mock fallback for Vina binary, TF-IDF fallback for FAISS. Backend optional — frontend mock preserves tier separation.</div>
+    <Page className="space-y-6">
+      <div>
+        <h1 className="font-display text-3xl md:text-4xl font-semibold text-forest-950 dark:text-cream-50">Run a new analysis</h1>
+        <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-forest-800/80 dark:text-cream-100/70">
+          Pick a compound and a protein shape. We will walk through six gentle steps and explain each one —
+          about a minute, with plain words throughout.
+        </p>
+      </div>
+
+      <div className="card p-5 md:p-6">
+        <div className="font-display font-bold text-lg text-forest-950 dark:text-cream-50">Start here</div>
+        <p className="text-xs text-forest-700/70 dark:text-cream-100/60 mt-1">Tip: “IMPHY000123” is Withaferin A from Ashwagandha — a lovely first try.</p>
 
         <div className="mt-4 grid md:grid-cols-12 gap-3 items-end">
           <div className="md:col-span-4">
-            <label className="font-mono text-[11px] tracking-widest text-slate-600">COMPOUND (IMPPAT ID)</label>
-            <input value={compoundId} onChange={e=>setCompoundId(e.target.value)} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 font-mono text-sm" placeholder="IMPHY000123" />
+            <label htmlFor="compound-id" className="text-[11px] tracking-widest uppercase text-forest-700/70 dark:text-cream-100/60">Compound code</label>
+            <input
+              id="compound-id"
+              value={compoundId}
+              onChange={(e) => setCompoundId(e.target.value)}
+              className="mt-1 w-full px-3 py-2.5 rounded-2xl border border-forest-900/10 bg-cream-50 text-sm dark:bg-white/5 dark:border-white/10 dark:text-cream-50"
+              placeholder="IMPHY000123"
+            />
           </div>
           <div className="md:col-span-3">
-            <label className="font-mono text-[11px] tracking-widest text-slate-600">TARGET PDB</label>
-            <select value={target} onChange={e=>setTarget(e.target.value)} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-white font-mono text-sm">
-              <option value="6LU7">6LU7 — SARS-CoV-2 Mpro</option>
-              <option value="1P44">1P44 — COX-2</option>
-              <option value="2AZ5">2AZ5 — TNF-alpha</option>
-              <option value="4KIK">4KIK — NF-kB p65</option>
+            <label htmlFor="shape-pick" className="text-[11px] tracking-widest uppercase text-forest-700/70 dark:text-cream-100/60">Protein shape</label>
+            <select
+              id="shape-pick"
+              value={target}
+              onChange={(e) => setTarget(e.target.value)}
+              className="mt-1 w-full px-3 py-2.5 rounded-2xl border border-forest-900/10 bg-white text-sm dark:bg-white/5 dark:border-white/10 dark:text-cream-50"
+            >
+              {PROTEIN_SHAPES.map((p) => (
+                <option key={p.code} value={p.code}>{p.code} — {p.name}</option>
+              ))}
             </select>
           </div>
           <div className="md:col-span-5 flex gap-2">
-            <button onClick={runPipeline} disabled={running} className="flex-1 px-5 py-2.5 rounded-xl bg-slate-900 text-white text-sm font-medium hover:bg-black disabled:opacity-50 flex items-center justify-center gap-2">
-              {running ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : '▶'} Run Pipeline (mock/full)
+            <button onClick={runPipeline} disabled={running} className="btn-primary flex-1">
+              {running ? <span className="spinner" /> : '▶'} {running ? 'Working…' : 'Start my analysis'}
             </button>
-            <button onClick={()=>{setLogs([]); setStatus(null);}} className="px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm">Clear</button>
+            <button onClick={() => { setLogs([]); setStatus(null); }} className="btn-secondary">Clear</button>
           </div>
         </div>
 
         {status && (
           <div className="mt-4">
-            <div className="flex items-center justify-between mb-1">
-              <span className="font-mono text-[11px] tracking-widest text-slate-600">{status.stage}</span>
-              <span className="font-mono text-[11px] text-slate-600">{status.progress}%</span>
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[12px] font-medium text-forest-800 dark:text-cream-100">{status.stage}</span>
+              <span className="text-[12px] text-forest-700/70 dark:text-cream-100/60">{status.progress}%</span>
             </div>
-            <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-              <div className="h-full bg-slate-900 transition-all duration-500" style={{width: `${status.progress}%`}} />
+            <div className="w-full h-2.5 bg-cream-200 rounded-full overflow-hidden dark:bg-white/10">
+              <div className="h-full rounded-full bg-gradient-to-r from-forest-600 to-gold-500 transition-all duration-500" style={{ width: `${status.progress}%` }} />
             </div>
+          </div>
+        )}
+
+        {status?.progress === 100 && !running && (
+          <div className="modal-panel mt-4 flex flex-wrap items-center gap-3 rounded-2xl bg-forest-50 border border-forest-200 p-4 dark:bg-white/5">
+            <span className="text-xl">🎉</span>
+            <p className="text-sm text-forest-900 dark:text-cream-50 flex-1 min-w-[200px]">Your results are ready — see them split into four friendly tabs.</p>
+            <Link to={`/results/${compoundId}?shape=${target}`} className="btn-primary !py-2.5">See my results →</Link>
           </div>
         )}
       </div>
 
       <PipelineFlow activeLayer={activeLayer} onSelectLayer={setActiveLayer} />
 
-      <div className="rounded-2xl border border-slate-200 bg-slate-900 text-slate-100 p-4 shadow-card font-mono text-[12px] leading-relaxed max-h-[360px] overflow-auto">
+      <div className="rounded-3xl border border-forest-900/10 bg-forest-950 text-cream-100 p-5 shadow-card font-mono text-[12px] leading-relaxed max-h-[360px] overflow-auto dark:bg-white/5">
         <div className="flex items-center justify-between mb-3">
-          <span className="font-bold tracking-widest text-white">ORCHESTRATOR LOGS — EVIDENCE TIER ENFORCED</span>
-          <span className="text-[10px] px-2 py-1 rounded-full bg-white/10">{logs.length} events • Job {jobId || '—'}</span>
+          <span className="font-bold tracking-widest text-white font-sans text-sm">What’s happening — live notes</span>
+          <span className="text-[10px] px-2.5 py-1 rounded-full bg-white/10">{logs.length} notes · {jobId || 'getting ready'}</span>
         </div>
-        {logs.length===0 ? <div className="text-slate-400">No logs yet — run pipeline to see LangGraph StateGraph transitions with tier checks.</div> : logs.map((l,i)=>(
-          <div key={i} className="py-1.5 border-b border-white/10 flex gap-3">
-            <span className="text-slate-400">{l.time}</span>
-            <EvidenceTierBadge tier={l.tier} size="sm" showLabel={false} />
-            <span className="flex-1">{l.message}</span>
+        {logs.length === 0 ? (
+          <div className="text-cream-100/50 font-sans text-sm">Nothing yet — press “Start my analysis” and follow along here. 🌱</div>
+        ) : logs.map((l, i) => (
+          <div key={i} className="py-2 border-b border-white/10 flex gap-3 items-start">
+            <span className="text-cream-100/40 shrink-0">{l.time}</span>
+            <ConfidenceBadge tier={STEP_TIER[l.stepId] || 'DATABASE_DERIVED'} size="sm" showLabel={false} />
+            <span className="flex-1 font-sans text-[13px]"><strong>{stepName(l.stepId)}:</strong> {l.message}</span>
           </div>
         ))}
       </div>
 
-      <div className="rounded-2xl border-2 border-amber-300 bg-amber-50 p-4">
-        <div className="font-mono text-xs font-bold tracking-widest text-amber-900">AGENTIC ORCHESTRATION — LangGraph StateGraph Design (from Section 5)</div>
-        <div className="font-mono text-[11px] text-amber-800 mt-2 leading-relaxed">
-          Graph: START → db_query (IMPPAT) → rdkit_process (ECFP4) → docking (Vina/mock) → ml_predict (RF) → xai_explain (SHAP) → rag_synthesis (FAISS/TF-IDF) → rank_report (tier-separated) → END. Each node validates evidenceTier before emitting. Edges conditional on applicability domain and faithfulness. Non-clinical guard: containsClinicalClaim() blocks any output claiming therapeutic effect. AYUSH-64 justification encoded in EvidenceTierBadge tooltips.
-        </div>
-      </div>
-    </div>
+      <ResearchNote />
+    </Page>
   );
 }

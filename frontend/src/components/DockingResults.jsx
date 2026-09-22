@@ -1,95 +1,117 @@
-
 /**
- * DockingResults.jsx
- * Table of docking scores, confidence, evidence tier DOCKING_RESULT
- * MUST include disclaimer not clinical proof
+ * DockingResults.jsx — plain-language "Shape fit test".
+ * Numbers come straight from the API; only labels/explanations changed.
  */
-import EvidenceTierBadge from './EvidenceTierBadge.jsx';
+import { ConfidenceBadge, HowCalculated, ResearchNote } from './ui.jsx';
+import { fitScoreToMeter, fitVerdict } from '../utils/friendly.js';
 
 export default function DockingResults({ result, loading }) {
   if (loading) {
     return (
-      <div className="rounded-2xl border border-violet-100 bg-violet-50/50 p-6 animate-pulse">
-        <div className="h-4 bg-violet-100 rounded w-1/3 mb-4" />
-        <div className="h-24 bg-white rounded-xl border border-violet-100" />
+      <div className="rounded-3xl border border-forest-900/10 bg-white p-6 animate-pulse dark:bg-forest-900">
+        <div className="h-4 bg-cream-200 rounded w-1/3 mb-4 dark:bg-white/10" />
+        <div className="h-24 bg-cream-100 rounded-2xl dark:bg-white/5" />
       </div>
     );
   }
   if (!result) {
     return (
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 text-center">
-        <div className="font-mono text-xs text-slate-500">No docking result yet — run pipeline for DOCKING_RESULT tier.</div>
+      <div className="card p-8 text-center">
+        <div className="text-3xl">🧩</div>
+        <div className="text-sm text-forest-800 dark:text-cream-100 mt-2 font-medium">No shape-fit test yet</div>
+        <div className="text-xs text-forest-700/70 dark:text-cream-100/60 mt-1">Run an analysis to see how this compound fits the protein shape.</div>
       </div>
     );
   }
 
   const poses = result.poses || [];
   const interactions = result.interactions || [];
+  const meter = fitScoreToMeter(result.affinity_kcal_mol);
 
   return (
-    <div className="rounded-2xl border border-violet-200 bg-white shadow-card overflow-hidden">
-      <div className="px-4 py-3 border-b border-violet-100 bg-violet-50/60 flex items-center justify-between">
+    <div className="card overflow-hidden">
+      <div className="px-5 py-4 border-b border-forest-900/10 bg-forest-50/60 flex items-center justify-between dark:bg-white/5">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-violet-600 text-white flex items-center justify-center">🧬</div>
+          <div className="w-9 h-9 rounded-2xl bg-forest-700 text-white flex items-center justify-center">🧩</div>
           <div>
-            <div className="font-display font-semibold text-sm text-slate-900">Molecular Docking — Vina Style</div>
-            <div className="font-mono text-[11px] text-violet-700">{result.target} • Affinity {result.affinity_kcal_mol} kcal/mol • confidence {(result.confidence*100).toFixed(0)}%</div>
+            <div className="font-display font-semibold text-[15px] text-forest-950 dark:text-cream-50">
+              Shape fit test
+              <HowCalculated title="shape fit test">
+                The computer rotates the compound inside the 3D protein shape thousands of ways and scores each try. The best score is shown here. Lower (more negative) numbers mean a snugger fit. It is a geometry guess — it cannot tell us what happens in real life.
+              </HowCalculated>
+            </div>
+            <div className="text-[11px] text-forest-700/75 dark:text-cream-100/60">
+              {fitVerdict(result.affinity_kcal_mol)} · score {result.affinity_kcal_mol}
+            </div>
           </div>
         </div>
-        <EvidenceTierBadge tier="DOCKING_RESULT" />
+        <ConfidenceBadge tier="DOCKING_RESULT" />
       </div>
 
-      {/* Score cards */}
-      <div className="grid grid-cols-3 divide-x divide-violet-100 border-b border-violet-100">
-        <div className="p-4 text-center">
-          <div className="font-mono text-[10px] tracking-widest text-violet-600">ΔG (BEST)</div>
-          <div className="font-mono font-bold text-lg text-slate-900 mt-1">{result.affinity_kcal_mol} <span className="text-xs font-normal">kcal/mol</span></div>
-          <div className="font-mono text-[10px] text-slate-500 mt-1">Lower = stronger (hypothesis)</div>
-        </div>
-        <div className="p-4 text-center">
-          <div className="font-mono text-[10px] tracking-widest text-violet-600">RMSD LOWER</div>
-          <div className="font-mono font-bold text-lg text-slate-900 mt-1">{result.rmsd ?? '0.00'} <span className="text-xs font-normal">Å</span></div>
-          <div className="font-mono text-[10px] text-slate-500 mt-1">Pose stability</div>
-        </div>
-        <div className="p-4 text-center">
-          <div className="font-mono text-[10px] tracking-widest text-violet-600">CLUSTERS</div>
-          <div className="font-mono font-bold text-lg text-slate-900 mt-1">{result.poseCluster ?? poses.length}</div>
-          <div className="font-mono text-[10px] text-slate-500 mt-1">Distinct binding modes</div>
-        </div>
-      </div>
-
-      {/* Poses table */}
-      <div className="p-4">
-        <div className="font-mono text-[11px] tracking-widest font-semibold text-slate-700 mb-2">TOP POSES (Vina scoring, physics-inspired, mock fallback if binary absent)</div>
-        <div className="rounded-xl border border-slate-200 overflow-hidden">
-          <div className="grid grid-cols-4 bg-slate-50 border-b border-slate-200 font-mono text-[10px] tracking-widest text-slate-500 px-3 py-2">
-            <span>MODE</span><span>AFFINITY (kcal/mol)</span><span>RMSD LB</span><span>RMSD UB</span>
+      {meter != null && (
+        <div className="px-5 pt-4">
+          <div className="flex items-center justify-between text-[11px] text-forest-700 dark:text-cream-100/70 mb-1.5">
+            <span className="font-semibold tracking-wide uppercase">Match strength</span>
+            <span>{meter}/100 · {fitVerdict(result.affinity_kcal_mol)}</span>
           </div>
-          {poses.map((p,i)=>(
-            <div key={i} className={`grid grid-cols-4 px-3 py-2 font-mono text-xs border-b last:border-0 border-slate-100 ${i===0 ? 'bg-violet-50/60 font-semibold' : 'bg-white'}`}>
-              <span>#{i+1}</span><span className={p.affinity < -7 ? 'text-violet-700' : ''}>{p.affinity}</span><span>{p.rmsd_lb}</span><span>{p.rmsd_ub}</span>
+          <div className="h-2.5 rounded-full bg-cream-200 dark:bg-white/10 overflow-hidden">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-forest-500 via-forest-600 to-gold-500 transition-all duration-700"
+              style={{ width: `${meter}%` }}
+            />
+          </div>
+        </div>
+      )}
+
+      <div className="grid grid-cols-3 divide-x divide-forest-900/10 border-b border-forest-900/10 mt-4">
+        <div className="p-4 text-center">
+          <div className="text-[10px] tracking-widest uppercase text-forest-700/70 dark:text-cream-100/60">Best fit score</div>
+          <div className="font-display font-bold text-lg text-forest-950 dark:text-cream-50 mt-1">{result.affinity_kcal_mol}</div>
+          <div className="text-[10px] text-forest-700/60 dark:text-cream-100/50 mt-1">Lower = snugger (a guess)</div>
+        </div>
+        <div className="p-4 text-center">
+          <div className="text-[10px] tracking-widest uppercase text-forest-700/70 dark:text-cream-100/60">
+            Steadiness
+            <HowCalculated title="steadiness">How much the best poses wobble compared with each other. Steadier poses are a little more reassuring — but still only computer guesses.</HowCalculated>
+          </div>
+          <div className="font-display font-bold text-lg text-forest-950 dark:text-cream-50 mt-1">{result.rmsd ?? '0.00'}</div>
+          <div className="text-[10px] text-forest-700/60 dark:text-cream-100/50 mt-1">How steady the pose looks</div>
+        </div>
+        <div className="p-4 text-center">
+          <div className="text-[10px] tracking-widest uppercase text-forest-700/70 dark:text-cream-100/60">Fit styles</div>
+          <div className="font-display font-bold text-lg text-forest-950 dark:text-cream-50 mt-1">{result.poseCluster ?? poses.length}</div>
+          <div className="text-[10px] text-forest-700/60 dark:text-cream-100/50 mt-1">Different ways it can sit</div>
+        </div>
+      </div>
+
+      <div className="p-5">
+        <div className="text-[11px] tracking-wide font-semibold text-forest-800 dark:text-cream-100 mb-2 uppercase">Best attempts</div>
+        <div className="rounded-2xl border border-forest-900/10 overflow-hidden">
+          <div className="grid grid-cols-4 bg-cream-50 border-b border-forest-900/10 text-[10px] tracking-widest uppercase text-forest-700/60 px-3 py-2 dark:bg-white/5">
+            <span>Try</span><span>Fit score</span><span>Wobble (low)</span><span>Wobble (high)</span>
+          </div>
+          {poses.map((p, i) => (
+            <div key={i} className={`grid grid-cols-4 px-3 py-2 text-xs border-b last:border-0 border-forest-900/5 ${i === 0 ? 'bg-forest-50/60 font-semibold dark:bg-white/5' : 'bg-white dark:bg-transparent'}`}>
+              <span>#{i + 1}</span><span className={p.affinity < -7 ? 'text-forest-700 font-bold' : ''}>{p.affinity}</span><span>{p.rmsd_lb}</span><span>{p.rmsd_ub}</span>
             </div>
           ))}
         </div>
 
-        {interactions.length>0 && (
+        {interactions.length > 0 && (
           <div className="mt-4">
-            <div className="font-mono text-[11px] tracking-widest font-semibold text-slate-700 mb-2">INTERACTIONS (PLIP-style heuristic)</div>
+            <div className="text-[11px] tracking-wide font-semibold text-forest-800 dark:text-cream-100 mb-2 uppercase">Touch points with the protein</div>
             <div className="flex flex-wrap gap-2">
-              {interactions.map((it, idx)=>(
-                <span key={idx} className="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-xs font-mono">
-                  {it.type} • {it.residue} • {it.distance}Å
+              {interactions.map((it, idx) => (
+                <span key={idx} className="chip bg-white border-forest-900/10 text-xs dark:bg-white/5 dark:text-cream-100">
+                  {it.type === 'H-bond' ? '🤝 Held' : it.type === 'Hydrophobic' ? '💧 Snug' : '🔗 Touch'} · {it.residue} · {it.distance}Å
                 </span>
               ))}
             </div>
           </div>
         )}
 
-        <div className="mt-4 rounded-xl bg-amber-50 border border-amber-200 p-3">
-          <div className="font-mono text-[10px] tracking-widest font-bold text-amber-900">EVIDENCE TIER DOCKING_RESULT — NON-CLINICAL DISCLAIMER</div>
-          <div className="mt-1 text-[11px] text-amber-800 leading-relaxed">
-            Docking score is a <span className="font-semibold">computational binding hypothesis</span> using AutoDock Vina-style empirical scoring (ΔG ≈ vdW + Hbond + Elec + Desolv + Tors). It does NOT demonstrate in vitro activity, let alone clinical efficacy. AYUSH-64 precedent: docking served only as target-mapping step before Ayurvedic pharmacology assessment and RCTs. Fallback: if Vina binary absent, physics-inspired mock scoring with same API shape.
-          </div>
+        <div className="mt-4">
+          <ResearchNote text="This fit score is a computer guess about 3D shape — a bit like testing puzzle pieces. It cannot tell us whether anything happens in real life. Lab testing is still needed." />
         </div>
       </div>
     </div>

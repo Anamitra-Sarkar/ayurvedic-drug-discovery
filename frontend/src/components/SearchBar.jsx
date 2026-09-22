@@ -1,10 +1,8 @@
-
 /**
- * SearchBar.jsx
- * IMPPAT search with evidence tier, plant filter
+ * SearchBar.jsx — plain-language plant & compound search.
  */
 import { useState, useEffect, useRef } from 'react';
-import EvidenceTierBadge from './EvidenceTierBadge.jsx';
+import { ConfidenceBadge } from './ui.jsx';
 
 export default function SearchBar({ onSearch, loading, results, onSelect }) {
   const [q, setQ] = useState('');
@@ -12,12 +10,12 @@ export default function SearchBar({ onSearch, loading, results, onSelect }) {
   const [showResults, setShowResults] = useState(false);
   const ref = useRef(null);
 
-  useEffect(()=> {
-    const handler = (e)=> {
+  useEffect(() => {
+    const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setShowResults(false);
     };
     document.addEventListener('mousedown', handler);
-    return ()=> document.removeEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
   }, []);
 
   const handleSubmit = (e) => {
@@ -30,19 +28,25 @@ export default function SearchBar({ onSearch, loading, results, onSelect }) {
 
   return (
     <div ref={ref} className="relative">
-      <form onSubmit={handleSubmit} className="rounded-2xl border border-slate-200 bg-white shadow-card p-3 flex flex-col md:flex-row gap-3 items-stretch">
+      <form onSubmit={handleSubmit} className="card p-3 flex flex-col md:flex-row gap-3 items-stretch">
         <div className="flex-1 relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">⌕</span>
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-forest-600/50">⌕</span>
           <input
             value={q}
-            onChange={e=>setQ(e.target.value)}
-            onFocus={()=> q && setShowResults(true)}
-            placeholder="Search IMPPAT — e.g., Withaferin, Ashwagandha, Curcuma, IMPPAT ID..."
-            className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-cyan-600/20 focus:border-cyan-600 font-mono text-sm"
+            onChange={(e) => setQ(e.target.value)}
+            onFocus={() => q && setShowResults(true)}
+            placeholder="Search plants or compounds — try Ashwagandha, Turmeric, Amla…"
+            className="w-full pl-9 pr-3 py-2.5 rounded-2xl border border-forest-900/10 bg-cream-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-forest-600/20 focus:border-forest-600 text-sm dark:bg-white/5 dark:border-white/10 dark:text-cream-50"
+            aria-label="Search plants or compounds"
           />
         </div>
         <div className="flex gap-2">
-          <select value={plantFilter} onChange={e=>setPlantFilter(e.target.value)} className="px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-mono">
+          <select
+            value={plantFilter}
+            onChange={(e) => setPlantFilter(e.target.value)}
+            className="px-3 py-2.5 rounded-2xl border border-forest-900/10 bg-white text-sm dark:bg-white/5 dark:border-white/10 dark:text-cream-50"
+            aria-label="Filter by plant"
+          >
             <option value="">All plants</option>
             <option>Withania somnifera</option>
             <option>Curcuma longa</option>
@@ -51,42 +55,53 @@ export default function SearchBar({ onSearch, loading, results, onSelect }) {
             <option>Terminalia bellirica</option>
             <option>Berberis aristata</option>
           </select>
-          <button disabled={loading} type="submit" className="px-5 py-2.5 rounded-xl bg-slate-900 text-white text-sm font-medium hover:bg-black disabled:opacity-50 flex items-center gap-2">
-            {loading ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : 'Search'}
+          <button disabled={loading} type="submit" className="btn-primary !py-2.5">
+            {loading ? <span className="spinner" /> : 'Search'}
           </button>
         </div>
-        <div className="hidden md:flex items-center gap-2 pl-2 border-l border-slate-100">
-          <EvidenceTierBadge tier="DATABASE_DERIVED" size="sm" />
+        <div className="hidden md:flex items-center gap-2 pl-2 border-l border-forest-900/10">
+          <ConfidenceBadge tier="DATABASE_DERIVED" size="sm" />
         </div>
       </form>
 
       {showResults && (
-        <div className="absolute z-30 mt-2 w-full rounded-2xl border border-slate-200 bg-white shadow-xl overflow-hidden max-h-[420px] flex flex-col">
-          <div className="px-4 py-2.5 border-b border-slate-100 bg-slate-50/70 flex items-center justify-between">
-            <div className="font-mono text-[11px] tracking-widest text-slate-600">IMPPAT SEARCH — DATABASE_DERIVED • {results?.count ?? data.length} results {results?.source ? `• ${results.source}` : ''}</div>
-            <button onClick={()=>setShowResults(false)} className="font-mono text-[11px] px-2 py-1 rounded-full bg-white border border-slate-200">✕ Close</button>
+        <div className="modal-panel absolute z-30 mt-2 w-full rounded-3xl border border-forest-900/10 bg-white shadow-lift overflow-hidden max-h-[420px] flex flex-col dark:bg-forest-900 dark:border-white/10">
+          <div className="px-4 py-2.5 border-b border-forest-900/10 bg-cream-50 flex items-center justify-between dark:bg-white/5">
+            <div className="text-[11px] tracking-wide text-forest-700 dark:text-cream-100/70">
+              Plant library · {results?.count ?? data.length} matches
+            </div>
+            <button onClick={() => setShowResults(false)} className="text-[11px] px-2.5 py-1 rounded-full bg-white border border-forest-900/10 hover:shadow-card transition active:scale-95 dark:bg-white/10 dark:text-cream-50">
+              ✕ Close
+            </button>
           </div>
           <div className="overflow-auto">
-            {data.length===0 ? (
+            {data.length === 0 ? (
               <div className="p-8 text-center">
-                <div className="font-mono text-sm text-slate-500">No compounds match "{q}". Try Ashwagandha, Turmeric, or partial IMPPAT ID.</div>
-                <div className="font-mono text-[11px] text-slate-400 mt-2">Evidence tiers remain enforced even for empty results</div>
+                <div className="text-3xl">🌱</div>
+                <div className="text-sm text-forest-800 dark:text-cream-100 mt-2 font-medium">No matches for “{q || 'your search'}”.</div>
+                <div className="text-xs text-forest-700/70 dark:text-cream-100/60 mt-1">Try “Ashwagandha”, “Turmeric”, or part of a name — spelling can be tricky.</div>
               </div>
-            ) : data.map(c=>(
-              <button key={c.id} onClick={()=>{onSelect?.(c); setShowResults(false);}} className="w-full text-left px-4 py-3 border-b last:border-0 border-slate-100 hover:bg-cyan-50/60 flex items-center justify-between gap-3 transition">
+            ) : data.map((c) => (
+              <button key={c.id} onClick={() => { onSelect?.(c); setShowResults(false); }} className="w-full text-left px-4 py-3 border-b last:border-0 border-forest-900/5 hover:bg-forest-50/60 dark:hover:bg-white/5 flex items-center justify-between gap-3 transition active:scale-[0.99]">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-display font-semibold text-sm text-slate-900 truncate">{c.name}</span>
-                    <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200">{c.id}</span>
-                    {c.drugLikeness?.qed && <span className="font-mono text-[10px] px-1.5 py-0.5 rounded-full bg-green-50 border border-green-200 text-green-700">QED {c.drugLikeness.qed.toFixed(2)}</span>}
+                    <span className="font-display font-semibold text-sm text-forest-950 dark:text-cream-50 truncate">{c.name}</span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-cream-100 border border-forest-900/10 dark:bg-white/10">{c.id}</span>
+                    {c.drugLikeness?.qed && (
+                      <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-forest-50 border border-forest-200 text-forest-700">
+                        Balance {c.drugLikeness.qed.toFixed(2)}
+                      </span>
+                    )}
                   </div>
-                  <div className="font-mono text-[11px] text-slate-500 truncate mt-0.5">{c.plant} • {c.formula} • {c.ayurvedicName}</div>
+                  <div className="text-[11px] text-forest-700/70 dark:text-cream-100/60 truncate mt-0.5">{c.plant} · {c.formula} · {c.ayurvedicName}</div>
                 </div>
-                <span className="font-mono text-[11px] text-cyan-700">View →</span>
+                <span className="text-[11px] font-medium text-forest-700">View →</span>
               </button>
             ))}
           </div>
-          <div className="px-4 py-2 bg-amber-50 border-t border-amber-100 font-mono text-[10px] text-amber-800">DATABASE_DERIVED tier — botanical occurrence data, not efficacy. AYUSH-64 style: foundation only.</div>
+          <div className="px-4 py-2 bg-gold-50 border-t border-gold-300/50 text-[11px] text-gold-700 dark:bg-gold-400/10 dark:text-gold-300">
+            Library entries describe plants and compounds — not health effects.
+          </div>
         </div>
       )}
     </div>

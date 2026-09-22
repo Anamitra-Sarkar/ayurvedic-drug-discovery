@@ -1,10 +1,10 @@
-
 /**
- * XAIExplanation.jsx
- * SHAP waterfall plot using plotly, feature importance, tier XAI_INTERPRETATION
+ * XAIExplanation.jsx — plain-language "Why this result?".
+ * Plotly chart kept; labels translated to plain words.
  */
 import { useEffect, useRef, useState } from 'react';
-import EvidenceTierBadge from './EvidenceTierBadge.jsx';
+import { ConfidenceBadge, HowCalculated, ResearchNote } from './ui.jsx';
+import { friendlyFeatureName } from './MLPredictionCard.jsx';
 
 export default function XAIExplanation({ explanation, loading }) {
   const plotRef = useRef(null);
@@ -17,10 +17,10 @@ export default function XAIExplanation({ explanation, loading }) {
         if (!explanation?.topFeatures) return;
         const Plotly = await import('plotly.js-dist');
         if (!mounted) return;
-        const features = [...explanation.topFeatures].sort((a,b)=>Math.abs(b.shap)-Math.abs(a.shap)).slice(0,8);
-        const y = features.map(f=> f.feature);
-        const x = features.map(f=> f.shap);
-        const colors = x.map(v=> v>=0 ? '#db2777' : '#0e7490');
+        const features = [...explanation.topFeatures].sort((a, b) => Math.abs(b.shap) - Math.abs(a.shap)).slice(0, 8);
+        const y = features.map((f) => friendlyFeatureName(f.feature));
+        const x = features.map((f) => f.shap);
+        const colors = x.map((v) => (v >= 0 ? '#0F5C4D' : '#D9962B'));
 
         const data = [{
           type: 'bar',
@@ -28,19 +28,19 @@ export default function XAIExplanation({ explanation, loading }) {
           x,
           y,
           marker: { color: colors, line: { width: 1, color: '#ffffff' } },
-          text: features.map(f=> `${f.value} → ${f.shap>0?'+':''}${f.shap.toFixed(2)}`),
+          text: features.map((f) => `${f.shap > 0 ? '+' : ''}${f.shap.toFixed(2)}`),
           textposition: 'auto',
-          hovertemplate: '%{y}<br>SHAP=%{x:.3f}<br>%{text}<extra></extra>',
+          hovertemplate: '%{y}<br>Push=%{x:.3f}<extra></extra>',
         }];
 
         const layout = {
-          title: { text: `SHAP Feature Importance — pKd ${explanation.baseValue} → ${explanation.prediction}`, font: { size: 12, family: 'Inter' } },
-          margin: { l: 160, r: 20, t: 40, b: 30 },
-          height: 320,
-          xaxis: { title: 'SHAP value (impact on predicted pKd)', zeroline: true, gridcolor: '#f1f5f9' },
+          title: { text: `What pushed the prediction up or down`, font: { size: 12, family: 'Inter' } },
+          margin: { l: 150, r: 20, t: 40, b: 30 },
+          height: 300,
+          xaxis: { title: 'Push on the strength score →', zeroline: true, gridcolor: '#eee9d6' },
           yaxis: { automargin: true },
-          plot_bgcolor: '#ffffff',
-          paper_bgcolor: '#ffffff',
+          plot_bgcolor: 'rgba(0,0,0,0)',
+          paper_bgcolor: 'rgba(0,0,0,0)',
           font: { family: 'Inter, sans-serif', size: 11 },
         };
 
@@ -49,59 +49,83 @@ export default function XAIExplanation({ explanation, loading }) {
           Plotly.newPlot(plotRef.current, data, layout, config);
           setPlotlyReady(true);
         }
-      } catch(e) {
-        console.error('Plotly SHAP failed', e);
+      } catch (e) {
+        console.error('Chart failed', e);
       }
     })();
-    return () => { mounted=false; };
+    return () => { mounted = false; };
   }, [explanation]);
 
-  if (loading) return <div className="rounded-2xl border border-orange-100 bg-orange-50/50 p-6 animate-pulse h-[380px]" />;
-  if (!explanation) return <div className="rounded-2xl border border-slate-200 bg-white p-6 text-center font-mono text-xs text-slate-500">No XAI explanation yet.</div>;
+  if (loading) return <div className="rounded-3xl border border-forest-900/10 bg-white p-6 animate-pulse h-[380px] dark:bg-forest-900" />;
+  if (!explanation) {
+    return (
+      <div className="card p-8 text-center">
+        <div className="text-3xl">💡</div>
+        <div className="text-sm font-medium text-forest-800 dark:text-cream-100 mt-2">No “why” breakdown yet</div>
+        <div className="text-xs text-forest-700/70 dark:text-cream-100/60 mt-1">Once there is a prediction, we will show what pushed it up or down.</div>
+      </div>
+    );
+  }
 
   return (
-    <div className="rounded-2xl border border-orange-200 bg-white shadow-card overflow-hidden">
-      <div className="px-4 py-3 border-b border-orange-100 bg-orange-50/70 flex items-center justify-between">
+    <div className="card overflow-hidden">
+      <div className="px-5 py-4 border-b border-forest-900/10 bg-cream-50/70 flex items-center justify-between dark:bg-white/5">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-orange-600 text-white flex items-center justify-center">🔍</div>
+          <div className="w-9 h-9 rounded-2xl bg-clay-500 text-white flex items-center justify-center">💡</div>
           <div>
-            <div className="font-display font-semibold text-sm">Explainable AI — SHAP Attributions</div>
-            <div className="font-mono text-[11px] text-orange-700">Base {explanation.baseValue} → Pred {explanation.prediction} • {explanation.topFeatures?.length} features</div>
+            <div className="font-display font-semibold text-[15px] text-forest-950 dark:text-cream-50">
+              Why this result?
+              <HowCalculated title="why this result">
+                We ask the model to show its working. Each bar is a chemical feature: bars to the right pushed the strength score up, bars to the left pulled it down. This explains the model’s thinking — not how nature really works.
+              </HowCalculated>
+            </div>
+            <div className="text-[11px] text-forest-700/75 dark:text-cream-100/60">Which chemical patterns mattered most · {explanation.topFeatures?.length} patterns</div>
           </div>
         </div>
-        <EvidenceTierBadge tier="XAI_INTERPRETATION" />
+        <ConfidenceBadge tier="XAI_INTERPRETATION" />
       </div>
 
-      <div className="p-4">
-        <div ref={plotRef} className="w-full rounded-xl border border-slate-100 bg-white" />
-        {!plotlyReady && <div className="font-mono text-[11px] text-slate-500 mt-2">Loading SHAP waterfall (plotly.js)... fallback table below if plot fails.</div>}
+      <div className="p-5">
+        <div ref={plotRef} className="w-full rounded-2xl border border-forest-900/10 bg-white dark:bg-white/5" />
+        {!plotlyReady && <div className="text-[11px] text-forest-700/60 dark:text-cream-100/50 mt-2">Drawing the chart… the table below always works.</div>}
 
-        {/* Fallback table */}
-        <div className="mt-4 rounded-xl border border-slate-200 overflow-hidden">
-          <div className="grid grid-cols-12 bg-slate-50 font-mono text-[10px] tracking-widest text-slate-500 px-3 py-2 border-b">
-            <span className="col-span-5">FEATURE</span><span className="col-span-2">VALUE</span><span className="col-span-2">SHAP</span><span className="col-span-3">INTERPRETATION</span>
+        <div className="mt-4 rounded-2xl border border-forest-900/10 overflow-hidden">
+          <div className="grid grid-cols-12 bg-cream-50 text-[10px] tracking-widest uppercase text-forest-700/60 px-3 py-2 border-b border-forest-900/10 dark:bg-white/5">
+            <span className="col-span-5">Pattern</span><span className="col-span-2">Value</span><span className="col-span-2">Push</span><span className="col-span-3">What it means</span>
           </div>
-          {explanation.topFeatures?.map((f,i)=>(
-            <div key={i} className="grid grid-cols-12 px-3 py-2 text-xs border-b last:border-0 border-slate-100 items-center">
-              <span className="col-span-5 font-mono font-medium truncate" title={f.feature}>{f.feature}</span>
-              <span className="col-span-2 font-mono text-slate-600">{typeof f.value==='number'? f.value.toFixed(2): String(f.value).slice(0,20)}</span>
-              <span className={`col-span-2 font-mono font-semibold ${f.shap>=0?'text-pink-700':'text-cyan-700'}`}>{f.shap>0?'+':''}{f.shap.toFixed(3)}</span>
-              <span className="col-span-3 text-[11px] text-slate-600 leading-tight">{f.description || '—'}</span>
+          {explanation.topFeatures?.map((f, i) => (
+            <div key={i} className="grid grid-cols-12 px-3 py-2 text-xs border-b last:border-0 border-forest-900/5 items-center">
+              <span className="col-span-5 font-medium truncate" title={f.feature}>{friendlyFeatureName(f.feature)}</span>
+              <span className="col-span-2 text-forest-700/70 dark:text-cream-100/60">{typeof f.value === 'number' ? f.value.toFixed(2) : String(f.value).slice(0, 20)}</span>
+              <span className={`col-span-2 font-semibold ${f.shap >= 0 ? 'text-forest-700' : 'text-gold-600'}`}>{f.shap > 0 ? '+' : ''}{f.shap.toFixed(3)}</span>
+              <span className="col-span-3 text-[11px] text-forest-800/75 dark:text-cream-100/70 leading-tight">{plainDescription(f.description)}</span>
             </div>
           ))}
         </div>
 
-        <div className="mt-4 rounded-xl bg-slate-50 border border-slate-200 p-3">
-          <div className="font-mono text-[10px] tracking-widest font-bold text-slate-700">XAI INTERPRETATION — WHY MODEL THINKS IT BINDS</div>
-          <div className="text-[11px] text-slate-700 mt-1 leading-relaxed">
-            {explanation.summary} SHAP values quantify each RDKit/ECFP4 feature's marginal contribution to predicted pKd via TreeSHAP. Positive SHAP pushes affinity higher. This explains <span className="font-semibold">model reasoning</span>, not biological mechanism. Like AYUSH-64, XAI helps triage chemotypes but does not constitute mechanism proof; requires pathway assays.
+        <div className="mt-4 rounded-2xl bg-cream-50 border border-forest-900/10 p-3 dark:bg-white/5">
+          <div className="text-[10px] tracking-widest uppercase font-bold text-forest-800 dark:text-cream-100">In plain words</div>
+          <div className="text-[12px] text-forest-900/85 dark:text-cream-100/80 mt-1 leading-relaxed">
+            {plainDescription(explanation.summary)} Right-pointing bars pushed the score up; left-pointing bars pulled it down. This shows the model’s reasoning, not a proven real-world cause.
           </div>
         </div>
 
-        <div className="mt-3 rounded-xl bg-amber-50 border border-amber-200 p-2.5">
-          <div className="font-mono text-[10px] font-bold text-amber-900">TIER XAI_INTERPRETATION — MODEL TRANSPARENCY, NOT CAUSALITY</div>
+        <div className="mt-3">
+          <ResearchNote text="This breakdown explains the computer model — like seeing a student’s rough work. It does not prove how anything works in real life." />
         </div>
       </div>
     </div>
   );
+}
+
+function plainDescription(text) {
+  if (!text) return '—';
+  return text
+    .replace(/SHAP/gi, 'push score')
+    .replace(/pKd/gi, 'strength score')
+    .replace(/affinity/gi, 'holding strength')
+    .replace(/MolLogP/gi, 'oil–water mix')
+    .replace(/TPSA/gi, 'exposed surface')
+    .replace(/ECFP4[^,]*/gi, 'fragment pattern')
+    .replace(/TreeSHAP/gi, 'step-by-step check');
 }

@@ -1,7 +1,6 @@
-
 /**
- * CompoundDetail.jsx
- * Full compound view with all 5 evidence tiers, 3Dmol viewer
+ * CompoundDetail.jsx — "/compounds/:id" single compound page, plain language.
+ * Same five API calls; presented as friendly sections with tabs.
  */
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
@@ -12,65 +11,120 @@ import DockingResults from '../components/DockingResults.jsx';
 import MLPredictionCard from '../components/MLPredictionCard.jsx';
 import XAIExplanation from '../components/XAIExplanation.jsx';
 import LiteraturePanel from '../components/LiteraturePanel.jsx';
-import { EvidenceTierLegend, TierSeparator } from '../components/EvidenceTierBadge.jsx';
+import { Page, LoadingSpinner, SkeletonCard, ResearchNote } from '../components/ui.jsx';
+import { ConfidenceLegend } from '../components/ui.jsx';
+
+const SECTIONS = [
+  { id: 'story', label: 'Plant story' },
+  { id: 'shape', label: '3D shape' },
+  { id: 'scores', label: 'Scores & why' },
+  { id: 'reading', label: 'Further reading' },
+];
 
 export default function CompoundDetail() {
   const { id } = useParams();
+  const [section, setSection] = useState('story');
   const [compound, setCompound] = useState(null);
-  const [docking, setDocking] = useState(null);
-  const [ml, setMl] = useState(null);
-  const [xai, setXai] = useState(null);
-  const [lit, setLit] = useState(null);
+  const [fit, setFit] = useState(null);
+  const [guess, setGuess] = useState(null);
+  const [why, setWhy] = useState(null);
+  const [papers, setPapers] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(()=> {
-    (async ()=>{
+  useEffect(() => {
+    (async () => {
       setLoading(true);
       const [c, d, m, x, l] = await Promise.all([
         apiClient.getCompound(id),
         apiClient.runDocking(id, '6LU7'),
         apiClient.predictAffinity(id, '6LU7'),
         apiClient.explainPrediction(id, '6LU7'),
-        apiClient.queryLiterature(`${id} phytochemical binding target`),
+        apiClient.queryLiterature(`${id} natural compound plant`),
       ]);
-      setCompound(c);
-      setDocking(d);
-      setMl(m);
-      setXai(x);
-      setLit(l);
+      setCompound(c); setFit(d); setGuess(m); setWhy(x); setPapers(l);
       setLoading(false);
     })();
   }, [id]);
 
   if (loading) {
-    return <div className="space-y-4 animate-pulse"><div className="h-24 bg-white border border-slate-200 rounded-2xl" /><div className="h-[480px] bg-white border border-slate-200 rounded-2xl" /></div>;
+    return (
+      <Page className="space-y-4">
+        <SkeletonCard />
+        <LoadingSpinner label={`Opening ${id}…`} />
+      </Page>
+    );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-2 font-mono text-[11px] text-slate-500">
-        <Link to="/" className="hover:text-slate-800">Dashboard</Link><span>/</span><span>{id}</span><span>/</span><span className="text-slate-900 font-semibold">{compound?.name}</span>
+    <Page className="space-y-5">
+      <div className="flex items-center gap-2 text-[12px] text-forest-700/70 dark:text-cream-100/60">
+        <Link to="/compounds" className="hover:text-forest-900">Compounds</Link><span>/</span>
+        <span className="text-forest-950 dark:text-cream-50 font-semibold">{compound?.name}</span>
       </div>
 
-      <div className="grid lg:grid-cols-12 gap-6">
-        <div className="lg:col-span-5 space-y-4">
-          {compound && <CompoundCard compound={compound} />}
-          <MoleculeViewer dockingResult={docking} height={420} />
-          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-3">
-            <div className="font-mono text-[11px] font-bold tracking-widest text-amber-900">COMPOUND DETAIL — ALL TIERS SEPARATED</div>
-            <div className="mt-1 text-[11px] text-amber-800 leading-relaxed">This view aggregates five evidence tiers for one phytochemical but keeps them visually and semantically separated per AYUSH-64 justification. No tier is presented as validating another; ML does not prove docking, literature does not prove efficacy.</div>
-            <div className="mt-2"><EvidenceTierLegend /></div>
+      <div>
+        <h1 className="font-display text-3xl md:text-4xl font-semibold text-forest-950 dark:text-cream-50">{compound?.name}</h1>
+        <p className="mt-1 text-sm text-forest-800/75 dark:text-cream-100/65">
+          {compound?.plant} · everything below is an early computer preview for research.
+        </p>
+      </div>
+
+      <div className="card flex gap-1.5 overflow-x-auto p-2" role="tablist" aria-label="Compound sections">
+        {SECTIONS.map((s) => (
+          <button
+            key={s.id}
+            role="tab"
+            aria-selected={section === s.id}
+            onClick={() => setSection(s.id)}
+            className={`flex-1 whitespace-nowrap rounded-2xl px-4 py-2.5 text-sm font-medium transition active:scale-[0.98] ${section === s.id ? 'bg-forest-700 text-white shadow-card' : 'text-forest-800 hover:bg-cream-100 dark:text-cream-100 dark:hover:bg-white/10'}`}
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+
+      <div key={section} className="page-wrap">
+        {section === 'story' && (
+          <div className="grid gap-5 lg:grid-cols-2">
+            {compound && <CompoundCard compound={compound} />}
+            <div className="space-y-5">
+              <div className="card p-6">
+                <h2 className="font-display text-lg font-semibold text-forest-950 dark:text-cream-50">🌿 The plant story</h2>
+                <p className="mt-2 text-sm leading-relaxed text-forest-900/85 dark:text-cream-100/80">
+                  {compound?.name} is found in <strong>{compound?.plant}</strong>
+                  {compound?.traditionalUse ? <> and is traditionally associated with <strong>{compound.traditionalUse}</strong></> : null}.
+                  Library records like this are our starting point — they describe the plant, not health effects.
+                </p>
+                <div className="mt-3"><ConfidenceLegend /></div>
+              </div>
+              <LiteraturePanel literature={papers} query={`${compound?.name} plant`} />
+            </div>
           </div>
-        </div>
-
-        <div className="lg:col-span-7 space-y-6">
-          <DockingResults result={docking} />
-          <MLPredictionCard prediction={ml} />
-          <XAIExplanation explanation={xai} />
-          <LiteraturePanel literature={lit} query={`${compound?.name} target`} />
-          <TierSeparator tiersPresent={['DATABASE_DERIVED','DOCKING_RESULT','ML_PREDICTION','XAI_INTERPRETATION','LITERATURE_DERIVED']} />
-        </div>
+        )}
+        {section === 'shape' && (
+          <div className="grid gap-5 lg:grid-cols-5">
+            <div className="lg:col-span-3"><MoleculeViewer dockingResult={fit} height={440} /></div>
+            <div className="lg:col-span-2"><DockingResults result={fit} /></div>
+          </div>
+        )}
+        {section === 'scores' && (
+          <div className="grid gap-5 lg:grid-cols-2">
+            <MLPredictionCard prediction={guess} />
+            <XAIExplanation explanation={why} />
+          </div>
+        )}
+        {section === 'reading' && (
+          <div className="max-w-3xl space-y-5">
+            <LiteraturePanel literature={papers} query={`${compound?.name} research`} />
+            <ResearchNote />
+          </div>
+        )}
       </div>
-    </div>
+
+      <div className="flex flex-wrap gap-2">
+        <Link to={`/results/${id}?shape=6LU7`} className="btn-primary !text-xs">Open the tabbed results view →</Link>
+        <Link to="/ranking" className="btn-secondary !text-xs">Back to the shortlist</Link>
+      </div>
+    </Page>
   );
 }

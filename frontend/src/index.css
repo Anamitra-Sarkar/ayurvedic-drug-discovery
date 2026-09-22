@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,24 +8,134 @@
   color-scheme: light;
 }
 
+.dark {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #FDFBF5;
+}
+
+.dark body {
+  background-color: #041B17;
 }
 
 .font-display {
-  font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+  font-family: 'Fraunces', Georgia, serif;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- reusable component classes ---------- */
+@layer components {
+  .card {
+    @apply rounded-3xl border bg-white shadow-card transition-all duration-300;
+    border-color: rgb(7 42 36 / 0.08);
+  }
+  .dark .card {
+    @apply bg-forest-900 shadow-none;
+    border-color: rgb(255 255 255 / 0.09);
+  }
+  .card-lift {
+    @apply transition-all duration-300 ease-out;
+  }
+  .card-lift:hover {
+    transform: translateY(-4px);
+    @apply shadow-card-hover;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-forest-700 px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-forest-800 hover:shadow-lift focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 active:scale-[0.97];
+  }
+  .dark .btn-primary {
+    @apply bg-gold-400 text-forest-950 hover:bg-gold-300;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium transition-all duration-200 bg-white hover:shadow-card-hover active:scale-[0.97];
+    border-color: rgb(7 42 36 / 0.14);
+    color: #0C4A3E;
+  }
+  .dark .btn-secondary {
+    @apply bg-white/5 text-cream-50 hover:bg-white/10;
+    border-color: rgb(255 255 255 / 0.14);
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs;
+  }
+  .page-wrap {
+    animation: fade-up 0.45s ease both;
+  }
+  .skeleton {
+    @apply relative overflow-hidden rounded-xl bg-cream-200;
+    background-image: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+    background-size: 400px 100%;
+    animation: shimmer 1.4s linear infinite;
+  }
+  .dark .skeleton {
+    @apply bg-white/10;
+  }
+  .spinner {
+    @apply inline-block h-5 w-5 animate-spin rounded-full border-2;
+    border-color: rgb(255 255 255 / 0.3);
+    border-top-color: #fff;
+  }
+  .spinner-dark {
+    border-color: rgb(15 92 77 / 0.2);
+    border-top-color: #0F5C4D;
+  }
+  .modal-backdrop {
+    animation: fade-in 0.25s ease both;
+  }
+  .modal-panel {
+    animation: pop-in 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .link-underline {
+    @apply underline decoration-gold-400 decoration-2 underline-offset-4 hover:decoration-forest-600;
+  }
 }
 
 /* Custom scrollbar */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #f1f5f9; }
-::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #B0DBBE; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #7FC297; }
+.dark ::-webkit-scrollbar-thumb { background: #0C4A3E; }
 
 /* 3Dmol container */
-.molecule-viewer canvas { border-radius: 12px; }
+.molecule-viewer canvas { border-radius: 16px; }
 
 /* Plotly tweaks */
 .js-plotly-plot .plotly .modebar { display: none !important; }
+
+/* Hero botanical pattern fallback (used if puter image unavailable) */
+.hero-pattern {
+  background:
+    radial-gradient(1100px 420px at 85% -10%, rgba(229, 176, 68, 0.22), transparent 60%),
+    radial-gradient(900px 480px at 10% 10%, rgba(77, 166, 114, 0.25), transparent 60%),
+    radial-gradient(700px 500px at 50% 110%, rgba(15, 92, 77, 0.18), transparent 60%),
+    linear-gradient(135deg, #072A24 0%, #0C4A3E 45%, #0F5C4D 70%, #2E8B57 100%);
+}
+.hero-pattern::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.14;
+  background-image: radial-gradient(rgba(255,255,255,0.9) 1px, transparent 1.4px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(ellipse at 70% 30%, black 30%, transparent 75%);
+  pointer-events: none;
+}
+.leaf-shape {
+  border-radius: 9999px 4px 9999px 4px;
+}
+
+/* Focus visibility for a11y */
+:focus-visible {
+  outline: 2px solid #D9962B;
+  outline-offset: 2px;
+}

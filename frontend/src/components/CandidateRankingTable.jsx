@@ -1,146 +1,147 @@
-
 /**
- * CandidateRankingTable.jsx
- * Ranked list of candidates with evidence tiers separated
- * Must not present as clinical proof — warning banner
+ * CandidateRankingTable.jsx — plain-language "Most promising picks".
+ * Sorting/data logic unchanged; headings and warnings rewritten plainly.
  */
 import { useState } from 'react';
-import EvidenceTierBadge, { TierSeparator } from './EvidenceTierBadge.jsx';
-import { getDisclaimerForTiers } from '../utils/evidence.js';
+import { ConfidenceBadge } from './ui.jsx';
+import { TierSeparator } from './EvidenceTierBadge.jsx';
+import { fitVerdict } from '../utils/friendly.js';
 
 export default function CandidateRankingTable({ ranking, loading, onSelect }) {
   const [sortBy, setSortBy] = useState('rank');
   const [expanded, setExpanded] = useState(null);
 
   if (loading) {
-    return <div className="rounded-2xl border border-slate-200 bg-white p-6 animate-pulse space-y-3"><div className="h-6 bg-slate-100 rounded w-1/3" /><div className="h-32 bg-slate-50 rounded" /></div>;
+    return <div className="card p-6 animate-pulse space-y-3"><div className="h-6 bg-cream-200 rounded w-1/3 dark:bg-white/10" /><div className="h-32 bg-cream-100 rounded dark:bg-white/5" /></div>;
   }
   if (!ranking?.candidates) {
-    return <div className="rounded-2xl border border-slate-200 bg-white p-6 text-center font-mono text-xs text-slate-500">No ranking — run pipeline or check target.</div>;
+    return (
+      <div className="card p-8 text-center">
+        <div className="text-3xl">🌱</div>
+        <div className="text-sm font-medium text-forest-800 dark:text-cream-100 mt-2">No shortlist yet</div>
+        <div className="text-xs text-forest-700/70 dark:text-cream-100/60 mt-1">Run an analysis and the most promising picks will appear here.</div>
+      </div>
+    );
   }
 
-  const candidates = [...ranking.candidates].sort((a,b)=>{
-    if (sortBy==='docking') return (a.docking?.affinity_kcal_mol||0) - (b.docking?.affinity_kcal_mol||0);
-    if (sortBy==='ml') return (b.ml?.pKd_pred||0) - (a.ml?.pKd_pred||0);
-    if (sortBy==='qed') return (b.database?.qed||0) - (a.database?.qed||0);
+  const candidates = [...ranking.candidates].sort((a, b) => {
+    if (sortBy === 'docking') return (a.docking?.affinity_kcal_mol || 0) - (b.docking?.affinity_kcal_mol || 0);
+    if (sortBy === 'ml') return (b.ml?.pKd_pred || 0) - (a.ml?.pKd_pred || 0);
+    if (sortBy === 'qed') return (b.database?.qed || 0) - (a.database?.qed || 0);
     return a.rank - b.rank;
   });
 
-  const allTiers = ['DATABASE_DERIVED','DOCKING_RESULT','ML_PREDICTION','XAI_INTERPRETATION','LITERATURE_DERIVED'];
-  const disclaimer = getDisclaimerForTiers(allTiers);
-
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white shadow-card overflow-hidden">
-      {/* Warning banner - HARD REQUIREMENT */}
-      <div className="bg-gradient-to-r from-amber-50 to-red-50 border-b-2 border-amber-300 px-5 py-4">
+    <div className="card overflow-hidden">
+      <div className="bg-gradient-to-r from-gold-50 to-cream-100 border-b-2 border-gold-300/60 px-5 py-4 dark:from-gold-400/10 dark:to-transparent">
         <div className="flex gap-3">
-          <div className="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center flex-shrink-0">⚠️</div>
+          <div className="w-10 h-10 rounded-2xl bg-gold-500 text-white flex items-center justify-center flex-shrink-0">🌼</div>
           <div className="flex-1">
-            <div className="font-display font-bold text-amber-900 text-sm tracking-wide">{disclaimer.title}</div>
-            <div className="mt-1 text-xs text-amber-900 leading-relaxed">{disclaimer.message}</div>
+            <div className="font-display font-bold text-gold-700 text-sm tracking-wide dark:text-gold-300">A computer shortlist — not a recommendation</div>
+            <div className="mt-1 text-xs text-forest-900/80 dark:text-cream-100/75 leading-relaxed">
+              These picks are ordered by early computer guesses only. A top spot does not mean something works or is safe — every candidate still needs real lab testing.
+            </div>
             <div className="mt-2 flex flex-wrap gap-2">
-              <span className="font-mono text-[10px] px-2 py-0.5 rounded-full bg-white border border-amber-200 text-amber-800">TIER SEPARATION ENFORCED</span>
-              <span className="font-mono text-[10px] px-2 py-0.5 rounded-full bg-white border border-red-200 text-red-700">NO CLINICAL RANK IMPLICATION</span>
-              <span className="font-mono text-[10px] px-2 py-0.5 rounded-full bg-white border border-slate-200 text-slate-600">Ref: AYUSH-64 required RCTs after computational hypothesis</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-white border border-gold-300/60 text-gold-700">Judged separately, not blended</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-white border border-forest-900/10 text-forest-700">Research stage only</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Controls */}
-      <div className="px-5 py-3 border-b border-slate-100 bg-slate-50/60 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <span className="font-mono text-[11px] tracking-widest text-slate-600">SORT BY</span>
+      <div className="px-5 py-3 border-b border-forest-900/10 bg-cream-50/60 flex flex-wrap items-center justify-between gap-3 dark:bg-white/5">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-[11px] tracking-widest uppercase text-forest-700/70 dark:text-cream-100/60">Order by</span>
           {[
-            {id:'rank', label:'# Rank'},
-            {id:'docking', label:'ΔG Docking'},
-            {id:'ml', label:'pKd ML'},
-            {id:'qed', label:'QED Drug-like'},
-          ].map(o=>(
-            <button key={o.id} onClick={()=>setSortBy(o.id)} className={`px-3 py-1 rounded-full text-xs font-medium border ${sortBy===o.id ? 'bg-slate-900 text-white border-slate-900' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'}`}>{o.label}</button>
+            { id: 'rank', label: '# Our order' },
+            { id: 'docking', label: 'Snuggest fit' },
+            { id: 'ml', label: 'Strongest guess' },
+            { id: 'qed', label: 'Most balanced' },
+          ].map((o) => (
+            <button key={o.id} onClick={() => setSortBy(o.id)} className={`px-3 py-1 rounded-full text-xs font-medium border transition active:scale-95 ${sortBy === o.id ? 'bg-forest-700 text-white border-forest-700' : 'bg-white border-forest-900/10 text-forest-800 hover:shadow-card dark:bg-white/5 dark:text-cream-100'}`}>{o.label}</button>
           ))}
         </div>
-        <div className="font-mono text-[11px] text-slate-500">Target: {ranking.target} • {candidates.length} candidates • {allTiers.length} tiers separated</div>
+        <div className="text-[11px] text-forest-700/60 dark:text-cream-100/50">{candidates.length} candidates · each judged on its own</div>
       </div>
 
-      {/* Table */}
       <div className="overflow-x-auto">
         <div className="min-w-[980px]">
-          {/* Header */}
-          <div className="grid grid-cols-12 gap-0 bg-slate-50 border-b border-slate-200 font-mono text-[10px] tracking-widest text-slate-500 px-4 py-2.5">
+          <div className="grid grid-cols-12 gap-0 bg-cream-50 border-b border-forest-900/10 text-[10px] tracking-widest uppercase text-forest-700/60 px-4 py-2.5 dark:bg-white/5">
             <span className="col-span-1">#</span>
-            <span className="col-span-3">COMPOUND (IMPPAT)</span>
-            <span className="col-span-2">DATABASE_DERIVED</span>
-            <span className="col-span-2">DOCKING_RESULT</span>
-            <span className="col-span-2">ML_PREDICTION</span>
-            <span className="col-span-2">XAI + LIT</span>
+            <span className="col-span-3">Compound</span>
+            <span className="col-span-2">Library</span>
+            <span className="col-span-2">Shape fit</span>
+            <span className="col-span-2">Prediction</span>
+            <span className="col-span-2">Why + research</span>
           </div>
 
-          {candidates.map((c, idx)=>(
-            <div key={c.compound.id} className={`grid grid-cols-12 gap-0 px-4 py-3 border-b border-slate-100 hover:bg-[#f8faf6] transition ${idx===0 ? 'bg-amber-50/50' : 'bg-white'}`}>
+          {candidates.map((c, idx) => (
+            <div key={c.compound.id} className={`grid grid-cols-12 gap-0 px-4 py-3 border-b border-forest-900/5 hover:bg-forest-50/50 dark:hover:bg-white/5 transition ${idx === 0 ? 'bg-gold-50/60 dark:bg-gold-400/5' : 'bg-white dark:bg-transparent'}`}>
               <div className="col-span-1 flex items-center gap-2">
-                <span className={`w-7 h-7 rounded-full flex items-center justify-center font-mono text-xs font-bold ${idx===0? 'bg-amber-600 text-white' : idx<3 ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600'}`}>{c.rank}</span>
+                <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${idx === 0 ? 'bg-gold-500 text-white' : idx < 3 ? 'bg-forest-700 text-white' : 'bg-cream-200 text-forest-700 dark:bg-white/10 dark:text-cream-100'}`}>{c.rank}</span>
               </div>
 
               <div className="col-span-3 min-w-0">
-                <div className="font-display font-semibold text-sm text-slate-900 truncate">{c.compound.name}</div>
-                <div className="font-mono text-[11px] text-slate-500 truncate">{c.compound.id} • {c.compound.plant?.slice(0,28)}</div>
+                <div className="font-display font-semibold text-sm text-forest-950 dark:text-cream-50 truncate">{c.compound.name}</div>
+                <div className="text-[11px] text-forest-700/60 dark:text-cream-100/50 truncate">{c.compound.id} · {c.compound.plant?.slice(0, 28)}</div>
                 <div className="mt-1 flex gap-1">
-                  <EvidenceTierBadge tier="DATABASE_DERIVED" size="sm" showLabel={false} />
+                  <ConfidenceBadge tier="DATABASE_DERIVED" size="sm" showLabel={false} />
                 </div>
               </div>
 
               <div className="col-span-2">
-                <div className="rounded-lg bg-cyan-50 border border-cyan-100 p-2">
-                  <div className="font-mono text-[10px] text-cyan-700">QED {c.database?.qed?.toFixed(2)} • Lipinski ✓</div>
-                  <div className="font-mono text-[11px] text-slate-700 mt-1">{c.compound.formula}</div>
+                <div className="rounded-xl bg-forest-50 border border-forest-900/10 p-2 dark:bg-white/5">
+                  <div className="text-[10px] text-forest-700">Balance {c.database?.qed?.toFixed(2)}</div>
+                  <div className="text-[11px] text-forest-800/80 dark:text-cream-100/70 mt-1">{c.compound.formula}</div>
                 </div>
               </div>
 
               <div className="col-span-2">
-                <div className="rounded-lg bg-violet-50 border border-violet-100 p-2">
-                  <div className="font-mono text-xs font-bold text-violet-800">{c.docking?.affinity_kcal_mol?.toFixed(1)} kcal/mol</div>
-                  <div className="font-mono text-[10px] text-violet-600 mt-1">conf {(c.docking?.confidence*100).toFixed(0)}% • computational</div>
+                <div className="rounded-xl bg-cream-100 border border-gold-300/50 p-2 dark:bg-white/5">
+                  <div className="text-xs font-bold text-forest-800 dark:text-cream-50">{c.docking?.affinity_kcal_mol?.toFixed(1)} fit score</div>
+                  <div className="text-[10px] text-forest-700/70 dark:text-cream-100/60 mt-1">{fitVerdict(c.docking?.affinity_kcal_mol)} · computer guess</div>
                 </div>
               </div>
 
               <div className="col-span-2">
-                <div className="rounded-lg bg-pink-50 border border-pink-100 p-2">
-                  <div className="font-mono text-xs font-bold text-pink-800">pKd {c.ml?.pKd_pred?.toFixed(1)}</div>
-                  <div className="font-mono text-[10px] text-pink-600 mt-1">AD {Math.round((c.ml?.applicability||0)*100)}% • model infer</div>
+                <div className="rounded-xl bg-gold-50 border border-gold-300/50 p-2 dark:bg-white/5">
+                  <div className="text-xs font-bold text-forest-800 dark:text-cream-50">Strength {c.ml?.pKd_pred?.toFixed(1)}</div>
+                  <div className="text-[10px] text-forest-700/70 dark:text-cream-100/60 mt-1">Trust {Math.round((c.ml?.applicability || 0) * 100)}% · model guess</div>
                 </div>
               </div>
 
               <div className="col-span-2 flex flex-col gap-1">
-                <div className="rounded-lg bg-orange-50 border border-orange-100 p-1.5">
-                  <div className="font-mono text-[10px] text-orange-700 truncate">XAI: {c.xai?.topFeature}</div>
+                <div className="rounded-xl bg-cream-50 border border-forest-900/10 p-1.5 dark:bg-white/5">
+                  <div className="text-[10px] text-forest-700/80 dark:text-cream-100/70 truncate">Why: {plainTop(c.xai?.topFeature)}</div>
                 </div>
-                <div className="rounded-lg bg-green-50 border border-green-100 p-1.5">
-                  <div className="font-mono text-[10px] text-green-700">{c.literature?.citations} cites • {Math.round((c.literature?.faithfulness||0)*100)}% faithful</div>
+                <div className="rounded-xl bg-forest-50 border border-forest-900/10 p-1.5 dark:bg-white/5">
+                  <div className="text-[10px] text-forest-700 dark:text-cream-100/70">{c.literature?.citations} papers · {Math.round((c.literature?.faithfulness || 0) * 100)}% grounded</div>
                 </div>
-                <button onClick={()=>setExpanded(expanded===c.compound.id?null:c.compound.id)} className="mt-1 text-[11px] font-medium text-slate-700 hover:text-slate-900">{expanded===c.compound.id? 'Hide':'Evidence breakdown'}</button>
+                <button onClick={() => setExpanded(expanded === c.compound.id ? null : c.compound.id)} className="mt-1 text-[11px] font-medium text-forest-700 hover:text-forest-900 dark:text-cream-100 transition active:scale-95">
+                  {expanded === c.compound.id ? 'Hide breakdown' : 'See breakdown'}
+                </button>
               </div>
 
-              {expanded===c.compound.id && (
-                <div className="col-span-12 mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+              {expanded === c.compound.id && (
+                <div className="col-span-12 mt-3 rounded-2xl border border-forest-900/10 bg-cream-50 p-3 dark:bg-white/5">
                   <TierSeparator tiersPresent={c.tiersPresent} />
                   <div className="grid grid-cols-5 gap-2 mt-2">
                     {[
-                      { tier:'DATABASE_DERIVED', val: `QED ${c.database?.qed?.toFixed(2)} • ${c.compound.plant}` },
-                      { tier:'DOCKING_RESULT', val: `${c.docking?.affinity_kcal_mol} kcal/mol • pose hypothesis` },
-                      { tier:'ML_PREDICTION', val: `pKd ${c.ml?.pKd_pred} • AD ${Math.round(c.ml?.applicability*100)}%` },
-                      { tier:'XAI_INTERPRETATION', val: `${c.xai?.topFeature} • SHAP ${c.xai?.shapSum?.toFixed(2)}` },
-                      { tier:'LITERATURE_DERIVED', val: `${c.literature?.citations} papers • faithful ${Math.round(c.literature?.faithfulness*100)}%` },
-                    ].map(row=>(
-                      <div key={row.tier} className="rounded-lg bg-white border border-slate-200 p-2">
-                        <EvidenceTierBadge tier={row.tier} size="sm" />
-                        <div className="font-mono text-[11px] text-slate-700 mt-2 leading-tight">{row.val}</div>
+                      { tier: 'DATABASE_DERIVED', val: `Balance ${c.database?.qed?.toFixed(2)} · ${c.compound.plant}` },
+                      { tier: 'DOCKING_RESULT', val: `${c.docking?.affinity_kcal_mol} fit score` },
+                      { tier: 'ML_PREDICTION', val: `Strength ${c.ml?.pKd_pred}` },
+                      { tier: 'XAI_INTERPRETATION', val: `${plainTop(c.xai?.topFeature)}` },
+                      { tier: 'LITERATURE_DERIVED', val: `${c.literature?.citations} papers` },
+                    ].map((row) => (
+                      <div key={row.tier} className="rounded-xl bg-white border border-forest-900/10 p-2 dark:bg-white/5">
+                        <ConfidenceBadge tier={row.tier} size="sm" />
+                        <div className="text-[11px] text-forest-800/80 dark:text-cream-100/70 mt-2 leading-tight">{row.val}</div>
                       </div>
                     ))}
                   </div>
-                  <div className="mt-3 flex gap-2">
-                    <button onClick={()=>onSelect?.(c.compound)} className="px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-medium">View compound →</button>
-                    <span className="font-mono text-[10px] text-slate-500 self-center">Each column is independent evidence — not summed into clinical score per AYUSH-64 compliance</span>
+                  <div className="mt-3 flex gap-2 flex-wrap items-center">
+                    <button onClick={() => onSelect?.(c.compound)} className="btn-primary !px-4 !py-1.5 !text-xs">View compound →</button>
+                    <span className="text-[10px] text-forest-700/60 dark:text-cream-100/50">Each column is a separate clue — never blended into one health score.</span>
                   </div>
                 </div>
               )}
@@ -149,10 +150,19 @@ export default function CandidateRankingTable({ ranking, loading, onSelect }) {
         </div>
       </div>
 
-      <div className="px-5 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-        <span className="font-mono text-[11px] text-slate-500">Ranking = computational triage only. No column implies therapeutic effect. See Documentation for AYUSH-64 justification.</span>
-        <button className="font-mono text-[11px] px-2.5 py-1 rounded-full bg-white border border-slate-200">Export (CSV tier-separated)</button>
+      <div className="px-5 py-3 bg-cream-50 border-t border-forest-900/10 flex items-center justify-between flex-wrap gap-2 dark:bg-white/5">
+        <span className="text-[11px] text-forest-700/70 dark:text-cream-100/60">A shortlist for researchers — every pick still needs lab testing.</span>
+        <button className="btn-secondary !px-3 !py-1 !text-[11px]">Download list</button>
       </div>
     </div>
   );
 }
+
+function plainTop(raw) {
+  if (!raw) return 'pattern mix';
+  return String(raw)
+    .replace(/lactone chemotype/i, 'ring pattern')
+    .replace(/SHAP/i, 'push score')
+    .replace(/ECFP4[^,]*/gi, 'fragment pattern');
+}
+

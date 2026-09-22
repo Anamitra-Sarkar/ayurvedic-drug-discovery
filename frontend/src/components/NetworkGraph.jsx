@@ -5,7 +5,19 @@
  * Canvas-based force layout + SVG fallback, tier DATABASE_DERIVED for structure, LITERATURE_DERIVED for edges
  */
 import { useEffect, useRef, useState, useMemo } from 'react';
-import EvidenceTierBadge from './EvidenceTierBadge.jsx';
+import { ConfidenceBadge } from './ui.jsx';
+import { proteinShapeName } from '../utils/friendly.js';
+
+const KNOWN_SHAPE_NAMES = { 'NF-kB': 'Cell-stress shape', 'TNF-alpha': 'Immune-signal shape', 'IL-6': 'Immune-signal shape', 'COX-2': 'Swelling-linked shape', 'Mpro': 'Virus defence shape', 'ACE2': 'Virus defence shape' };
+function labelFor(n) {
+  if (n.type === 'target') {
+    if (KNOWN_SHAPE_NAMES[n.label]) return KNOWN_SHAPE_NAMES[n.label];
+    if (KNOWN_SHAPE_NAMES[n.id]) return KNOWN_SHAPE_NAMES[n.id];
+    const friendly = proteinShapeName(n.id);
+    if (friendly !== ('Protein shape ' + n.id)) return friendly;
+  }
+  return n.label;
+}
 
 export default function NetworkGraph({ networkData, loading }) {
   const canvasRef = useRef(null);
@@ -125,7 +137,7 @@ export default function NetworkGraph({ networkData, loading }) {
       if (n.type==='plant' || n.type==='target') {
         ctx.fillStyle = '#0f172a';
         ctx.font = '11px Inter';
-        ctx.fillText(n.label, n.x+ (n.size||4)+4, n.y+3);
+        ctx.fillText(labelFor(n), n.x+ (n.size||4)+4, n.y+3);
       }
     });
 
@@ -133,7 +145,7 @@ export default function NetworkGraph({ networkData, loading }) {
 
   }, [filtered]);
 
-  if (loading) return <div className="rounded-2xl border border-slate-200 bg-white h-[460px] animate-pulse p-6" />;
+  if (loading) return <div className="card h-[460px] animate-pulse p-6" />;
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white shadow-card overflow-hidden">
@@ -141,13 +153,13 @@ export default function NetworkGraph({ networkData, loading }) {
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-green-700 text-white flex items-center justify-center">🕸️</div>
           <div>
-            <div className="font-display font-semibold text-sm">{networkData?.name || 'Triphala Network (174 bioactives)'} </div>
-            <div className="font-mono text-[11px] text-slate-500">Network pharmacology — 3 plants • 174 bioactives • 6 targets • {filtered.edges.length} edges</div>
+            <div className="font-display font-semibold text-sm">Triphala plant map</div>
+            <div className="font-mono text-[11px] text-slate-500">Plant connections — 3 plants • 174 bioactives • 6 targets • {filtered.edges.length} edges</div>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <EvidenceTierBadge tier="DATABASE_DERIVED" size="sm" />
-          <EvidenceTierBadge tier="LITERATURE_DERIVED" size="sm" />
+          <ConfidenceBadge tier="DATABASE_DERIVED" size="sm" />
+          <ConfidenceBadge tier="LITERATURE_DERIVED" size="sm" />
         </div>
       </div>
 
@@ -168,38 +180,38 @@ export default function NetworkGraph({ networkData, loading }) {
       <div className="relative bg-[#fcfcfa] border-b border-slate-100">
         <canvas ref={canvasRef} className="w-full" style={{height: 420, display:'block'}} />
         <div className="absolute top-3 left-3 rounded-xl bg-white border border-slate-200 shadow-sm p-2.5 space-y-1.5">
-          <div className="font-mono text-[10px] tracking-widest text-slate-500">LEGEND — TIERS SEPARATED</div>
-          <div className="flex items-center gap-2 text-[11px] font-mono"><span className="w-2.5 h-2.5 rounded-full bg-[#16a34a]" /> Plant (DATABASE_DERIVED)</div>
-          <div className="flex items-center gap-2 text-[11px] font-mono"><span className="w-2 h-2 rounded-full bg-[#7c3aed]" /> Compound (DATABASE_DERIVED)</div>
-          <div className="flex items-center gap-2 text-[11px] font-mono"><span className="w-2.5 h-2.5 rounded-full bg-[#db2777]" /> Target (LITERATURE_DERIVED predicted)</div>
-          <div className="flex items-center gap-2 text-[11px] font-mono"><span className="w-4 h-0.5 bg-slate-300" /> Botanical occurrence (DB)</div>
-          <div className="flex items-center gap-2 text-[11px] font-mono"><span className="w-4 h-0.5 bg-pink-300" /> Predicted interaction (ML/LIT)</div>
+          <div className="font-mono text-[10px] tracking-widest text-slate-500">Map key</div>
+          <div className="flex items-center gap-2 text-[11px] font-mono"><span className="w-2.5 h-2.5 rounded-full bg-[#16a34a]" /> Plant</div>
+          <div className="flex items-center gap-2 text-[11px] font-mono"><span className="w-2 h-2 rounded-full bg-[#7c3aed]" /> Natural compound</div>
+          <div className="flex items-center gap-2 text-[11px] font-mono"><span className="w-2.5 h-2.5 rounded-full bg-[#db2777]" /> Protein shape (compared)</div>
+          <div className="flex items-center gap-2 text-[11px] font-mono"><span className="w-4 h-0.5 bg-slate-300" /> Comes from this plant</div>
+          <div className="flex items-center gap-2 text-[11px] font-mono"><span className="w-4 h-0.5 bg-pink-300" /> Compared with this shape</div>
         </div>
-        <div className="absolute bottom-3 right-3 rounded-full bg-white border border-slate-200 px-3 py-1 font-mono text-[10px] text-slate-500">Canvas force layout • 174 bioactives showcase • Not clinical pathway proof</div>
+        <div className="absolute bottom-3 right-3 rounded-full bg-white border border-slate-200 px-3 py-1 font-mono text-[10px] text-slate-500">Interactive map • research preview only</div>
       </div>
 
       <div className="p-4 grid grid-cols-3 gap-3">
         <div className="rounded-xl bg-slate-50 border border-slate-200 p-3 text-center">
-          <div className="font-mono text-[10px] tracking-widest text-slate-500">PLANTS (Triphala)</div>
+          <div className="font-mono text-[10px] tracking-widest text-slate-500">Plants (Triphala)</div>
           <div className="font-mono text-lg font-bold mt-1">{stats?.plants || 3}</div>
           <div className="font-mono text-[11px] text-slate-600 mt-1">Amalaki, Bibhitaki, Haritaki</div>
         </div>
         <div className="rounded-xl bg-violet-50 border border-violet-100 p-3 text-center">
-          <div className="font-mono text-[10px] tracking-widest text-violet-600">BIOACTIVES</div>
+          <div className="font-mono text-[10px] tracking-widest text-violet-600">Natural compounds</div>
           <div className="font-mono text-lg font-bold mt-1 text-violet-800">{stats?.bioactives || 174}</div>
-          <div className="font-mono text-[11px] text-violet-700 mt-1">IMPPAT curated • DB tier</div>
+          <div className="font-mono text-[11px] text-violet-700 mt-1">From the plant library</div>
         </div>
         <div className="rounded-xl bg-green-50 border border-green-100 p-3 text-center">
-          <div className="font-mono text-[10px] tracking-widest text-green-600">TARGET EDGES</div>
+          <div className="font-mono text-[10px] tracking-widest text-green-600">Comparisons</div>
           <div className="font-mono text-lg font-bold mt-1 text-green-800">{stats?.interactions || 200}+</div>
-          <div className="font-mono text-[11px] text-green-700 mt-1">Literature + predicted</div>
+          <div className="font-mono text-[11px] text-green-700 mt-1">Library + computer checks</div>
         </div>
       </div>
 
       <div className="px-4 pb-4">
         <div className="rounded-xl bg-amber-50 border border-amber-200 p-3">
-          <div className="font-mono text-[10px] font-bold tracking-widest text-amber-900">TRIPHALA NETWORK — AYURVEDIC POLYPHARMACOLOGY EXAMPLE</div>
-          <div className="text-[11px] text-amber-800 mt-1 leading-relaxed">Triphala (Amalaki + Bibhitaki + Haritaki) represents classic Ayurvedic combinatorial formulation: 174 bioactives mapped to inflammatory and metabolic targets via network pharmacology (Belwal et al.). Graph shows botanical co-occurrence (DATABASE_DERIVED) vs target prediction edges (LITERATURE_DERIVED/ML_PREDICTION). Does NOT imply clinical synergy — requires experimental validation per AYUSH-64 framework.</div>
+          <div className="font-mono text-[10px] font-bold tracking-widest text-amber-900">Triphala example — three plants, many compounds</div>
+          <div className="text-[11px] text-amber-800 mt-1 leading-relaxed">Triphala blends three fruits — Amla, Bibhitaki and Haritaki. Dots are plants (green), natural compounds (purple) and protein shapes (pink). Lines show which compound comes from which plant, and which protein shapes they were compared with. A busy map hints at variety — not at health effects.</div>
         </div>
       </div>
     </div>

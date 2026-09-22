@@ -7,7 +7,15 @@
  * - Evidence tier: DOCKING_RESULT
  */
 import React, { useEffect, useRef, useState } from 'react';
-import EvidenceTierBadge from './EvidenceTierBadge.jsx';
+import { ConfidenceBadge } from './ui.jsx';
+import { proteinShapeName } from '../utils/friendly.js';
+
+function shapeTitle(raw) {
+  if (!raw) return 'Protein shape preview';
+  const m = String(raw).match(/(6LU7|1P44|2AZ5|4KIK)/);
+  if (m) return proteinShapeName(m[1]);
+  return 'Protein shape preview';
+}
 
 export default function MoleculeViewer({ 
   proteinPDB = null, // PDB string or URL
@@ -156,12 +164,12 @@ $$$$
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-violet-600 text-white flex items-center justify-center text-sm">🧬</div>
           <div>
-            <div className="font-display font-semibold text-sm">Protein-Ligand Complex</div>
-            <div className="font-mono text-[11px] text-slate-500">{dockingResult?.target || 'Mpro (6LU7) - demo'} • {dockingResult?.affinity_kcal_mol ? `${dockingResult.affinity_kcal_mol} kcal/mol` : 'pose preview'}</div>
+            <div className="font-display font-semibold text-sm">3D protein shape + compound</div>
+            <div className="font-mono text-[11px] text-slate-500">{shapeTitle(dockingResult?.target)} • {dockingResult?.affinity_kcal_mol ? `${dockingResult.affinity_kcal_mol} kcal/mol` : 'pose preview'}</div>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <EvidenceTierBadge tier="DOCKING_RESULT" size="sm" />
+          <ConfidenceBadge tier="DOCKING_RESULT" size="sm" />
         </div>
       </div>
 
@@ -172,21 +180,21 @@ $$$$
           <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex items-center justify-center">
             <div className="flex flex-col items-center gap-2">
               <div className="w-6 h-6 border-2 border-violet-600 border-t-transparent rounded-full animate-spin" />
-              <span className="font-mono text-xs text-slate-600">Loading 3Dmol.js viewer...</span>
+              <span className="font-mono text-xs text-slate-600">Loading the 3D view...</span>
             </div>
           </div>
         )}
         {error && (
           <div className="absolute inset-0 bg-red-50 flex items-center justify-center p-6 text-center">
             <div>
-              <div className="text-red-700 font-semibold text-sm">Viewer failed</div>
+              <div className="text-red-700 font-semibold text-sm">3D view hiccup</div>
               <div className="text-xs text-red-600 mt-1 font-mono break-all">{error}</div>
-              <div className="text-[11px] text-slate-500 mt-2">Check proteinPDB / ligand SDF format. Showing fallback is available.</div>
+              <div className="text-[11px] text-slate-500 mt-2">Try reloading — a still preview is shown meanwhile.</div>
             </div>
           </div>
         )}
         {/* Watermark */}
-        <div className="absolute bottom-2 right-3 font-mono text-[10px] text-slate-400 bg-white/80 px-2 py-0.5 rounded-full border border-slate-200">3Dmol.js • Computational Pose</div>
+        <div className="absolute bottom-2 right-3 font-mono text-[10px] text-slate-400 bg-white/80 px-2 py-0.5 rounded-full border border-slate-200">3D view • computer preview</div>
       </div>
 
       {/* Controls */}
@@ -194,10 +202,10 @@ $$$$
         <div className="px-4 py-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-1.5">
             {[
-              { id: 'stick', label: 'Stick' },
-              { id: 'sphere', label: 'Sphere' },
-              { id: 'line', label: 'Wire' },
-              { id: 'cartoon', label: 'Cartoon+' },
+              { id: 'stick', label: 'Sticks' },
+              { id: 'sphere', label: 'Balls' },
+              { id: 'line', label: 'Lines' },
+              { id: 'cartoon', label: 'Ribbons' },
             ].map(b => (
               <button
                 key={b.id}
@@ -218,7 +226,7 @@ $$$$
       {/* Interactions */}
       {dockingResult?.interactions && (
         <div className="px-4 py-3 bg-violet-50/60 border-t border-violet-100">
-          <div className="font-mono text-[11px] tracking-widest text-violet-800 font-semibold mb-2">PREDICTED INTERACTIONS — DOCKING_RESULT TIER</div>
+          <div className="font-mono text-[11px] tracking-widest text-violet-800 font-semibold mb-2">Where it seems to touch</div>
           <div className="flex flex-wrap gap-2">
             {dockingResult.interactions.map((it, i)=>(
               <span key={i} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-violet-200 text-xs">
@@ -229,7 +237,7 @@ $$$$
               </span>
             ))}
           </div>
-          <div className="mt-2 font-mono text-[10px] text-violet-700">⚠️ In-silico interaction hypothesis — requires experimental validation (e.g., co-crystallography).</div>
+          <div className="mt-2 font-mono text-[10px] text-violet-700">⚠️ A computer guess about touch points — lab testing would still be needed.</div>
         </div>
       )}
     </div>
