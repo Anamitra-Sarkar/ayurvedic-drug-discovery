@@ -65,7 +65,10 @@ class CitationGroundedGenerator:
             self.openai_api_key = groq_api_key
             base_url = "https://api.groq.com/openai/v1"
             if model_name in (None, "mock-llm", "gpt-3.5-turbo", "gpt-4o-mini"):
-                model_name = "llama-3.3-70b-versatile"
+                # Verified against a live GET https://api.groq.com/openai/v1/models
+                # call on 2026-09-22 - Groq's catalog changes over time, so if this
+                # 404s again, re-check that endpoint rather than guessing a name.
+                model_name = "openai/gpt-oss-120b"
 
         self.model_name = model_name
         self.use_openai = OPENAI_AVAILABLE and self.openai_api_key is not None
