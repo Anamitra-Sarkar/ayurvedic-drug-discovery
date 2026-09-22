@@ -12,29 +12,35 @@ class MLRequest(BaseModel):
 
 @router.post("/ml/predict")
 async def predict_affinity(req: MLRequest):
-    """ML binding-affinity prediction - fusion of docking + QSAR features, R2 0.78 combined [20]"""
+    """ML binding-affinity prediction via the real trained MLAgent model
+    (backend/app/models/trained/best_regressor.joblib - real RandomForest
+    trained on real PDBBind data, see docs/REPRODUCIBILITY.md)."""
     try:
         from app.agents.ml_agent import MLAgent
         agent = MLAgent()
-        result = agent.predict(smiles=req.smiles, docking_score=req.docking_affinity)
-        return result
+        if not agent.is_trained_:
+            return {
+                "smiles": req.smiles,
+                "status": "model_not_trained",
+                "evidence_tier": "ML_PREDICTION",
+                "disclaimer": "No trained model is currently loaded - no prediction was generated. This is not a fabricated result.",
+            }
+        # NOTE: this previously called agent.predict(smiles=..., docking_score=...),
+        # but MLAgent.predict()'s real parameter is docking_result (a dict), not
+        # docking_score (a float) - a TypeError on every call, silently caught,
+        # falling into a random.seed(hash(smiles))-based fake pKd generator whose
+        # "model" field even claimed a StackingEnsemble that was never actually
+        # trained (the real one is a plain RandomForest). Found via live testing.
+        docking_result = {"affinity": req.docking_affinity} if req.docking_affinity is not None else None
+        pred = agent.predict(smiles=req.smiles, docking_result=docking_result, return_evidence_tagged=False)
+        return pred.__dict__ if hasattr(pred, "__dict__") else pred
     except Exception as e:
-        import random, hashlib
-        h = int(hashlib.md5(req.smiles.encode()).hexdigest()[:8], 16)
-        random.seed(h)
-        pkd = round(random.uniform(4.5, 8.5), 2)
+        # Honest failure - no fabricated affinity, no random.seed trick.
         return {
             "smiles": req.smiles,
-            "predicted_pKd": pkd,
-            "predicted_affinity_nM": round(10**(9-pkd), 2),
-            "model": "StackingEnsemble (RF+ExtraTrees+HistGradientBoosting + Ridge meta) - top 5 of 42-algorithm benchmark [19]",
-            "features_used": ["vina_affinity", "MW", "LogP", "HBD/HBA", "TPSA", "QED", "phytochemical_class"],
-            "fusion_improvement": "BACE1 study: R2 0.78 combined vs 0.65/0.64 alone [20]",
-            "applicability_domain": "inside" if random.random() > 0.2 else "outside - low confidence",
-            "confidence": round(random.uniform(0.65,0.92),2),
+            "error": str(e),
             "evidence_tier": "ML_PREDICTION",
-            "disclaimer": "ML prediction - leakage-aware diversity-preserving split methodology [16], small dataset n=49 template",
-            "warning": "NOT experimental, requires wet-lab validation"
+            "disclaimer": "Real prediction failed for this request - no affinity was generated. This is not a fabricated result.",
         }
 
 @router.get("/ml/models")
@@ -56,18 +62,33 @@ async def list_models():
 
 @router.post("/ml/explain")
 async def explain_prediction(req: MLRequest):
-    """XAI explanation - SHAP + triangulation [24]"""
+    """XAI explanation via the real XAIAgent, wired to the real trained MLAgent model."""
     try:
+        from app.agents.ml_agent import MLAgent
         from app.agents.xai_agent import XAIAgent
-        agent = XAIAgent()
-        return agent.explain(smiles=req.smiles, docking_score=req.docking_affinity)
-    except:
-        import random
+        ml_agent = MLAgent()
+        if not ml_agent.is_trained_:
+            return {
+                "smiles": req.smiles,
+                "status": "model_not_trained",
+                "evidence_tier": "XAI_INTERPRETATION",
+                "disclaimer": "No trained model is currently loaded - no explanation was generated. This is not a fabricated result.",
+            }
+        # NOTE: this previously called agent.explain(...) (no such method - real
+        # method is explain_prediction) on XAIAgent() constructed with NO
+        # ml_agent at all - every call silently raised, falling into a
+        # HARDCODED fixed SHAP-values dict (identical for every compound,
+        # every call, forever). Found via live testing. Fixed to call the
+        # real method on an XAIAgent wired to the real trained model.
+        agent = XAIAgent(ml_agent=ml_agent)
+        docking_result = {"affinity": req.docking_affinity} if req.docking_affinity is not None else None
+        expl = agent.explain_prediction(smiles=req.smiles, docking_result=docking_result, return_evidence_tagged=False)
+        return expl.__dict__ if hasattr(expl, "__dict__") else expl
+    except Exception as e:
+        # Honest failure - no fabricated SHAP values.
         return {
-            "shap_values": {"LogP": 0.32, "HBD": -0.15, "vina_affinity": 0.45, "QED": 0.28, "TPSA": -0.12},
-            "top_features": ["vina_affinity", "LogP", "QED"],
-            "interpretation": "Higher docking affinity and LogP drive predicted activity, consistent with hydrophobic pocket occupation",
-            "method": "SHAP TreeSHAP + LIME + feature importance triangulation, bias-aware splits [24]",
+            "smiles": req.smiles,
+            "error": str(e),
             "evidence_tier": "XAI_INTERPRETATION",
-            "disclaimer": "Interpretation of ML model, not causal biological mechanism"
+            "disclaimer": "Real explanation failed for this request - no interpretation was generated. This is not a fabricated result.",
         }

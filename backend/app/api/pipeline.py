@@ -50,36 +50,37 @@ async def run_pipeline(request: PipelineRequest, background_tasks: BackgroundTas
             target_protein=request.protein_target,
         )
         final_state = summary.get("final_state", {})
+        # The real orchestrator's evidence_tier_summary is {tier: {tier_number,
+        # count, disclaimer, ...}} (rich per-tier detail), but this endpoint's
+        # response model expects a simple {tier: count} map - previously passed
+        # the raw dict straight through, which failed Pydantic validation on
+        # every single real (successful!) pipeline run and silently fell into a
+        # fabricated-mock-candidates fallback that ALSO no longer worked
+        # (create_mock_candidates doesn't exist in evidence_tiers.py), causing
+        # a 500 either way. Found via live testing - logs showed the real
+        # 9-node orchestrator completing successfully every time, the response
+        # serialization was the only real bug.
+        raw_summary = summary.get("evidence_tier_summary", {}) or {}
+        evidence_summary = {
+            tier: (v.get("count", 0) if isinstance(v, dict) else v)
+            for tier, v in raw_summary.items()
+        }
         return PipelineResponse(
             request_id=summary["pipeline_id"],
             status=summary["status"],
             candidates=final_state.get("ranked_candidates", [])[: request.top_n],
-            evidence_summary=summary.get("evidence_tier_summary", {}),
+            evidence_summary=evidence_summary,
             validation_report=final_state.get("validation_report", {}),
             report_path=summary.get("final_output_path"),
         )
     except Exception as e:
-        # Fallback mock for demo if agents not fully initialized
-        logger.warning(f"Pipeline fallback mock due to: {e}")
-        from app.agents.evidence_tiers import create_mock_candidates
-        candidates = create_mock_candidates(request.top_n)
-        return PipelineResponse(
-            request_id="mock-req-001",
-            status="completed_mock",
-            candidates=candidates,
-            evidence_summary={
-                "DATABASE_DERIVED": len(candidates),
-                "DOCKING_RESULT": len(candidates),
-                "ML_PREDICTION": len(candidates),
-                "XAI_INTERPRETATION": len(candidates) if request.include_xai else 0,
-                "LITERATURE_DERIVED": len(candidates) if request.include_literature else 0
-            },
-            validation_report={
-                "passed": True,
-                "checks": ["tier_compliance", "no_clinical_overclaim", "citation_grounding"],
-                "ayush64_compliant": True
-            }
-        )
+        # Honest failure - never fabricate candidates. The old fallback here
+        # imported a function (create_mock_candidates) that doesn't exist in
+        # this codebase; even if it had, presenting fabricated candidates as
+        # pipeline output would violate this project's core anti-overclaim
+        # requirement. Real failures surface as a real error instead.
+        logger.error(f"Pipeline run failed: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Pipeline run failed: {e}")
 
 @router.get("/pipeline/status/{request_id}")
 async def get_status(request_id: str):

@@ -41,20 +41,23 @@ export default function SearchBar({ onSearch, loading, results, onSelect }) {
           />
         </div>
         <div className="flex flex-col sm:flex-row gap-2">
-          <select
-            value={plantFilter}
-            onChange={(e) => setPlantFilter(e.target.value)}
-            className="min-w-0 flex-1 px-3 py-2.5 rounded-2xl border border-forest-900/10 bg-white text-sm dark:bg-white/5 dark:border-white/10 dark:text-cream-50"
-            aria-label="Filter by plant"
-          >
-            <option value="">All plants</option>
-            <option>Withania somnifera</option>
-            <option>Curcuma longa</option>
-            <option>Phyllanthus emblica</option>
-            <option>Terminalia chebula</option>
-            <option>Terminalia bellirica</option>
-            <option>Berberis aristata</option>
-          </select>
+          <div className="relative min-w-0 flex-1">
+            <select
+              value={plantFilter}
+              onChange={(e) => setPlantFilter(e.target.value)}
+              className="w-full appearance-none px-3 py-2.5 pr-9 rounded-2xl border border-forest-900/10 bg-white text-sm text-forest-950 dark:bg-white/5 dark:border-white/10 dark:text-cream-50 focus:outline-none focus:ring-2 focus:ring-forest-600/20 focus:border-forest-600 transition-shadow"
+              aria-label="Filter by plant"
+            >
+              <option value="">All plants</option>
+              <option>Withania somnifera</option>
+              <option>Curcuma longa</option>
+              <option>Phyllanthus emblica</option>
+              <option>Terminalia chebula</option>
+              <option>Terminalia bellirica</option>
+              <option>Berberis aristata</option>
+            </select>
+            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-forest-700/50 dark:text-cream-100/50 text-xs">▾</span>
+          </div>
           <button disabled={loading} type="submit" className="btn-primary w-full sm:w-auto shrink-0 !py-2.5">
             {loading ? <span className="spinner" /> : 'Search'}
           </button>

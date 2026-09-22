@@ -231,9 +231,10 @@ export const apiClient = {
     }
   },
 
-  async runDocking(compoundId, targetId = '6LU7', box = null) {
+  async runDocking(smiles, targetId = '6LU7', compoundId = null) {
     try {
-      const res = await api.post('/docking/run', { compound_id: compoundId, target: targetId, box });
+      // Real route is POST /docking/run, DockingRequest = {smiles, protein_pdb_id, phytochemical_name, num_poses}.
+      const res = await api.post('/docking/run', { smiles, protein_pdb_id: targetId, phytochemical_name: compoundId });
       return res.data;
     } catch (e) {
       if (DEV) {
@@ -244,28 +245,29 @@ export const apiClient = {
     }
   },
 
-  async predictAffinity(compoundId, targetId = '6LU7') {
+  async predictAffinity(smiles, targetId = '6LU7', dockingAffinity = null) {
     try {
-      const res = await api.post('/ml/predict', { compound_id: compoundId, target: targetId });
+      // Real route is POST /ml/predict, MLRequest = {smiles, docking_affinity, features?}.
+      const res = await api.post('/ml/predict', { smiles, docking_affinity: dockingAffinity });
       return res.data;
     } catch (e) {
       if (DEV) {
         console.warn('[DEV fallback] predictAffinity — local sample data, never served in production');
-        return { ...DEV_FALLBACK_ML, compoundId, target: targetId };
+        return { ...DEV_FALLBACK_ML, compoundId: smiles, target: targetId };
       }
       throw e;
     }
   },
 
-  async explainPrediction(compoundId, targetId = '6LU7') {
+  async explainPrediction(smiles, targetId = '6LU7', dockingAffinity = null) {
     try {
-      // Real route is POST /ml/explain, expecting {smiles, docking_affinity, features?}.
-      const res = await api.post('/ml/explain', { smiles: compoundId });
+      // Real route is POST /ml/explain, MLRequest = {smiles, docking_affinity, features?}.
+      const res = await api.post('/ml/explain', { smiles, docking_affinity: dockingAffinity });
       return res.data;
     } catch (e) {
       if (DEV) {
         console.warn('[DEV fallback] explainPrediction — local sample data, never served in production');
-        return { ...DEV_FALLBACK_XAI, compoundId };
+        return { ...DEV_FALLBACK_XAI, compoundId: smiles };
       }
       throw e;
     }

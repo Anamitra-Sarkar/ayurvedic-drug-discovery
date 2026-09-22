@@ -23,10 +23,14 @@ export default function Targets() {
           const arr = live.targets || live.data || live;
           if (Array.isArray(arr) && arr.length > 0) {
             setShapes(arr.map((t, i) => ({
-              code: t.code || t.id || t.pdb || `shape-${i}`,
-              name: t.name || t.label || 'Protein shape',
-              hint: t.hint || t.organism || 'Target under study',
-              plantContext: t.plantContext || '',
+              // Real backend record shape (GET /api/pipeline/targets):
+              // {target_id, gene_name, protein_name, pdb_id, organism,
+              //  disease_associations, pathway, relevance}. Keep the old
+              // generic keys as a last-resort fallback only.
+              code: t.pdb_id || t.code || t.id || t.pdb || `shape-${i}`,
+              name: t.protein_name || t.gene_name || t.name || t.label || 'Protein shape',
+              hint: t.organism || (Array.isArray(t.disease_associations) ? t.disease_associations.join(', ') : t.pathway) || t.hint || 'Target under study',
+              plantContext: t.relevance || t.plantContext || '',
               live: true,
             })));
             setFromLive(true);

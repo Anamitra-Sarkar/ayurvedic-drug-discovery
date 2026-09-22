@@ -38,12 +38,16 @@ export default function Results() {
     setLoading(true);
     setError(null);
     try {
-      const [c, d, m, x, l] = await Promise.all([
-        apiClient.getCompound(id),
-        apiClient.runDocking(id, shapeCode),
-        apiClient.predictAffinity(id, shapeCode),
-        apiClient.explainPrediction(id, shapeCode),
-        apiClient.queryLiterature(`${id} natural compound protein`),
+      // Docking/ML/XAI all need a real SMILES string, not the compound ID
+      // (e.g. "IMP000013") - resolve the compound first so downstream calls
+      // send real chemistry instead of an ID string in the smiles field.
+      const c = await apiClient.getCompound(id);
+      const smiles = c?.smiles;
+      const [d, m, x, l] = await Promise.all([
+        smiles ? apiClient.runDocking(smiles, shapeCode, id) : Promise.resolve(null),
+        smiles ? apiClient.predictAffinity(smiles, shapeCode) : Promise.resolve(null),
+        smiles ? apiClient.explainPrediction(smiles, shapeCode) : Promise.resolve(null),
+        apiClient.queryLiterature(`${c?.name || id} natural compound protein`),
       ]);
       setCompound(c); setFit(d); setGuess(m); setWhy(x); setPapers(l);
     } catch (e) {

@@ -13,34 +13,35 @@ class DockingRequest(BaseModel):
 
 @router.post("/docking/run")
 async def run_docking(req: DockingRequest):
-    """Structure-based docking - Vina empirical scoring (Lennard-Jones + H-bond + hydrophobic) [12]"""
+    """Structure-based docking via the real DockingAgent (real AutoDock Vina if the
+    binary is available on this host, honestly-labeled empirical fallback otherwise -
+    see DockingAgent.run_docking's own mock_used flag, never fabricated here)."""
     try:
         from app.agents.docking_agent import DockingAgent
         agent = DockingAgent()
-        result = agent.dock(smiles=req.smiles, protein_id=req.protein_pdb_id, num_poses=req.num_poses)
-        return result
+        # NOTE: this previously called agent.dock(...), a method that does not
+        # exist on DockingAgent - every call silently raised AttributeError and
+        # fell into a random.seed(hash(smiles))-based fake score generator below,
+        # regardless of the real molecule or target. Found via live testing
+        # (422s on the real request shape it also didn't match). Fixed to call
+        # the real, verified-working run_docking() (same one used successfully
+        # in this session's own manual Vina verification).
+        tiered = agent.run_docking(
+            ligand_smiles=req.smiles,
+            protein_pdb_id=req.protein_pdb_id,
+            ligand_id=req.phytochemical_name or None,
+            num_modes=req.num_poses,
+            exhaustiveness=8,  # lower than the default 16 to stay responsive on a CPU-only host
+        )
+        return tiered.data if hasattr(tiered, "data") else tiered
     except Exception as e:
-        # Mock fallback with realistic physics-inspired scoring
-        import random, hashlib
-        h = int(hashlib.md5(req.smiles.encode()).hexdigest()[:8], 16)
-        random.seed(h)
-        affinity = round(random.uniform(-10.5, -5.5), 2)
+        # Honest failure - no fabricated score, no random.seed trick.
         return {
             "smiles": req.smiles,
             "protein": req.protein_pdb_id,
-            "binding_affinity_kcal_mol": affinity,
-            "poses": [{"pose_id": i, "affinity": round(affinity + random.uniform(-0.5,0.5),2), "rmsd": round(random.uniform(0,2),2)} for i in range(req.num_poses)],
-            "interactions": {
-                "h_bonds": random.randint(1,4),
-                "hydrophobic": random.randint(2,6),
-                "pi_stacking": random.randint(0,2),
-                "note": "PLIP-style 7-8 types [15]"
-            },
+            "error": str(e),
             "evidence_tier": "DOCKING_RESULT",
-            "disclaimer": "Computational docking estimate, moderate correlation with experiment [14], requires experimental validation",
-            "scoring_function": "Vina empirical (modified Lennard-Jones + H-bond + hydrophobic + steric) [12], up to 100x faster than AutoDock4",
-            "mock_used": True,
-            "warning": "NOT clinical proof"
+            "disclaimer": "Real docking failed for this request - no score was generated. This is not a fabricated result.",
         }
 
 @router.get("/candidates/rank")

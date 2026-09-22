@@ -13,7 +13,7 @@ import { apiClient } from '../services/api.js';
 const STEP_TIER = { i: 'DATABASE_DERIVED', ii: 'DATABASE_DERIVED', iii: 'DOCKING_RESULT', iv: 'ML_PREDICTION', v: 'XAI_INTERPRETATION', vi: 'LITERATURE_DERIVED' };
 
 export default function PipelineRun() {
-  const [compoundId, setCompoundId] = useState('IMPHY000123');
+  const [compoundId, setCompoundId] = useState('IMP000013');
   const [target, setTarget] = useState('6LU7');
   const [jobId, setJobId] = useState(null);
   const [status, setStatus] = useState(null);
@@ -25,46 +25,51 @@ export default function PipelineRun() {
     setLogs((prev) => [...prev, { time: new Date().toLocaleTimeString(), stepId, message }]);
   };
 
+  // The 6 "steps" below are a friendly narration of what the real backend
+  // pipeline (database -> cheminformatics -> docking -> ML -> XAI ->
+  // literature) is doing while we wait for it - they advance on a timer
+  // because the orchestrator doesn't stream per-step progress, but they
+  // NEVER claim completion on their own: progress caps at 92% until the
+  // real apiClient.runPipeline() call actually resolves, and only a real
+  // success reaches 100% / unlocks the results link. A real failure shows
+  // an honest error instead of a fake "done" state.
+  const NARRATION = [
+    { id: 'i', cap: 15, msg: 'Found the plant, the compound and its traditional background.' },
+    { id: 'ii', cap: 35, msg: 'Measuring basic chemical properties (size, balance, surface).' },
+    { id: 'iii', cap: 55, msg: `Trying the compound inside the ${target} protein shape from many angles.` },
+    { id: 'iv', cap: 75, msg: 'The model predicts a strength score and checks its trust level.' },
+    { id: 'v', cap: 88, msg: 'Showing which chemical patterns pushed the guess up or down.' },
+    { id: 'vi', cap: 92, msg: 'Comparing with published papers and gathering sources.' },
+  ];
+
   const runPipeline = async () => {
     setRunning(true);
     setLogs([]);
     setStatus({ progress: 0, stage: 'Warming up…' });
     addLog('i', `Finding ${compoundId} in the plant library…`);
 
-    await new Promise((r) => setTimeout(r, 600));
-    setActiveLayer('i');
-    setStatus({ progress: 15, stage: 'Step 1 done — found in the library' });
-    addLog('i', 'Found the plant, the compound and its traditional background.');
-
-    await new Promise((r) => setTimeout(r, 500));
-    setActiveLayer('ii');
-    addLog('ii', 'Step 2 — measuring basic chemical properties (size, balance, surface).');
-    setStatus({ progress: 35, stage: 'Step 2 — chemical check' });
-
-    await new Promise((r) => setTimeout(r, 800));
-    setActiveLayer('iii');
-    addLog('iii', `Step 3 — trying the compound inside the ${target} protein shape from many angles.`);
-    setStatus({ progress: 55, stage: 'Step 3 — shape fit test' });
-
-    await new Promise((r) => setTimeout(r, 700));
-    setActiveLayer('iv');
-    addLog('iv', 'Step 4 — the model predicts a strength score and checks its trust level.');
-    setStatus({ progress: 75, stage: 'Step 4 — strength prediction' });
-
-    await new Promise((r) => setTimeout(r, 600));
-    setActiveLayer('v');
-    addLog('v', 'Step 5 — showing which chemical patterns pushed the guess up or down.');
-    setStatus({ progress: 88, stage: 'Step 5 — why this result?' });
-
-    await new Promise((r) => setTimeout(r, 600));
-    setActiveLayer('vi');
-    addLog('vi', 'Step 6 — comparing with published papers and gathering sources.');
-    setStatus({ progress: 100, stage: 'Done — your results are ready 🎉' });
+    let step = 0;
+    const timer = setInterval(() => {
+      if (step >= NARRATION.length) return;
+      const n = NARRATION[step];
+      setActiveLayer(n.id);
+      addLog(n.id, n.msg);
+      setStatus({ progress: n.cap, stage: `Working — this can take a little while on real chemistry` });
+      step += 1;
+    }, 1100);
 
     try {
       const job = await apiClient.runPipeline({ compound_id: compoundId, target });
-      setJobId(job.jobId || 'demo-' + Date.now());
-    } catch { /* demo mode continues */ }
+      clearInterval(timer);
+      setActiveLayer('vi');
+      setJobId(job.jobId || job.request_id || null);
+      setStatus({ progress: 100, stage: 'Done — your results are ready 🎉' });
+      addLog('vi', 'Full pipeline finished — real docking, prediction and literature results are ready.');
+    } catch (e) {
+      clearInterval(timer);
+      setStatus({ progress: 0, stage: 'The analysis failed — no results were generated' });
+      addLog('vi', `We hit a real error and stopped rather than show made-up results: ${e?.response?.data?.detail || e?.message || 'unknown error'}`);
+    }
     setRunning(false);
   };
 
@@ -82,7 +87,7 @@ export default function PipelineRun() {
 
       <div className="card p-5 md:p-6">
         <div className="font-display font-bold text-lg text-forest-950 dark:text-cream-50">Start here</div>
-        <p className="text-xs text-forest-700/70 dark:text-cream-100/60 mt-1">Tip: “IMPHY000123” is Withaferin A from Ashwagandha — a lovely first try.</p>
+        <p className="text-xs text-forest-700/70 dark:text-cream-100/60 mt-1">Tip: “IMP000013” is Withaferin A from Ashwagandha — a lovely first try.</p>
 
         <div className="mt-4 grid md:grid-cols-12 gap-3 items-end">
           <div className="md:col-span-4">
@@ -92,21 +97,24 @@ export default function PipelineRun() {
               value={compoundId}
               onChange={(e) => setCompoundId(e.target.value)}
               className="mt-1 w-full px-3 py-2.5 rounded-2xl border border-forest-900/10 bg-cream-50 text-sm dark:bg-white/5 dark:border-white/10 dark:text-cream-50"
-              placeholder="IMPHY000123"
+              placeholder="IMP000013"
             />
           </div>
           <div className="md:col-span-3">
             <label htmlFor="shape-pick" className="text-[11px] tracking-widest uppercase text-forest-700/70 dark:text-cream-100/60">Protein shape</label>
-            <select
-              id="shape-pick"
-              value={target}
-              onChange={(e) => setTarget(e.target.value)}
-              className="mt-1 w-full px-3 py-2.5 rounded-2xl border border-forest-900/10 bg-white text-sm dark:bg-white/5 dark:border-white/10 dark:text-cream-50"
-            >
-              {PROTEIN_SHAPES.map((p) => (
-                <option key={p.code} value={p.code}>{p.code} — {p.name}</option>
-              ))}
-            </select>
+            <div className="relative mt-1">
+              <select
+                id="shape-pick"
+                value={target}
+                onChange={(e) => setTarget(e.target.value)}
+                className="w-full appearance-none px-3 py-2.5 pr-9 rounded-2xl border border-forest-900/10 bg-white text-sm text-forest-950 dark:bg-white/5 dark:border-white/10 dark:text-cream-50 focus:outline-none focus:ring-2 focus:ring-forest-500/40 transition-shadow"
+              >
+                {PROTEIN_SHAPES.map((p) => (
+                  <option key={p.code} value={p.code}>{p.code} — {p.name}</option>
+                ))}
+              </select>
+              <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-forest-700/50 dark:text-cream-100/50 text-xs">▾</span>
+            </div>
           </div>
           <div className="md:col-span-5 flex flex-col sm:flex-row gap-2">
             <button onClick={runPipeline} disabled={running} className="btn-primary flex-1">
