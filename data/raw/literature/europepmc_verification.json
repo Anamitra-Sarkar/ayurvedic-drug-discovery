@@ -1,0 +1,385 @@
+[
+  {
+    "ref_number": 1,
+    "original_ref_title": "Future of Ayurveda-inspired drug discovery perspective",
+    "matched_title": "Integrating Artificial Intelligence Into Drug Discovery From Medicinal Plants: Current Applications and Infrastructural Challenges.",
+    "doi": "10.1111/cbdd.70372",
+    "pmid": "42535626",
+    "pub_year": "2026",
+    "match_plausible": false
+  },
+  {
+    "ref_number": 2,
+    "original_ref_title": "Network pharmacology review Ayurveda",
+    "matched_title": "Role of Tinospora cordifolia (Willd.) Hook. F. in neurological disorders: A comprehensive review and network pharmacology-based analysis.",
+    "doi": "10.1016/j.jphs.2026.08.001",
+    "pmid": "42632748",
+    "pub_year": "2026",
+    "match_plausible": true
+  },
+  {
+    "ref_number": 3,
+    "original_ref_title": "Polyherbal formulation repurposed against COVID-19 using combined network pharmacology and molecular docking and subsequently evaluated in open-label randomised controlled trial as adjunct to standard care, rare documented example computational hypothesis carried through clinical evidence tier",
+    "matched_title": "Proceedings of ACBICON 2022",
+    "doi": null,
+    "pmid": null,
+    "pub_year": "2022",
+    "match_plausible": false
+  },
+  {
+    "ref_number": 4,
+    "original_ref_title": "Triphala network pharmacology case study",
+    "matched_title": "Triphala Targets the SLC7A11-GSH-GPX4 Axis to Trigger Ferroptosis in Oral Cancer: An Integrated Network Pharmacology, Molecular Docking, and Experimental Validation Study.",
+    "doi": "10.1111/cbdd.70375",
+    "pmid": "42644728",
+    "pub_year": "2026",
+    "match_plausible": true
+  },
+  {
+    "ref_number": 5,
+    "original_ref_title": "63 anti-epileptic Ayurvedic herbs screening",
+    "matched_title": "Zebrafish models for studying central nervous system effects of Ayurvedic medicinal plants.",
+    "doi": "10.1016/j.jaim.2025.101169",
+    "pmid": "40628078",
+    "pub_year": "2025",
+    "match_plausible": true
+  },
+  {
+    "ref_number": 6,
+    "original_ref_title": "7,288 publications 2007-2025 systematic shift TCM research toward integrated network-pharmacology AI multi-omics workflows",
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "Europe PMC query failed or returned nothing: unexpected Europe PMC response shape: 'resultList'"
+  },
+  {
+    "ref_number": 7,
+    "original_ref_title": "Indian Medicinal Plants Phytochemistry And Therapeutics database manually curated catalogue 1,742 Indian medicinal plants 9,596 phytochemicals 1,124 therapeutic uses spanning 27,074 plant-phytochemical and 11,514 plant-therapeutic associations non-redundant in silico chemical library computed physicochemical ADMET drug-likeness properties intended support downstream virtual screening",
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "Europe PMC query failed or returned nothing: no results returned by Europe PMC"
+  },
+  {
+    "ref_number": 8,
+    "original_ref_title": "Expanded curation base 100+ books traditional Indian medicine 7,000+ published articles largest digital resource of its kind",
+    "matched_title": "Abstracts of the 7th World Parkinson Congress.",
+    "doi": "10.1177/1877718x261451755",
+    "pmid": "42175618",
+    "pub_year": "2026",
+    "match_plausible": false
+  },
+  {
+    "ref_number": 9,
+    "original_ref_title": "Traditional Chinese Medicine Systems Pharmacology database 499 herbs registered Chinese Pharmacopoeia 29,384 ingredients 3,311 targets 837 diseases 12 ADME properties oral bioavailability half-life Caco-2 permeability blood-brain-barrier permeability Lipinski's rule-of-five",
+    "matched_title": "TCMSP: a database of systems pharmacology for drug discovery from herbal medicines.",
+    "doi": "10.1186/1758-2946-6-13",
+    "pmid": "24735618",
+    "pub_year": "2014",
+    "match_plausible": true
+  },
+  {
+    "ref_number": 10,
+    "original_ref_title": "TCMID / TCMID 2.0",
+    "matched_title": "TCMToxDB: a comprehensive database for the toxicological analysis of traditional Chinese medicines.",
+    "doi": "10.1093/database/baag019",
+    "pmid": "41987665",
+    "pub_year": "2026",
+    "match_plausible": false
+  },
+  {
+    "ref_number": 11,
+    "original_ref_title": "TCMSID simplified resource addresses specific weakness many mapped constituents low-abundance inactive",
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "Europe PMC query failed or returned nothing: no results returned by Europe PMC"
+  },
+  {
+    "ref_number": 12,
+    "original_ref_title": "AutoDock Vina scoring function",
+    "matched_title": "Docking-score landscapes shape active-learning performance across Vina, Glide, and SILCS.",
+    "doi": "10.1007/s10822-026-00927-x",
+    "pmid": "42726342",
+    "pub_year": "2026",
+    "match_plausible": false
+  },
+  {
+    "ref_number": 13,
+    "original_ref_title": "2020 docking rescoring CASF-2013/2016 Random-forest rescoring layered Vina output accuracy comparable SOTA ML/DL scoring functions requires retraining validation new target classes",
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "Europe PMC query failed or returned nothing: no results returned by Europe PMC"
+  },
+  {
+    "ref_number": 14,
+    "original_ref_title": "Hybrid AutoDock/Vina scoring function",
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "Europe PMC query failed or returned nothing: unexpected Europe PMC response shape: 'resultList'"
+  },
+  {
+    "ref_number": 15,
+    "original_ref_title": "2015 (2021,2025 updates) protein-ligand interaction profiling PDB-format complexes rule-based atom-level non-covalent interaction detection detects 7-8 interaction types without manual structure preparation rule-based not physics/energy-based",
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "Europe PMC query failed or returned nothing: unexpected Europe PMC response shape: 'resultList'"
+  },
+  {
+    "ref_number": 16,
+    "original_ref_title": "TLR4 binding-affinity ML study",
+    "matched_title": "MAP Crosslinker Chirality Regulates Macrophage Polarization Through MD-2 Engagement and Enables Tunable Immunomodulation Through Novel Peptide Design.",
+    "doi": "10.1002/adhm.71572",
+    "pmid": "42596107",
+    "pub_year": "2026",
+    "match_plausible": false
+  },
+  {
+    "ref_number": 17,
+    "original_ref_title": null,
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "no clearly extractable title for reference [17]; skipped query, not guessed"
+  },
+  {
+    "ref_number": 18,
+    "original_ref_title": null,
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "no clearly extractable title for reference [18]; skipped query, not guessed"
+  },
+  {
+    "ref_number": 19,
+    "original_ref_title": "Interpretable QSAR Factor Xa inhibitors",
+    "matched_title": "Rational Design of Novel Isosteviol-Derived Factor Xa Inhibitors Using Integrated QSAR, Molecular Docking, Molecular Dynamics, and MM/GBSA Analyses.",
+    "doi": "10.3390/biology15141149",
+    "pmid": "42510696",
+    "pub_year": "2026",
+    "match_plausible": true
+  },
+  {
+    "ref_number": 20,
+    "original_ref_title": "BACE1 inhibitor ML docking+QSAR fusion",
+    "matched_title": "Peptide-Based Therapeutics for Alzheimer's Disease: Medicinal Chemistry, AI-Guided Computational Design, and Blood-Brain Barrier Delivery.",
+    "doi": "10.2147/dddt.s597087",
+    "pmid": "42007396",
+    "pub_year": "2026",
+    "match_plausible": false
+  },
+  {
+    "ref_number": 21,
+    "original_ref_title": null,
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "no clearly extractable title for reference [21]; skipped query, not guessed"
+  },
+  {
+    "ref_number": 22,
+    "original_ref_title": null,
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "no clearly extractable title for reference [22]; skipped query, not guessed"
+  },
+  {
+    "ref_number": 23,
+    "original_ref_title": null,
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "no clearly extractable title for reference [23]; skipped query, not guessed"
+  },
+  {
+    "ref_number": 24,
+    "original_ref_title": "XAI methods drug discovery survey",
+    "matched_title": "Leveraging Advanced AI Frameworks for Dual PPAR \u03b1/\u03b3 Agonist Discovery in Alzheimer's Disease.",
+    "doi": "10.1021/acschemneuro.6c00148",
+    "pmid": "42458794",
+    "pub_year": "2026",
+    "match_plausible": false
+  },
+  {
+    "ref_number": 25,
+    "original_ref_title": null,
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "no clearly extractable title for reference [25]; skipped query, not guessed"
+  },
+  {
+    "ref_number": 26,
+    "original_ref_title": "LIME Ribeiro et al",
+    "matched_title": "Improving LIME Stability via Density-Awareness: Evaluation and Comparison of AKDE-LIME.",
+    "doi": "10.1080/08839514.2026.2640686",
+    "pmid": "41890697",
+    "pub_year": "2026",
+    "match_plausible": true
+  },
+  {
+    "ref_number": 27,
+    "original_ref_title": "2025 LLM/RAG pharmaceutical literature QA comparative RAG vs non-RAG LLM RAG 0% hallucinated citations vs 40-60% non-RAG systems single-domain benchmark",
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "Europe PMC query failed or returned nothing: no results returned by Europe PMC"
+  },
+  {
+    "ref_number": 28,
+    "original_ref_title": "RAG reducing hallucination drug QA",
+    "matched_title": "Fine-Tuning, Retrieval-Augmented Generation, and Hybrid Large Language Models for Postoperative Decision Support: Comparative Analysis.",
+    "doi": "10.2196/90692",
+    "pmid": "42452955",
+    "pub_year": "2026",
+    "match_plausible": false
+  },
+  {
+    "ref_number": 29,
+    "original_ref_title": null,
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "no clearly extractable title for reference [29]; skipped query, not guessed"
+  },
+  {
+    "ref_number": 30,
+    "original_ref_title": "RAG for AIGC survey RAG for Science",
+    "matched_title": "Exploring the application boundaries of LLMs in mental health: a systematic scoping review.",
+    "doi": "10.3389/fpsyg.2025.1715306",
+    "pmid": "41836276",
+    "pub_year": "2025",
+    "match_plausible": false
+  },
+  {
+    "ref_number": 31,
+    "original_ref_title": null,
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "no clearly extractable title for reference [31]; skipped query, not guessed"
+  },
+  {
+    "ref_number": 32,
+    "original_ref_title": "Agentic AI in Pharma review",
+    "matched_title": "Evaluating AI Performance in Systematic Literature Reviews for HEOR: A Case Study.",
+    "doi": "10.36469/001c.165173",
+    "pmid": "42572706",
+    "pub_year": "2026",
+    "match_plausible": false
+  },
+  {
+    "ref_number": 33,
+    "original_ref_title": null,
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "no clearly extractable title for reference [33]; skipped query, not guessed"
+  },
+  {
+    "ref_number": 34,
+    "original_ref_title": null,
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "no clearly extractable title for reference [34]; skipped query, not guessed"
+  },
+  {
+    "ref_number": 35,
+    "original_ref_title": "2026 agentic AI drug-discovery pipeline tasks modular LLM agent framework contrasts CACTUS SciToolAgent DrugPilot automates multi-task pipeline coordination general-purpose not integrated literature/docking/XAI traditional medicine",
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "Europe PMC query failed or returned nothing: no results returned by Europe PMC"
+  },
+  {
+    "ref_number": 36,
+    "original_ref_title": "2025 agentic AI lab automation DMTA cycle 5-agent architecture + Safety Guardrail reported first production-ready agentic system DMTA cycle oriented physical lab automation not computation-only pipelines",
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "Europe PMC query failed or returned nothing: no results returned by Europe PMC"
+  },
+  {
+    "ref_number": 37,
+    "original_ref_title": null,
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "no clearly extractable title for reference [37]; skipped query, not guessed"
+  },
+  {
+    "ref_number": 38,
+    "original_ref_title": null,
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "no clearly extractable title for reference [38]; skipped query, not guessed"
+  },
+  {
+    "ref_number": 39,
+    "original_ref_title": "Scientific Reports, Journal of Cheminformatics, Nucleic Acids Research, PLOS ONE, ACS Omega, Expert Opinion on Drug Discovery, WIREs Computational Molecular Science journals",
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "Europe PMC query failed or returned nothing: no results returned by Europe PMC"
+  },
+  {
+    "ref_number": 40,
+    "original_ref_title": "arXiv/bioRxiv preprints agentic AI RAG fastest-moving sub-areas recent technical reports peer-reviewed coverage emerging as of 2026",
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "Europe PMC query failed or returned nothing: no results returned by Europe PMC"
+  }
+]

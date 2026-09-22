@@ -1,0 +1,102 @@
+[
+  {
+    "pdb_id": "7E9G",
+    "protein_name_expected": "Metabotropic glutamate receptor 2 (mGluR2)",
+    "title_from_rcsb": "Cryo-EM structure of Gi-bound metabotropic glutamate receptor mGlu2",
+    "release_date": "2021-06-23T00:00:00.000+00:00",
+    "file_size_bytes": 1932093,
+    "retrieved_at": "2026-09-22T07:20:48.311827+00:00",
+    "title_match_ok": true,
+    "status": "ok"
+  },
+  {
+    "pdb_id": "5CNK",
+    "protein_name_expected": "Metabotropic glutamate receptor 3 (mGluR3)",
+    "title_from_rcsb": "mglur3 with glutamate",
+    "release_date": "2015-09-09T00:00:00.000+00:00",
+    "file_size_bytes": 939843,
+    "retrieved_at": "2026-09-22T07:20:48.726384+00:00",
+    "title_match_ok": true,
+    "status": "ok"
+  },
+  {
+    "pdb_id": "3FXI",
+    "protein_name_expected": "Toll-like receptor 4",
+    "title_from_rcsb": "Crystal structure of the human TLR4-human MD-2-E.coli LPS Ra complex",
+    "release_date": "2009-03-03T00:00:00.000+00:00",
+    "file_size_bytes": 1133514,
+    "retrieved_at": "2026-09-22T07:20:49.374076+00:00",
+    "title_match_ok": false,
+    "status": "ok"
+  },
+  {
+    "pdb_id": "1XKA",
+    "protein_name_expected": "Coagulation Factor Xa",
+    "title_from_rcsb": "FACTOR XA COMPLEXED WITH A SYNTHETIC INHIBITOR FX-2212A,(2S)-(3'-AMIDINO-3-BIPHENYLYL)-5-(4-PYRIDYLAMINO)PENTANOIC ACID",
+    "release_date": "1999-03-23T00:00:00.000+00:00",
+    "file_size_bytes": 267786,
+    "retrieved_at": "2026-09-22T07:20:49.910983+00:00",
+    "title_match_ok": true,
+    "status": "ok"
+  },
+  {
+    "pdb_id": "2QP8",
+    "protein_name_expected": "Beta-secretase 1 (Beta-site APP cleaving enzyme 1)",
+    "title_from_rcsb": "Structure of BACE Bound to SCH734723",
+    "release_date": "2008-03-11T00:00:00.000+00:00",
+    "file_size_bytes": 635688,
+    "retrieved_at": "2026-09-22T07:20:50.427430+00:00",
+    "title_match_ok": false,
+    "status": "ok"
+  },
+  {
+    "pdb_id": "6LU7",
+    "protein_name_expected": "SARS-CoV-2 Main Protease (3CLpro)",
+    "title_from_rcsb": "The crystal structure of COVID-19 main protease in complex with an inhibitor N3",
+    "release_date": "2020-02-05T00:00:00.000+00:00",
+    "file_size_bytes": 239112,
+    "retrieved_at": "2026-09-22T07:20:50.659221+00:00",
+    "title_match_ok": true,
+    "status": "ok"
+  },
+  {
+    "pdb_id": "5KIR",
+    "protein_name_expected": "Cyclooxygenase-2 (COX-2)",
+    "title_from_rcsb": "The Structure of Vioxx Bound to Human COX-2",
+    "release_date": "2016-09-28T00:00:00.000+00:00",
+    "file_size_bytes": 2293515,
+    "retrieved_at": "2026-09-22T07:20:51.215339+00:00",
+    "title_match_ok": false,
+    "status": "ok"
+  },
+  {
+    "pdb_id": "2AZ5",
+    "protein_name_expected": "Tumor necrosis factor alpha (TNF-alpha)",
+    "title_from_rcsb": "Crystal Structure of TNF-alpha with a small molecule inhibitor",
+    "release_date": "2005-11-29T00:00:00.000+00:00",
+    "file_size_bytes": 415773,
+    "retrieved_at": "2026-09-22T07:20:51.773348+00:00",
+    "title_match_ok": true,
+    "status": "ok"
+  },
+  {
+    "pdb_id": "1R42",
+    "protein_name_expected": "Angiotensin-converting enzyme 2",
+    "title_from_rcsb": "Native Human Angiotensin Converting Enzyme-Related Carboxypeptidase (ACE2)",
+    "release_date": "2004-02-03T00:00:00.000+00:00",
+    "file_size_bytes": 504711,
+    "retrieved_at": "2026-09-22T07:20:52.142128+00:00",
+    "title_match_ok": true,
+    "status": "ok"
+  },
+  {
+    "pdb_id": "1A52",
+    "protein_name_expected": "Estrogen receptor alpha (ERa)",
+    "title_from_rcsb": "ESTROGEN RECEPTOR ALPHA LIGAND-BINDING DOMAIN COMPLEXED TO ESTRADIOL",
+    "release_date": "1998-09-16T00:00:00.000+00:00",
+    "file_size_bytes": 371709,
+    "retrieved_at": "2026-09-22T07:20:52.435786+00:00",
+    "title_match_ok": true,
+    "status": "ok"
+  }
+]

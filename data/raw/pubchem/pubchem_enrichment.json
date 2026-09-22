@@ -1,0 +1,488 @@
+{
+  "results": [
+    {
+      "query_name": "Gallic acid",
+      "pubchem_cid": 370,
+      "canonical_smiles": "C1=C(C=C(C(=C1O)O)O)C(=O)O",
+      "molecular_formula": "C7H6O5",
+      "molecular_weight": "170.12",
+      "iupac_name": "3,4,5-trihydroxybenzoic acid"
+    },
+    {
+      "query_name": "Ellagic acid",
+      "pubchem_cid": 5281855,
+      "canonical_smiles": "C1=C2C3=C(C(=C1O)O)OC(=O)C4=CC(=C(C(=C43)OC2=O)O)O",
+      "molecular_formula": "C14H6O8",
+      "molecular_weight": "302.19",
+      "iupac_name": "6,7,13,14-tetrahydroxy-2,9-dioxatetracyclo[6.6.2.04,16.011,15]hexadeca-1(15),4,6,8(16),11,13-hexaene-3,10-dione"
+    },
+    {
+      "query_name": "Emblicanin A",
+      "pubchem_cid": 119058016,
+      "canonical_smiles": "C1C2C(C(=C(C(=O)O2)OC(=O)C3=CC(=C(C(=C3)O)O)O)OC(=O)C4=CC(=C(C(=C4)O)O)O)OC(=O)C5=CC(=C(C(=C5C6=C(C(=C(C=C6C(=O)O1)O)O)O)O)O)O",
+      "molecular_formula": "C34H22O22",
+      "molecular_weight": "782.5",
+      "iupac_name": "[(10R,15R)-3,4,5,21,22,23-hexahydroxy-8,13,18-trioxo-12-(3,4,5-trihydroxybenzoyl)oxy-9,14,17-trioxatetracyclo[17.4.0.02,7.010,15]tricosa-1(23),2,4,6,11,19,21-heptaen-11-yl] 3,4,5-trihydroxybenzoate"
+    },
+    {
+      "query_name": "Quercetin",
+      "pubchem_cid": 5280343,
+      "canonical_smiles": "C1=CC(=C(C=C1C2=C(C(=O)C3=C(C=C(C=C3O2)O)O)O)O)O",
+      "molecular_formula": "C15H10O7",
+      "molecular_weight": "302.23",
+      "iupac_name": "2-(3,4-dihydroxyphenyl)-3,5,7-trihydroxychromen-4-one"
+    },
+    {
+      "query_name": "Chebulagic acid",
+      "pubchem_cid": 442674,
+      "canonical_smiles": "C1C2C3C(C(C(O2)OC(=O)C4=CC(=C(C(=C4)O)O)O)OC(=O)C5=CC(=C(C6=C5C(C(C(=O)O3)CC(=O)O)C(C(=O)O6)O)O)O)OC(=O)C7=CC(=C(C(=C7C8=C(C(=C(C=C8C(=O)O1)O)O)O)O)O)O",
+      "molecular_formula": "C41H30O27",
+      "molecular_weight": "954.7",
+      "iupac_name": "2-[(4R,5S,7R,25S,26R,29S,30S,31S)-13,14,15,18,19,20,31,35,36-nonahydroxy-2,10,23,28,32-pentaoxo-5-(3,4,5-trihydroxybenzoyl)oxy-3,6,9,24,27,33-hexaoxaheptacyclo[28.7.1.04,25.07,26.011,16.017,22.034,38]octatriaconta-1(37),11,13,15,17,19,21,34(38),35-nonaen-29-yl]acetic acid"
+    },
+    {
+      "query_name": "Chebulinic acid",
+      "pubchem_cid": 99937814,
+      "canonical_smiles": "C1=C(C=C(C(=C1O)O)O)C(=O)OCC2C3C(C(C(O2)OC(=O)C4=CC(=C(C(=C4)O)O)O)OC(=O)C5=CC(=C(C6=C5C(C(C(=O)O3)CC(=O)O)C(C(=O)O6)O)O)O)OC(=O)C7=CC(=C(C(=C7)O)O)O",
+      "molecular_formula": "C41H32O27",
+      "molecular_weight": "956.7",
+      "iupac_name": "2-[(4R,5S,7R,8R,11S,12S,13R,21S)-13,17,18-trihydroxy-2,10,14-trioxo-5,21-bis[(3,4,5-trihydroxybenzoyl)oxy]-7-[(3,4,5-trihydroxybenzoyl)oxymethyl]-3,6,9,15-tetraoxatetracyclo[10.7.1.14,8.016,20]henicosa-1(19),16(20),17-trien-11-yl]acetic acid"
+    },
+    {
+      "query_name": "Corilagin",
+      "pubchem_cid": 73568,
+      "canonical_smiles": "C1C2C(C(C(C(O2)OC(=O)C3=CC(=C(C(=C3)O)O)O)O)OC(=O)C4=CC(=C(C(=C4C5=C(C(=C(C=C5C(=O)O1)O)O)O)O)O)O)O",
+      "molecular_formula": "C27H22O18",
+      "molecular_weight": "634.5",
+      "iupac_name": "[(1S,19R,21S,22R,23R)-6,7,8,11,12,13,22,23-octahydroxy-3,16-dioxo-2,17,20-trioxatetracyclo[17.3.1.04,9.010,15]tricosa-4,6,8,10,12,14-hexaen-21-yl] 3,4,5-trihydroxybenzoate"
+    },
+    {
+      "query_name": "Echitamine",
+      "pubchem_cid": 124841315,
+      "canonical_smiles": "CC=C1C[N+]2(CCC34C2(C(CC1C3(CO)C(=O)OC)O)NC5=CC=CC=C45)C",
+      "molecular_formula": "C22H29N2O4+",
+      "molecular_weight": "385.5",
+      "iupac_name": "methyl (1S,9R,10S,12S,13E,15S,18R)-13-ethylidene-10-hydroxy-18-(hydroxymethyl)-15-methyl-8-aza-15-azoniapentacyclo[10.5.1.01,9.02,7.09,15]octadeca-2,4,6-triene-18-carboxylate"
+    },
+    {
+      "query_name": "Picroside I",
+      "pubchem_cid": 6440892,
+      "canonical_smiles": "C1=CC=C(C=C1)C=CC(=O)OCC2C(C(C(C(O2)OC3C4C(C=CO3)C(C5C4(O5)CO)O)O)O)O",
+      "molecular_formula": "C24H28O11",
+      "molecular_weight": "492.5",
+      "iupac_name": "[(2R,3S,4S,5R,6S)-3,4,5-trihydroxy-6-[[(1S,2S,4S,5S,6R,10S)-5-hydroxy-2-(hydroxymethyl)-3,9-dioxatricyclo[4.4.0.02,4]dec-7-en-10-yl]oxy]oxan-2-yl]methyl (E)-3-phenylprop-2-enoate"
+    },
+    {
+      "query_name": "Amarogentin",
+      "pubchem_cid": 115149,
+      "canonical_smiles": "C=CC1C2CCOC(=O)C2=COC1OC3C(C(C(C(O3)CO)O)O)OC(=O)C4=C(C=C(C=C4O)O)C5=CC(=CC=C5)O",
+      "molecular_formula": "C29H30O13",
+      "molecular_weight": "586.5",
+      "iupac_name": "[(2S,3R,4S,5S,6R)-2-[[(3S,4R,4aS)-4-ethenyl-8-oxo-4,4a,5,6-tetrahydro-3H-pyrano[3,4-c]pyran-3-yl]oxy]-4,5-dihydroxy-6-(hydroxymethyl)oxan-3-yl] 2,4-dihydroxy-6-(3-hydroxyphenyl)benzoate"
+    },
+    {
+      "query_name": "Mangiferin",
+      "pubchem_cid": 5281647,
+      "canonical_smiles": "C1=C2C(=CC(=C1O)O)OC3=C(C2=O)C(=C(C(=C3)O)C4C(C(C(C(O4)CO)O)O)O)O",
+      "molecular_formula": "C19H18O11",
+      "molecular_weight": "422.3",
+      "iupac_name": "1,3,6,7-tetrahydroxy-2-[(2S,3R,4R,5S,6R)-3,4,5-trihydroxy-6-(hydroxymethyl)oxan-2-yl]xanthen-9-one"
+    },
+    {
+      "query_name": "Withanolide A",
+      "pubchem_cid": 11294368,
+      "canonical_smiles": "CC1=C(C(=O)OC(C1)C(C)(C2CCC3C2(CCC4C3C5C(O5)C6(C4(C(=O)C=CC6)C)O)C)O)C",
+      "molecular_formula": "C28H38O6",
+      "molecular_weight": "470.6",
+      "iupac_name": "(1S,2S,4S,5R,10R,11S,14S,15S,18S)-15-[(1R)-1-[(2R)-4,5-dimethyl-6-oxo-2,3-dihydropyran-2-yl]-1-hydroxyethyl]-5-hydroxy-10,14-dimethyl-3-oxapentacyclo[9.7.0.02,4.05,10.014,18]octadec-7-en-9-one"
+    },
+    {
+      "query_name": "Withaferin A",
+      "pubchem_cid": 265237,
+      "canonical_smiles": "CC1=C(C(=O)OC(C1)C(C)C2CCC3C2(CCC4C3CC5C6(C4(C(=O)C=CC6O)C)O5)C)CO",
+      "molecular_formula": "C28H38O6",
+      "molecular_weight": "470.6",
+      "iupac_name": "(1S,2R,6S,7R,9R,11S,12S,15R,16S)-6-hydroxy-15-[(1S)-1-[(2R)-5-(hydroxymethyl)-4-methyl-6-oxo-2,3-dihydropyran-2-yl]ethyl]-2,16-dimethyl-8-oxapentacyclo[9.7.0.02,7.07,9.012,16]octadec-4-en-3-one"
+    },
+    {
+      "query_name": "Bacoside A",
+      "pubchem_cid": 92043183,
+      "canonical_smiles": "CC(=CCCC(C)(C1C2CCC3C(C2(CC1=O)C)(CCC4C3(CCC(C4(C)C)OC5C(C(C(C(O5)CO)OC6C(C(C(CO6)O)O)O)O)O)CO)C)O)C",
+      "molecular_formula": "C41H68O13",
+      "molecular_weight": "769.0",
+      "iupac_name": "(5R,8R,9S,10S,13R,14R,17S)-3-[(2R,3R,4R,5S,6R)-3,4-dihydroxy-6-(hydroxymethyl)-5-[(2S,3R,4S,5S)-3,4,5-trihydroxyoxan-2-yl]oxyoxan-2-yl]oxy-10-(hydroxymethyl)-17-[(2S)-2-hydroxy-6-methylhept-5-en-2-yl]-4,4,8,14-tetramethyl-1,2,3,5,6,7,9,11,12,13,15,17-dodecahydrocyclopenta[a]phenanthren-16-one"
+    },
+    {
+      "query_name": "Asiatic acid",
+      "pubchem_cid": 119034,
+      "canonical_smiles": "CC1CCC2(CCC3(C(=CCC4C3(CCC5C4(CC(C(C5(C)CO)O)O)C)C)C2C1C)C)C(=O)O",
+      "molecular_formula": "C30H48O5",
+      "molecular_weight": "488.7",
+      "iupac_name": "(1S,2R,4aS,6aR,6aS,6bR,8aR,9R,10R,11R,12aR,14bS)-10,11-dihydroxy-9-(hydroxymethyl)-1,2,6a,6b,9,12a-hexamethyl-2,3,4,5,6,6a,7,8,8a,10,11,12,13,14b-tetradecahydro-1H-picene-4a-carboxylic acid"
+    },
+    {
+      "query_name": "Curcumin",
+      "pubchem_cid": 969516,
+      "canonical_smiles": "COC1=C(C=CC(=C1)C=CC(=O)CC(=O)C=CC2=CC(=C(C=C2)O)OC)O",
+      "molecular_formula": "C21H20O6",
+      "molecular_weight": "368.4",
+      "iupac_name": "(1E,6E)-1,7-bis(4-hydroxy-3-methoxyphenyl)hepta-1,6-diene-3,5-dione"
+    },
+    {
+      "query_name": "Piperine",
+      "pubchem_cid": 638024,
+      "canonical_smiles": "C1CCN(CC1)C(=O)C=CC=CC2=CC3=C(C=C2)OCO3",
+      "molecular_formula": "C17H19NO3",
+      "molecular_weight": "285.34",
+      "iupac_name": "(2E,4E)-5-(1,3-benzodioxol-5-yl)-1-piperidin-1-ylpenta-2,4-dien-1-one"
+    },
+    {
+      "query_name": "Berberine",
+      "pubchem_cid": 2353,
+      "canonical_smiles": "COC1=C(C2=C[N+]3=C(C=C2C=C1)C4=CC5=C(C=C4CC3)OCO5)OC",
+      "molecular_formula": "C20H18NO4+",
+      "molecular_weight": "336.4",
+      "iupac_name": "16,17-dimethoxy-5,7-dioxa-13-azoniapentacyclo[11.8.0.02,10.04,8.015,20]henicosa-1(13),2,4(8),9,14,16,18,20-octaene"
+    },
+    {
+      "query_name": "Glycyrrhizin",
+      "pubchem_cid": 14982,
+      "canonical_smiles": "CC1(C2CCC3(C(C2(CCC1OC4C(C(C(C(O4)C(=O)O)O)O)OC5C(C(C(C(O5)C(=O)O)O)O)O)C)C(=O)C=C6C3(CCC7(C6CC(CC7)(C)C(=O)O)C)C)C)C",
+      "molecular_formula": "C42H62O16",
+      "molecular_weight": "822.9",
+      "iupac_name": "(2S,3S,4S,5R,6R)-6-[(2S,3R,4S,5S,6S)-2-[[(3S,4aR,6aR,6bS,8aS,11S,12aR,14aR,14bS)-11-carboxy-4,4,6a,6b,8a,11,14b-heptamethyl-14-oxo-2,3,4a,5,6,7,8,9,10,12,12a,14a-dodecahydro-1H-picen-3-yl]oxy]-6-carboxy-4,5-dihydroxyoxan-3-yl]oxy-3,4,5-trihydroxyoxane-2-carboxylic acid"
+    },
+    {
+      "query_name": "Azadirachtin",
+      "pubchem_cid": 5281303,
+      "canonical_smiles": "CC=C(C)C(=O)OC1CC(C2(COC3C2C14COC(C4C(C3O)(C)C56C7CC(C5(O6)C)C8(C=COC8O7)O)(C(=O)OC)O)C(=O)OC)OC(=O)C",
+      "molecular_formula": "C35H44O16",
+      "molecular_weight": "720.7",
+      "iupac_name": "dimethyl (1S,4S,5R,6S,7S,8R,11S,12R,14S,15R)-12-acetyloxy-4,7-dihydroxy-6-[(1S,2S,6S,8S,9R,11S)-2-hydroxy-11-methyl-5,7,10-trioxatetracyclo[6.3.1.02,6.09,11]dodec-3-en-9-yl]-6-methyl-14-[(E)-2-methylbut-2-enoyl]oxy-3,9-dioxatetracyclo[6.6.1.01,5.011,15]pentadecane-4,11-dicarboxylate"
+    }
+  ],
+  "unresolved": [
+    {
+      "query_name": "Gallic acid derivative 20",
+      "error": "HTTPError 404: PUGREST.NotFound {\n  \"Fault\": {\n    \"Code\": \"PUGREST.NotFound\",\n    \"Message\": \"No CID found\",\n    \"Details\": [\n      \"No CID found that matches the given name\"\n    ]\n  }\n}\n"
+    },
+    {
+      "query_name": "Ellagic acid derivative 21",
+      "error": "HTTPError 404: PUGREST.NotFound {\n  \"Fault\": {\n    \"Code\": \"PUGREST.NotFound\",\n    \"Message\": \"No CID found\",\n    \"Details\": [\n      \"No CID found that matches the given name\"\n    ]\n  }\n}\n"
+    },
+    {
+      "query_name": "Emblicanin A derivative 22",
+      "error": "HTTPError 404: PUGREST.NotFound {\n  \"Fault\": {\n    \"Code\": \"PUGREST.NotFound\",\n    \"Message\": \"No CID found\",\n    \"Details\": [\n      \"No CID found that matches the given name\"\n    ]\n  }\n}\n"
+    },
+    {
+      "query_name": "Quercetin derivative 23",
+      "error": "HTTPError 404: PUGREST.NotFound {\n  \"Fault\": {\n    \"Code\": \"PUGREST.NotFound\",\n    \"Message\": \"No CID found\",\n    \"Details\": [\n      \"No CID found that matches the given name\"\n    ]\n  }\n}\n"
+    },
+    {
+      "query_name": "Chebulagic acid derivative 24",
+      "error": "HTTPError 404: PUGREST.NotFound {\n  \"Fault\": {\n    \"Code\": \"PUGREST.NotFound\",\n    \"Message\": \"No CID found\",\n    \"Details\": [\n      \"No CID found that matches the given name\"\n    ]\n  }\n}\n"
+    },
+    {
+      "query_name": "Chebulinic acid derivative 25",
+      "error": "HTTPError 404: PUGREST.NotFound {\n  \"Fault\": {\n    \"Code\": \"PUGREST.NotFound\",\n    \"Message\": \"No CID found\",\n    \"Details\": [\n      \"No CID found that matches the given name\"\n    ]\n  }\n}\n"
+    },
+    {
+      "query_name": "Corilagin derivative 26",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Echitamine derivative 27",
+      "error": "HTTPError 404: PUGREST.NotFound {\n  \"Fault\": {\n    \"Code\": \"PUGREST.NotFound\",\n    \"Message\": \"No CID found\",\n    \"Details\": [\n      \"No CID found that matches the given name\"\n    ]\n  }\n}\n"
+    },
+    {
+      "query_name": "Picroside I derivative 28",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Amarogentin derivative 29",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Mangiferin derivative 30",
+      "error": "HTTPError 404: PUGREST.NotFound {\n  \"Fault\": {\n    \"Code\": \"PUGREST.NotFound\",\n    \"Message\": \"No CID found\",\n    \"Details\": [\n      \"No CID found that matches the given name\"\n    ]\n  }\n}\n"
+    },
+    {
+      "query_name": "Withanolide A derivative 31",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Withaferin A derivative 32",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Bacoside A derivative 33",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Asiatic acid derivative 34",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Curcumin derivative 35",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Piperine derivative 36",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Berberine derivative 37",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Glycyrrhizin derivative 38",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Azadirachtin derivative 39",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Gallic acid derivative 40",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Ellagic acid derivative 41",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Emblicanin A derivative 42",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Quercetin derivative 43",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Chebulagic acid derivative 44",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Chebulinic acid derivative 45",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Corilagin derivative 46",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Echitamine derivative 47",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Picroside I derivative 48",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Amarogentin derivative 49",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Mangiferin derivative 50",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Withanolide A derivative 51",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Withaferin A derivative 52",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Bacoside A derivative 53",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Asiatic acid derivative 54",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Curcumin derivative 55",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Piperine derivative 56",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Berberine derivative 57",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Glycyrrhizin derivative 58",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Azadirachtin derivative 59",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Gallic acid derivative 60",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Ellagic acid derivative 61",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Emblicanin A derivative 62",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Quercetin derivative 63",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Chebulagic acid derivative 64",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Chebulinic acid derivative 65",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Corilagin derivative 66",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Echitamine derivative 67",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Picroside I derivative 68",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Amarogentin derivative 69",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Mangiferin derivative 70",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Withanolide A derivative 71",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Withaferin A derivative 72",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Bacoside A derivative 73",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Asiatic acid derivative 74",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Curcumin derivative 75",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Piperine derivative 76",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Berberine derivative 77",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Glycyrrhizin derivative 78",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Azadirachtin derivative 79",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Gallic acid derivative 80",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Ellagic acid derivative 81",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Emblicanin A derivative 82",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Quercetin derivative 83",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Chebulagic acid derivative 84",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Chebulinic acid derivative 85",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Corilagin derivative 86",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Echitamine derivative 87",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Picroside I derivative 88",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Amarogentin derivative 89",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Mangiferin derivative 90",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Withanolide A derivative 91",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Withaferin A derivative 92",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Bacoside A derivative 93",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Asiatic acid derivative 94",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Curcumin derivative 95",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Piperine derivative 96",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Berberine derivative 97",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Glycyrrhizin derivative 98",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    },
+    {
+      "query_name": "Azadirachtin derivative 99",
+      "error": "HTTPError 503: PUGREST.ServerBusy {\n  \"Fault\": {\n    \"Code\": \"PUGREST.ServerBusy\",\n    \"Message\": \"Too many requests or server too busy\"\n  }\n}\n"
+    }
+  ],
+  "retrieved_at": "2026-09-22T07:20:47.391991+00:00",
+  "source": "PubChem PUG-REST"
+}
