@@ -53,17 +53,28 @@ class CitationGroundedGenerator:
         openai_api_key: Optional[str] = None,
         strict_grounding: bool = True
     ):
-        self.model_name = model_name
         self.strict_grounding = strict_grounding
-        self.openai_api_key = openai_api_key or os.getenv("OPENAI_API_KEY")
 
+        # Prefer a real OpenAI key if set; otherwise fall back to Groq's
+        # OpenAI-compatible API (https://api.groq.com/openai/v1) using
+        # GROQ_API_KEY - real LLM calls either way, never a hardcoded fake key.
+        groq_api_key = os.getenv("GROQ_API_KEY")
+        self.openai_api_key = openai_api_key or os.getenv("OPENAI_API_KEY")
+        base_url = None
+        if not self.openai_api_key and groq_api_key:
+            self.openai_api_key = groq_api_key
+            base_url = "https://api.groq.com/openai/v1"
+            if model_name in (None, "mock-llm", "gpt-3.5-turbo", "gpt-4o-mini"):
+                model_name = "llama-3.3-70b-versatile"
+
+        self.model_name = model_name
         self.use_openai = OPENAI_AVAILABLE and self.openai_api_key is not None
         if self.use_openai:
             try:
-                self.client = openai.OpenAI(api_key=self.openai_api_key)
-                logger.info(f"Using OpenAI model {model_name}")
+                self.client = openai.OpenAI(api_key=self.openai_api_key, base_url=base_url)
+                logger.info(f"Using LLM model {model_name} (provider={'Groq' if base_url else 'OpenAI'})")
             except Exception as e:
-                logger.warning(f"OpenAI init failed {e}, using mock")
+                logger.warning(f"LLM client init failed {e}, using mock")
                 self.use_openai = False
         else:
             logger.info("Using mock LLM generator (no API key / fallback) - structured synthesis for demo")
