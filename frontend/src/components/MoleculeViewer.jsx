@@ -17,6 +17,32 @@ function shapeTitle(raw) {
   return 'Protein shape preview';
 }
 
+// Style buttons previously only ever restyled the tiny ligand while the
+// protein stayed cartoon forever, so the huge protein dominated the view
+// and every button looked the same. Both models now switch representation
+// together, so "Sticks"/"Balls"/"Lines"/"Ribbons" each genuinely differ.
+function proteinStyleFor(style) {
+  switch (style) {
+    case 'sphere': return { sphere: { scale: 0.22, colorscheme: 'Jmol' } };
+    case 'line': return { line: { colorscheme: 'Jmol' } };
+    case 'stick': return { stick: { radius: 0.15, colorscheme: 'Jmol' } };
+    case 'cartoon':
+    default:
+      return { cartoon: { color: '#a3b18a', opacity: 0.85 } };
+  }
+}
+
+function ligandStyleFor(style) {
+  switch (style) {
+    case 'sphere': return { sphere: { scale: 0.3, colorscheme: 'greenCarbon' } };
+    case 'line': return { line: { colorscheme: 'greenCarbon', linewidth: 3 } };
+    case 'cartoon': return { stick: { radius: 0.2, colorscheme: 'greenCarbon' }, sphere: { scale: 0.25, colorscheme: 'greenCarbon' } };
+    case 'stick':
+    default:
+      return { stick: { radius: 0.25, colorscheme: 'greenCarbon' }, sphere: { scale: 0.22, colorscheme: 'greenCarbon' } };
+  }
+}
+
 export default function MoleculeViewer({
   proteinPDB = null, // real PDB text (RCSB structure)
   ligandSDF = null, // SDF/MOL string (legacy prop, mock fallback only)
@@ -104,16 +130,12 @@ $$$$
 
         // Add protein
         viewer.addModel(pdbData, 'pdb');
-        viewer.setStyle({ model: 0 }, { cartoon: { color: '#a3b18a', opacity: 0.85 }, stick: { radius: 0.15, colorscheme: 'Jmol' } });
+        viewer.setStyle({ model: 0 }, proteinStyleFor(style));
 
         // Add ligand as second model
         if (ligandData) {
           viewer.addModel(ligandData, ligandFormat);
-          const ligandStyle = style === 'sphere' ? { sphere: { scale: 0.3 } } :
-                              style === 'line' ? { line: {} } :
-                              style === 'cartoon' ? { stick: { radius: 0.2 }, sphere: { scale: 0.25 } } :
-                              { stick: { radius: 0.25, colorscheme: 'greenCarbon' }, sphere: { scale: 0.22 } };
-          viewer.setStyle({ model: 1 }, ligandStyle);
+          viewer.setStyle({ model: 1 }, ligandStyleFor(style));
         }
 
         // Highlight interactions if present
@@ -143,11 +165,8 @@ $$$$
   useEffect(() => {
     if (!viewerRef.current || !viewerReady) return;
     try {
-      const ligandStyle = style === 'sphere' ? { sphere: { scale: 0.3 } } :
-                          style === 'line' ? { line: {} } :
-                          style === 'cartoon' ? { stick: { radius: 0.2 }, sphere: { scale: 0.25 } } :
-                          { stick: { radius: 0.25, colorscheme: 'greenCarbon' }, sphere: { scale: 0.22 } };
-      viewerRef.current.setStyle({ model: 1 }, ligandStyle);
+      viewerRef.current.setStyle({ model: 0 }, proteinStyleFor(style));
+      viewerRef.current.setStyle({ model: 1 }, ligandStyleFor(style));
       viewerRef.current.render();
     } catch {}
   }, [style, viewerReady]);
