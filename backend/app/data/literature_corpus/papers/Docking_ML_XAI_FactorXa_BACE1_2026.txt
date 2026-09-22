@@ -1,0 +1,34 @@
+Title: Interpretable QSAR for Factor Xa and BACE1 fusion ML + Docking + XAI benchmarks [19][20][16]
+Evidence Tier: 3 ML prediction +4 XAI interpretation
+
+ABSTRACTS COMBINED:
+Factor Xa [19] Benchmark 42 regression 42 classification on 6400 ChEMBL 391 Mordred + RDKit Target PDB 1XKA Factor Xa coagulation ExtraTrees R2=0.760 RMSE=0.831 XGBoost acc 0.91 ROC-AUC 0.962 SHAP electrostatic topological polar-surface dominant Williams plot applicability domain.
+BACE1 [20] NuSVR combining binding-interaction and QSAR features R2=0.78 vs 0.65/0.64 either alone for BACE1 Alzheimer's 2QP8 justifies fusing docking output with descriptor-based ML features rather than sequential independent stages.
+TLR4 [16] 49 compounds experimental affinities foregrounds leakage prevention chemically-diverse train/test splitting naive random split overstates performance ensemble ML robust small-dataset methodology.
+
+KEY FINDINGS FOR PIPELINE:
+- RDKit descriptors + fingerprints dominant featurization tree ensembles RF XGBoost LightGBM ExtraTrees strongest small-mid datasets [16][17][19]
+- Fusion docking+QSAR superior [20] R2 0.78 combined
+- Dual-Filter Feature Selection LightGBM ERa [17] MRE 0.0775 outperforms ChemBERTa baseline -> curated classical descriptors remain competitive
+- XGBoost vs LLM embeddings BioT5+ GPT2 BERT [18] LLM embeddings comparable some series worse highly similar ligands -> validate per target family not assume superiority
+- Data leakage scaffold split vs random required trustworthy performance Ayurvedic limited data
+- SHAP dominant post-hoc explainer global + local
+
+XAI VALIDATION PROTOCOL ADOPTED [24]:
+- Pair explanations with bias-aware splits scaffold/series not random
+- Robustness checks across chemically related series controlled perturbations
+- Triangulate across multiple explainers SHAP stable cross-checked vs integrated gradients or counterfactuals
+- Hard requirement [24][22] SHAP describes what trained statistical model attended to not biological mechanism of action
+- Multi-explainer triangulation SHAP+LIME agreement corroboration [25]
+- Regulatory FDA/EMA favour interrogable evidence [23]
+- Future neuro-symbolic multimodal GNN+transformer+symbolic + uncertainty quant [26]
+
+EVIDENTIARY TIER ENFORCEMENT:
+- ML prediction tier3 statistical model output NOT experimental affinity
+- XAI interpretation tier4 model attention NOT biological mechanism
+- Must label applicability domain inside/outside Williams plot
+- Example disclaimer Predicted pKd 6.8 ±0.5 ML model R2=0.76 training SHAP flags topological PSA and logP top contributors to this prediction - explains model behavior not proven mechanism.
+
+FOR TRAINING DATA: training_data.csv 500 synthetic samples features MW logP TPSA HBD HBA rotBonds QED Vina_score PLIP_Hbonds hydrophobic etc + affinity label pKd synthetic physics-inspired affinity = physics-inspired linear combination -0.3*Vina +0.2*logP -0.01*TPSA + ... + noise to mimic real but synthetic
+
+LITERATURE AREAS: D ML and E XAI

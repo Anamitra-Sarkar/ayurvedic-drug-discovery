@@ -1,0 +1,23 @@
+Title: Combined synthesis Agentic AI in Pharma Review AI Agents Drug Discovery ChatInvent AgentD Tippy [32][33][34][35][36]
+Evidence Tier: 5 architectural design
+
+ABSTRACTS COMBINED:
+[32] Multi-Agent System MAS multiple autonomous LLM agents each distinct reasoning scope domain-specific tools coordinated under shared orchestration to accomplish goals exceeding single model DrugAgent framework separates planning LLM Planner high-level strategy and execution LLM Instructor translates to executable ML pipelines Flags engineering risk poorly coordinated multi-agent implementations propagate errors downstream because agent receiving flawed input produces difficult-to-audit output -> motivates explicit Validation Agent distinct pipeline stage rather than linear unchecked chain.
+[33] Case studies orchestrator coordinating Patent Extraction Cross-reference Literature Retrieval agents shared memory comprehensive asset eval parallel sub-agent queries assess BTK-inhibitor selectivity profile Both structurally analogous to Literature Agent Compound Agent Validation Agent decomposition.
+[34] AstraZeneca ChatInvent evolved single-agent PoC to extensible multi-agent architecture GUI molecular design synthesis planning building on CoScientist ChemCrow LLM-RDF Real-world adoption challenges persist after production use tempers expectations.
+[35] AgentD Modular LLM agent framework contrasted vs CACTUS wraps LLM around simple calculators MW LogP TPSA drug-likeness filters narrow toolset SciToolAgent knowledge-graph orchestration allowing LLM select hundreds tools DrugPilot parameterized reasoning multi-stage workflow but benchmark datasets Observes most existing computational drug-discovery methods remain task-specific require manual orchestration -> fragmentation problem present project's LangGraph-based agent layer Literature Compound Molecular Preparation Docking Interaction Analysis ML XAI Validation Report agents designed to resolve.
+[36] Tippy Production-oriented 5-agent architecture Supervisor Molecule Lab Analysis Report agents wrapped Safety Guardrail role around Design-Make-Test-Analyze cycle reported first production-ready specialised-agent system DMTA Produced oriented physical lab automation not computation-only but Safety-Guardrail-before-Report pattern direct template for gating logic Validation Agent before candidate reaches Report Agent.
+
+GAP SYNTHESIS:
+Every individual stage required independently well precedented independently validated NP docking for Ayurveda/TCM [1]-[6] curated phytochemical DBs computed properties [7]-[11] docking engines rescoring quantified accuracy tradeoffs [12]-[14] automated PLIP [15] tree-ensemble ML binding affinity QSAR rigorous small-dataset [16]-[21] SHAP XAI increasingly well-defined validation [22]-[26] RAG measured substantial reductions hallucination [27]-[31] multi-agent orchestration including production industrial [32]-[36] Field reviews [37][38][40] SperoPredictor integrated ML+docking repurposing validated end-to-end real disease target [39] What NOT yet show single reproducible pipeline chains all stages together for Ayurvedic phytochemicals specifically with every output explicitly labelled evidentiary tier rather than undifferentiated result Therefore project pipeline Traditional Medicine Data -> Phytochemical Mining -> Molecular Processing -> Target Identification -> Molecular Docking -> Binding Analysis -> ML -> XAI -> Literature Evidence -> Agentic Validation -> Candidate Prioritisation
+
+EVIDENTIARY LABELING HARD CONSTRAINT:
+System must clearly distinguish for every candidate compound between five categories experimental where exists cited in vitro/clinical published literature retrieved via RAG layer docking-based computational Vina score + PLIP profile ML predictions trained affinity model output + SHAP LLM-generated summaries explicitly marked as syntheses above never as new evidence Must NOT at any stage present computational prediction as clinical proof Inspired by AYUSH-64 case [3] where computational -> RCT was separate subsequent step own evidence tier.
+
+PIPELINE IMPLEMENTATION:
+- Central module evidence_tier.py enforcement via decorator Pydantic validation disallows merging tiers
+- LangGraph-style orchestration 9 agents state machine checkpointing human-in-loop Validation Agent safety guardrail before Report Agent per Tippy [36]
+- Frontend React interactive molecular visualisation 3Dmol.js candidate ranking table evidence tier chips automated reporting citations
+- Backend Python RDKit cheminformatics Vina wrapper + mock fallback physics-inspired scoring XGBoost ML SHAP XAI sentence-transformers+FAISS RAG TF-IDF fallback
+
+LITERATURE AREAS: G + gap synthesis

@@ -1,0 +1,72 @@
+HEADER    SARS-CoV-2 MAIN PROTEASE COMPLEX WITH GALLIC ACID  19-JAN-24
+TITLE     SAMPLE COMPLEX FOR AYURVEDIC DRUG DISCOVERY PIPELINE TESTING
+COMPND    MOL_ID: 1; MOLECULE: SARS-COV-2 MAIN PROTEASE; CHAIN: A
+COMPND    MOL_ID: 2; MOLECULE: GALLIC ACID; CHAIN: B; SYNONYM: 3,4,5-TRIHYDROXYBENZOIC ACID
+SOURCE    MOL_ID: 1; ORGANISM_SCIENTIFIC: SEVERE ACUTE RESPIRATORY SYNDROME CORONAVIRUS 2
+KEYWDS    PHYTOMEDICINE, AYURVEDA, DOCKING, TRIphala, AYUSH-64
+EXPDTA    X-RAY DIFFRACTION (SAMPLE - NOT EXPERIMENTAL, FOR TESTING ONLY)
+RESOLUTION 2.16 ANGSTROMS (MOCK - SEE 6LU7 for real)
+AUTHOR    PIPELINE TEST DATA GENERATOR
+REMARK   1 SAMPLE FILE FOR TESTING ONLY - NOT A REAL EXPERIMENTAL STRUCTURE
+REMARK   1 EVIDENTIARY TIER: 2 - Molecular docking result (computational)
+REMARK   2 WARNING: This PDB is synthetic sample for pipeline unit tests
+REMARK   2 Real target should be fetched from RCSB PDB ID 6LU7 for SARS-CoV-2 Mpro, 3FXI for TLR4, 1XKA for Factor Xa, etc.
+REMARK   3 Docking pose from mock Vina wrapper physics-inspired scoring; treat as hypothesis not experimental truth
+REMARK   4 Binding site center: -10.7 12.4 68.9 size 20x20x20 residues HIS41 CYS145 MET49 GLU166
+REMARK   5 Evidence tier enforcement: This file belongs to tier 2 only. Placing tier 1 label on it would violate evidentiary integrity
+REMARK 900 EVIDENTIARY_TIER 2 DOCKING_RESULT MOCK
+ATOM      1  N   HIS A  41      -8.123  14.234  65.123  1.00 20.00           N
+ATOM      2  CA  HIS A  41      -7.456  13.456  66.345  1.00 20.00           C
+ATOM      3  C   HIS A  41      -6.123  14.234  66.789  1.00 20.00           C
+ATOM      4  O   HIS A  41      -5.987  15.345  66.345  1.00 20.00           O
+ATOM      5  CB  HIS A  41      -8.234  12.345  67.012  1.00 20.00           C
+ATOM      6  CG  HIS A  41      -9.456  12.987  67.567  1.00 20.00           C
+ATOM      7  ND1 HIS A  41     -10.234  12.234  68.234  1.00 20.00           N
+ATOM      8  CE1 HIS A  41     -11.012  13.123  68.789  1.00 20.00           C
+ATOM      9  NE2 HIS A  41     -10.789  14.345  68.456  1.00 20.00           N
+ATOM     10  CD2 HIS A  41      -9.876  13.987  67.789  1.00 20.00           C
+ATOM     11  N   CYS A 145     -11.234  10.123  70.123  1.00 25.00           N
+ATOM     12  CA  CYS A 145     -10.567   9.345  71.345  1.00 25.00           C
+ATOM     13  C   CYS A 145      -9.234   8.987  71.012  1.00 25.00           C
+ATOM     14  O   CYS A 145      -8.456   8.234  71.789  1.00 25.00           O
+ATOM     15  CB  CYS A 145     -11.456   8.123  71.987  1.00 25.00           C
+ATOM     16  SG  CYS A 145     -12.789   8.789  72.789  1.00 30.00           S
+ATOM     17  N   MET A  49      -6.789  16.234  62.123  1.00 20.00           N
+ATOM     18  CA  MET A  49      -6.123  15.456  61.012  1.00 20.00           C
+ATOM     19  C   MET A  49      -4.789  16.123  60.567  1.00 20.00           C
+ATOM     20  O   MET A  49      -4.456  17.234  61.012  1.00 20.00           O
+ATOM     21  CB  MET A  49      -6.987  14.234  60.456  1.00 20.00           C
+ATOM     22  CG  MET A  49      -7.876  13.456  61.234  1.00 20.00           C
+ATOM     23  SD  MET A  49      -8.987  12.564  60.234  1.00 25.00           S
+ATOM     24  CE  MET A  49      -9.876  13.789  59.234  1.00 20.00           C
+ATOM     25  N   GLU A 166      -9.123  11.234  68.123  1.00 20.00           N
+ATOM     26  CA  GLU A 166      -9.789  10.456  67.012  1.00 20.00           C
+ATOM     27  C   GLU A 166     -10.987   9.789  67.567  1.00 20.00           C
+ATOM     28  O   GLU A 166     -11.456   8.789  66.987  1.00 20.00           O
+ATOM     29  CB  GLU A 166      -8.876   9.456  66.234  1.00 20.00           C
+ATOM     30  CG  GLU A 166      -7.678   8.987  66.987  1.00 20.00           C
+ATOM     31  CD  GLU A 166      -6.789   8.123  66.234  1.00 20.00           C
+ATOM     32  OE1 GLU A 166      -7.123   7.123  65.456  1.00 20.00           O
+ATOM     33  OE2 GLU A 166      -5.789   8.456  66.567  1.00 20.00           O
+ATOM     34  N   ASP A  187     -12.123   9.234  65.123  1.00 20.00           N
+ATOM     35  CA  ASP A  187     -13.456   9.876  64.789  1.00 20.00           C
+ATOM     36  C   ASP A  187     -14.234   8.987  63.876  1.00 20.00           C
+ATOM     37  O   ASP A  187     -14.123   7.789  64.123  1.00 20.00           O
+ATOM     38  CB  ASP A  187     -14.123  10.234  66.123  1.00 20.00           C
+ATOM     39  CG  ASP A  187     -13.234  10.987  67.123  1.00 20.00           C
+ATOM     40  OD1 ASP A  187     -12.123  10.456  67.456  1.00 20.00           O
+ATOM     41  OD2 ASP A  187     -13.789  11.987  67.567  1.00 20.00           O
+HETATM   42  C1  GAL B   1      -10.123  12.456  68.234  1.00 30.00           C
+HETATM   43  C2  GAL B   1      -9.234  13.234  67.567  1.00 30.00           C
+HETATM   44  C3  GAL B   1      -8.456  12.789  66.789  1.00 30.00           C
+HETATM   45  C4  GAL B   1      -8.567  11.567  66.678  1.00 30.00           C
+HETATM   46  C5  GAL B   1      -9.456  10.789  67.345  1.00 30.00           C
+HETATM   47  C6  GAL B   1     -10.234  11.234  68.123  1.00 30.00           C
+HETATM   48  C7  GAL B   1     -11.012  12.987  69.012  1.00 30.00           C
+HETATM   49  O1  GAL B   1      -8.876  14.456  67.678  1.00 30.00           O
+HETATM   50  O2  GAL B   1      -7.678  13.456  66.012  1.00 30.00           O
+HETATM   51  O3  GAL B   1      -7.789  10.789  65.901  1.00 30.00           O
+HETATM   52  O4  GAL B   1      -9.345   9.567  67.234  1.00 30.00           O
+HETATM   53  O5  GAL B   1     -11.789  12.234  69.678  1.00 30.00           O
+HETATM   54  O6  GAL B   1     -11.123  14.123  69.123  1.00 30.00           O
+END

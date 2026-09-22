@@ -1,0 +1,11 @@
+Title: Insights about multi-targeting and synergistic neuromodulators in Ayurvedic herbs against epilepsy
+Authors: Sharma H, Rao VS, Jain A 2019 Frontiers PMC6646331
+Evidence Tier: 1+2
+
+ABSTRACT:
+Epilepsy 50M globally 30% resistant. Ayurveda 63 anti-epileptic herbs centuries empirical use but molecular mechanisms uncharacterised. Integrated NP with molecular docking screened 349 drug-like phytochemicals filtered from 63 herbs using IMPPAT ADMET + Lipinski against mGluR2 PDB 7E9G/5CNI and mGluR3 5CNK. Similarity to DrugBank anti-epileptics levetiracetam lamotrigine validation heuristic. Vina docking with PLIP identified 11 novel neuromodulator candidates and 74 phytochemicals with polypharmacological similarity to approved compounds. Top: bacoside A Bacopa monnieri -8.2 kcal/mol vs mGluR2 withanolide A Withania somnifera -7.9 H-bonds ARG-107 SER-278. Closest precedent to proposed pipeline but confined single target class and lacks downstream ML XAI literature validation.
+
+LITERATURE AREAS: A,B,C
+EVIDENTIARY TIER: Database + docking result Tier2. Docking score computational hypothesis moderate correlation. Must not present as clinical proof. Subsequent ML prediction Tier3 treats Vina score as input not final answer per hybrid scoring [14].
+CHEMINFORMATICS: RDKit descriptors MW logP HBD HBA TPSA rotatable Morgan fingerprints. Drug-likeness Lipinski violations <=1 Veber rot<=10 TPSA<=140 QED 0.4-0.9
+FOR PIPELINE: Source database IMPPAT primary 1742/9596 scaled to 100 samples including Triphala 20 + AYUSH-64 20 + anti-epileptic 60. Docking Vina wrapper mock fallback physics-inspired Lennard-Jones + H-bond + hydrophobic terms. Binding site centers defined per target.json e.g mGluR2 center 12.5 -4.2 22.1 size 20. PLIP detects 7-8 interaction types.

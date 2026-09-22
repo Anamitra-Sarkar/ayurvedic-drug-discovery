@@ -1,0 +1,24 @@
+Title: RAG for Pharma Performance of RAG on Pharmaceutical Documents and Drug QA Hallucination Reduction [27][28][29][30][31]
+Evidence Tier: 5 literature-derived / LLM-synthesised with retrieval grounding
+
+ABSTRACTS:
+[27] Benchmark models without retrieval fabricated or cited incorrect references 40-60% answers while retrieval-augmented system produced zero hallucinated citations same task Pharma docs QA.
+[28] Full RAG pipeline Sentence-BERT dense retrieval FAISS vector indexing cross-encoder re-ranking Llama 3.2 generator measured on 150 curated drug QA pairs across ten medications results hallucination 47.8%->12.3% 74.3% relative reduction faithfulness 0.52->0.87 accuracy 0.54->0.89 concrete reproducible numbers justifying architecture chunked embeddings vector DB similarity search generation constrained to retrieved evidence.
+[29] Foundational premise grounding LLM output in retrieved passages reduces hallucination not reconstructing from parametric memory and injects post-training knowledge biomedical extensions emerging but evaluation partially resolved.
+[30] RAG for Science RetMol PromptDiff molecular generation BIOREADER biomedical text incorporate retrieval via chunked cross-attention evidence RAG applicable to both molecule and literature stages.
+[31] HiPerRAG At PubMed/Europe PMC continuously growing corpus scale ingestion/indexing pipeline design determines reliable grounding.
+
+DESIGN IMPLICATION FOR THIS PROJECT:
+- Every claim by Report Agent must carry explicit checkable evidence pointer PMID DOI identifier back to retrieved passage
+- System must represent and surface no supporting evidence found explicitly rather than allowing LLM generate unsupported claim by default mechanism behind measured reduction
+- Evidence tier5 must be labeled literature-derived / LLM-synthesised evidence never as database or experimental fact
+- Example Literature-derived Gallic acid reported anti-inflammatory activity Triphala context [4] retrieved from paper Ay_NP_Triphala_2015 chunk2 citation Chandran U 2015 JAIM This is literature evidence not new experimental claim.
+- RAG fallback If sentence-transformers + FAISS not available TF-IDF fallback provides same interface lower accuracy still zero hallucination in citation because constrained to corpus unlike parametric LLM
+- For Ayurvedic literature corpus 40 references +5 paper txt files covering 7 literature areas A-G can expand ingestion to PubMed 7k IMPPAT articles scale
+
+EVIDENTIARY TIER NOTES:
+- MUST NOT present LLM synthesis as clinical proof or even as primary literature claim mark as LLM-synthesised summary of retrieved literature
+- Hallucination benchmark numbers performance targets for RAG layer
+- Implementation sentence-transformers all-MiniLM-L6-v2 if available else TF-IDF vectorizer FAISS IndexFlatL2 if available else sklearn pairwise reranker cross-encoder if available
+
+LITERATURE AREAS: F and General

@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app/data:/app/app/data
+    environment:
+      - DEBUG=False
+      - HOST=0.0.0.0
+      - PORT=8000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://localhost:8000
+
+# Notes:
+# - Backend uses mock fallbacks if Vina/RDKit/sentence-transformers missing
+# - All outputs tagged with 5-tier evidence system
+# - AYUSH-64 justification enforced
+# - Triphala 174 bioactives, 63 herbs 349 phytochemicals demo data

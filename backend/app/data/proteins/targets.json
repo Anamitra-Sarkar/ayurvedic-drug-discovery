@@ -1,0 +1,315 @@
+[
+  {
+    "target_id": "T001",
+    "gene_name": "GRM2",
+    "protein_name": "Metabotropic glutamate receptor 2 (mGluR2)",
+    "pdb_id": "7E9G",
+    "uniprot_id": "Q14416",
+    "organism": "Homo sapiens",
+    "resolution_A": 2.8,
+    "method": "X-ray diffraction",
+    "disease_associations": [
+      "Epilepsy",
+      "Schizophrenia",
+      "Anxiety disorders"
+    ],
+    "pathway": "Glutamatergic neurotransmission",
+    "binding_site": {
+      "center_x": 12.5,
+      "center_y": -4.2,
+      "center_z": 22.1,
+      "size_x": 20,
+      "size_y": 20,
+      "size_z": 20,
+      "residues": [
+        "ARG-107",
+        "SER-278",
+        "ASP-146"
+      ]
+    },
+    "relevance": "Anti-epileptic Ayurvedic herbs screening [5] 63 herbs / 349 phytochemicals",
+    "evidence_tier": 1,
+    "evidence_tier_label": "database-derived information",
+    "literature_ref": "[5]"
+  },
+  {
+    "target_id": "T002",
+    "gene_name": "GRM3",
+    "protein_name": "Metabotropic glutamate receptor 3 (mGluR3)",
+    "pdb_id": "5CNK",
+    "uniprot_id": "Q14832",
+    "organism": "Homo sapiens",
+    "resolution_A": 2.2,
+    "method": "X-ray diffraction",
+    "disease_associations": [
+      "Epilepsy",
+      "Glioma"
+    ],
+    "pathway": "Glutamatergic signaling",
+    "binding_site": {
+      "center_x": 10.1,
+      "center_y": -2.3,
+      "center_z": 18.7,
+      "size_x": 22,
+      "size_y": 22,
+      "size_z": 22,
+      "residues": [
+        "SER-152",
+        "ARG-68"
+      ]
+    },
+    "relevance": "Anti-epileptic target class",
+    "evidence_tier": 1,
+    "evidence_tier_label": "database-derived information",
+    "literature_ref": "[5]"
+  },
+  {
+    "target_id": "T003",
+    "gene_name": "TLR4",
+    "protein_name": "Toll-like receptor 4",
+    "pdb_id": "3FXI",
+    "uniprot_id": "O00206",
+    "organism": "Homo sapiens",
+    "resolution_A": 2.48,
+    "method": "X-ray diffraction",
+    "disease_associations": [
+      "Sepsis",
+      "Chronic inflammation",
+      "COVID-19 cytokine storm"
+    ],
+    "pathway": "Innate immunity, NF-kB activation",
+    "binding_site": {
+      "center_x": 25.3,
+      "center_y": 12.8,
+      "center_z": -8.4,
+      "size_x": 25,
+      "size_y": 25,
+      "size_z": 25,
+      "residues": [
+        "LYS-341",
+        "PHE-408"
+      ]
+    },
+    "relevance": "TLR4 ML study [16] small dataset",
+    "evidence_tier": 1,
+    "evidence_tier_label": "database-derived information",
+    "literature_ref": "[16]"
+  },
+  {
+    "target_id": "T004",
+    "gene_name": "F10",
+    "protein_name": "Coagulation Factor Xa",
+    "pdb_id": "1XKA",
+    "uniprot_id": "P00742",
+    "organism": "Homo sapiens",
+    "resolution_A": 2.1,
+    "method": "X-ray diffraction",
+    "disease_associations": [
+      "Thrombosis",
+      "Deep vein thrombosis"
+    ],
+    "pathway": "Blood coagulation cascade",
+    "binding_site": {
+      "center_x": 7.5,
+      "center_y": 15.2,
+      "center_z": 14.8,
+      "size_x": 20,
+      "size_y": 20,
+      "size_z": 20,
+      "residues": [
+        "ASP-189",
+        "SER-195"
+      ]
+    },
+    "relevance": "QSAR benchmark [19] 6400 ChEMBL ExtraTrees R2=0.76",
+    "evidence_tier": 1,
+    "evidence_tier_label": "database-derived information",
+    "literature_ref": "[19]"
+  },
+  {
+    "target_id": "T005",
+    "gene_name": "BACE1",
+    "protein_name": "Beta-secretase 1 (Beta-site APP cleaving enzyme 1)",
+    "pdb_id": "2QP8",
+    "uniprot_id": "P56817",
+    "organism": "Homo sapiens",
+    "resolution_A": 1.7,
+    "method": "X-ray diffraction",
+    "disease_associations": [
+      "Alzheimer's disease"
+    ],
+    "pathway": "Amyloid processing",
+    "binding_site": {
+      "center_x": 35.2,
+      "center_y": 70.1,
+      "center_z": 3.4,
+      "size_x": 20,
+      "size_y": 20,
+      "size_z": 20,
+      "residues": [
+        "ASP-32",
+        "ASP-228"
+      ]
+    },
+    "relevance": "BACE1 inhibitor ML fusion [20] R2=0.78",
+    "evidence_tier": 1,
+    "evidence_tier_label": "database-derived information",
+    "literature_ref": "[20]"
+  },
+  {
+    "target_id": "T006",
+    "gene_name": "SARS-CoV-2 Mpro",
+    "protein_name": "SARS-CoV-2 Main Protease (3CLpro)",
+    "pdb_id": "6LU7",
+    "uniprot_id": "P0DTD1",
+    "organism": "SARS-CoV-2",
+    "resolution_A": 2.16,
+    "method": "X-ray diffraction",
+    "disease_associations": [
+      "COVID-19"
+    ],
+    "pathway": "Viral polyprotein processing",
+    "binding_site": {
+      "center_x": -10.7,
+      "center_y": 12.4,
+      "center_z": 68.9,
+      "size_x": 20,
+      "size_y": 20,
+      "size_z": 20,
+      "residues": [
+        "HIS-41",
+        "CYS-145",
+        "MET-49",
+        "GLU-166"
+      ]
+    },
+    "relevance": "AYUSH-64 repurposing [3] computational -> RCT",
+    "evidence_tier": 1,
+    "evidence_tier_label": "database-derived information",
+    "literature_ref": "[3]"
+  },
+  {
+    "target_id": "T007",
+    "gene_name": "PTGS2",
+    "protein_name": "Cyclooxygenase-2 (COX-2)",
+    "pdb_id": "5KIR",
+    "uniprot_id": "P35354",
+    "organism": "Homo sapiens",
+    "resolution_A": 2.7,
+    "method": "X-ray diffraction",
+    "disease_associations": [
+      "Inflammation",
+      "Arthritis"
+    ],
+    "pathway": "Prostaglandin biosynthesis",
+    "binding_site": {
+      "center_x": 23.1,
+      "center_y": 16.4,
+      "center_z": 16.2,
+      "size_x": 20,
+      "size_y": 20,
+      "size_z": 20,
+      "residues": [
+        "ARG-120",
+        "TYR-355"
+      ]
+    },
+    "relevance": "Triphala anti-inflammatory [4] 174 bioactives",
+    "evidence_tier": 1,
+    "evidence_tier_label": "database-derived information",
+    "literature_ref": "[4]"
+  },
+  {
+    "target_id": "T008",
+    "gene_name": "TNF",
+    "protein_name": "Tumor necrosis factor alpha (TNF-alpha)",
+    "pdb_id": "2AZ5",
+    "uniprot_id": "P01375",
+    "organism": "Homo sapiens",
+    "resolution_A": 2.1,
+    "method": "X-ray diffraction",
+    "disease_associations": [
+      "Rheumatoid arthritis",
+      "Cytokine storm"
+    ],
+    "pathway": "Inflammatory response",
+    "binding_site": {
+      "center_x": -19.2,
+      "center_y": 74.5,
+      "center_z": 33.8,
+      "size_x": 20,
+      "size_y": 20,
+      "size_z": 20,
+      "residues": [
+        "TYR-59",
+        "TYR-119"
+      ]
+    },
+    "relevance": "Network pharmacology polypharmacology [2]",
+    "evidence_tier": 1,
+    "evidence_tier_label": "database-derived information",
+    "literature_ref": "[2]"
+  },
+  {
+    "target_id": "T009",
+    "gene_name": "ACE2",
+    "protein_name": "Angiotensin-converting enzyme 2",
+    "pdb_id": "1R42",
+    "uniprot_id": "Q9BYF1",
+    "organism": "Homo sapiens",
+    "resolution_A": 2.2,
+    "method": "X-ray diffraction",
+    "disease_associations": [
+      "COVID-19 viral entry",
+      "Hypertension"
+    ],
+    "pathway": "Renin-angiotensin system",
+    "binding_site": {
+      "center_x": 40.2,
+      "center_y": 5.8,
+      "center_z": 23.1,
+      "size_x": 25,
+      "size_y": 25,
+      "size_z": 25,
+      "residues": [
+        "HIS-34",
+        "ASP-38"
+      ]
+    },
+    "relevance": "AYUSH-64 host target vs viral Mpro dual strategy [3]",
+    "evidence_tier": 1,
+    "evidence_tier_label": "database-derived information",
+    "literature_ref": "[3]"
+  },
+  {
+    "target_id": "T010",
+    "gene_name": "ESR1",
+    "protein_name": "Estrogen receptor alpha (ERa)",
+    "pdb_id": "1A52",
+    "uniprot_id": "P03372",
+    "organism": "Homo sapiens",
+    "resolution_A": 2.8,
+    "method": "X-ray diffraction",
+    "disease_associations": [
+      "Breast cancer",
+      "Osteoporosis"
+    ],
+    "pathway": "Estrogen signaling",
+    "binding_site": {
+      "center_x": 20.5,
+      "center_y": 2.1,
+      "center_z": 20.8,
+      "size_x": 20,
+      "size_y": 20,
+      "size_z": 20,
+      "residues": [
+        "GLU-353",
+        "ARG-394"
+      ]
+    },
+    "relevance": "QSAR SHAP example [17] MRE 0.0775",
+    "evidence_tier": 1,
+    "evidence_tier_label": "database-derived information",
+    "literature_ref": "[17]"
+  }
+]

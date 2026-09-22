@@ -1,0 +1,1042 @@
+[
+  {
+    "id": 1,
+    "citation_key": "REF01_Wherelies",
+    "title": "Where lies the future of Ayurveda-inspired drug discovery?",
+    "authors": [
+      "Author 1A",
+      "Author 1B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2016,
+    "doi": "10.1234/1",
+    "type": "Review",
+    "abstract": "Abstract for Where lies the future of Ayurveda-inspired drug discovery?. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 1 a",
+      "Key finding 1 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        2
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "B",
+    "keywords": "docking"
+  },
+  {
+    "id": 2,
+    "citation_key": "REF02_NetworkPh",
+    "title": "Network Pharmacology Approach for Herbal Drugs Intended for the Therapy of Diseases: A Comprehensive Review",
+    "authors": [
+      "Author 2A",
+      "Author 2B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2017,
+    "doi": "10.1234/2",
+    "type": "Research",
+    "abstract": "Abstract for Network Pharmacology Approach for Herbal Drugs Intended for the Therapy of Diseases: A Comprehensive Review. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 2 a",
+      "Key finding 2 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        3
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "C",
+    "keywords": "ML"
+  },
+  {
+    "id": 3,
+    "citation_key": "REF03_Ayurvedaa",
+    "title": "Ayurveda and in silico Approach: A Challenging Proficient Confluence for Better Development of Effective Traditional Medicine Spotlighting Network Pharmacology",
+    "authors": [
+      "Author 3A",
+      "Author 3B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2018,
+    "doi": "10.1234/3",
+    "type": "Review",
+    "abstract": "Abstract for Ayurveda and in silico Approach: A Challenging Proficient Confluence for Better Development of Effective Traditional Medicine Spotlighting Network Pharmacology. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 3 a",
+      "Key finding 3 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        4
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "D",
+    "keywords": "XAI"
+  },
+  {
+    "id": 4,
+    "citation_key": "REF04_NetworkPh",
+    "title": "Network Pharmacology: An Emerging Technique for Natural Product Drug Discovery and Scientific Research on Ayurveda",
+    "authors": [
+      "Author 4A",
+      "Author 4B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2019,
+    "doi": "10.1234/4",
+    "type": "Research",
+    "abstract": "Abstract for Network Pharmacology: An Emerging Technique for Natural Product Drug Discovery and Scientific Research on Ayurveda. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 4 a",
+      "Key finding 4 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        5
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "E",
+    "keywords": "RAG"
+  },
+  {
+    "id": 5,
+    "citation_key": "REF05_Insightsa",
+    "title": "Insights about multi-targeting and synergistic neuromodulators in Ayurvedic herbs against epilepsy",
+    "authors": [
+      "Author 5A",
+      "Author 5B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2020,
+    "doi": "10.1234/5",
+    "type": "Review",
+    "abstract": "Abstract for Insights about multi-targeting and synergistic neuromodulators in Ayurvedic herbs against epilepsy. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 5 a",
+      "Key finding 5 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        1
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "F",
+    "keywords": "Ayurveda"
+  },
+  {
+    "id": 6,
+    "citation_key": "REF06_NetworkPh",
+    "title": "Network Pharmacology-Driven Sustainability: AI and Multi-Omics Synergy for Drug Discovery in Traditional Chinese Medicine",
+    "authors": [
+      "Author 6A",
+      "Author 6B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2021,
+    "doi": "10.1234/6",
+    "type": "Research",
+    "abstract": "Abstract for Network Pharmacology-Driven Sustainability: AI and Multi-Omics Synergy for Drug Discovery in Traditional Chinese Medicine. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 6 a",
+      "Key finding 6 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        2
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "G",
+    "keywords": "docking"
+  },
+  {
+    "id": 7,
+    "citation_key": "REF07_IMPPAT:A",
+    "title": "IMPPAT: A curated database of Indian Medicinal Plants, Phytochemistry And Therapeutics",
+    "authors": [
+      "Author 7A",
+      "Author 7B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2022,
+    "doi": "10.1234/7",
+    "type": "Review",
+    "abstract": "Abstract for IMPPAT: A curated database of Indian Medicinal Plants, Phytochemistry And Therapeutics. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 7 a",
+      "Key finding 7 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        3
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "A",
+    "keywords": "ML"
+  },
+  {
+    "id": 8,
+    "citation_key": "REF08_IMPPAT2.0",
+    "title": "IMPPAT 2.0 database resource",
+    "authors": [
+      "Author 8A",
+      "Author 8B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2023,
+    "doi": "10.1234/8",
+    "type": "Research",
+    "abstract": "Abstract for IMPPAT 2.0 database resource. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 8 a",
+      "Key finding 8 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        4
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "B",
+    "keywords": "XAI"
+  },
+  {
+    "id": 9,
+    "citation_key": "REF09_TCMSP:ad",
+    "title": "TCMSP: a database of systems pharmacology for drug discovery from herbal medicines",
+    "authors": [
+      "Author 9A",
+      "Author 9B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2024,
+    "doi": "10.1234/9",
+    "type": "Review",
+    "abstract": "Abstract for TCMSP: a database of systems pharmacology for drug discovery from herbal medicines. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 9 a",
+      "Key finding 9 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        5
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "C",
+    "keywords": "RAG"
+  },
+  {
+    "id": 10,
+    "citation_key": "REF10_TCMID:Tra",
+    "title": "TCMID: Traditional Chinese Medicine integrative database",
+    "authors": [
+      "Author 10A",
+      "Author 10B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2025,
+    "doi": "10.1234/10",
+    "type": "Research",
+    "abstract": "Abstract for TCMID: Traditional Chinese Medicine integrative database. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 10 a",
+      "Key finding 10 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        1
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "D",
+    "keywords": "Ayurveda"
+  },
+  {
+    "id": 11,
+    "citation_key": "REF11_TCMSID:a",
+    "title": "TCMSID: a simplified integrated database for drug discovery from traditional Chinese medicine",
+    "authors": [
+      "Author 11A",
+      "Author 11B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2026,
+    "doi": "10.1234/11",
+    "type": "Review",
+    "abstract": "Abstract for TCMSID: a simplified integrated database for drug discovery from traditional Chinese medicine. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 11 a",
+      "Key finding 11 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        2
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "E",
+    "keywords": "docking"
+  },
+  {
+    "id": 12,
+    "citation_key": "REF12_AutoDockV",
+    "title": "AutoDock Vina: improving the speed and accuracy of docking",
+    "authors": [
+      "Author 12A",
+      "Author 12B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2015,
+    "doi": "10.1234/12",
+    "type": "Research",
+    "abstract": "Abstract for AutoDock Vina: improving the speed and accuracy of docking. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 12 a",
+      "Key finding 12 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        3
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "F",
+    "keywords": "ML"
+  },
+  {
+    "id": 13,
+    "citation_key": "REF13_DockingApp",
+    "title": "DockingApp RF: A State-of-the-Art Novel Scoring Function for Molecular Docking",
+    "authors": [
+      "Author 13A",
+      "Author 13B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2016,
+    "doi": "10.1234/13",
+    "type": "Review",
+    "abstract": "Abstract for DockingApp RF: A State-of-the-Art Novel Scoring Function for Molecular Docking. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 13 a",
+      "Key finding 13 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        4
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "G",
+    "keywords": "XAI"
+  },
+  {
+    "id": 14,
+    "citation_key": "REF14_ANewScor",
+    "title": "A New Scoring Function for Molecular Docking Based on AutoDock and AutoDock Vina",
+    "authors": [
+      "Author 14A",
+      "Author 14B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2017,
+    "doi": "10.1234/14",
+    "type": "Research",
+    "abstract": "Abstract for A New Scoring Function for Molecular Docking Based on AutoDock and AutoDock Vina. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 14 a",
+      "Key finding 14 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        5
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "A",
+    "keywords": "RAG"
+  },
+  {
+    "id": 15,
+    "citation_key": "REF15_PLIP:full",
+    "title": "PLIP: fully automated protein-ligand interaction profiler",
+    "authors": [
+      "Author 15A",
+      "Author 15B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2018,
+    "doi": "10.1234/15",
+    "type": "Review",
+    "abstract": "Abstract for PLIP: fully automated protein-ligand interaction profiler. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 15 a",
+      "Key finding 15 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        1
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "B",
+    "keywords": "Ayurveda"
+  },
+  {
+    "id": 16,
+    "citation_key": "REF16_MachineLe",
+    "title": "Machine Learning-Driven Prediction of TLR4 Binding Affinity",
+    "authors": [
+      "Author 16A",
+      "Author 16B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2019,
+    "doi": "10.1234/16",
+    "type": "Research",
+    "abstract": "Abstract for Machine Learning-Driven Prediction of TLR4 Binding Affinity. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 16 a",
+      "Key finding 16 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        2
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "C",
+    "keywords": "docking"
+  },
+  {
+    "id": 17,
+    "citation_key": "REF17_Multi-obje",
+    "title": "Multi-objective QSAR prediction of ERa antagonists via SHAP-based interpretation",
+    "authors": [
+      "Author 17A",
+      "Author 17B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2020,
+    "doi": "10.1234/17",
+    "type": "Review",
+    "abstract": "Abstract for Multi-objective QSAR prediction of ERa antagonists via SHAP-based interpretation. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 17 a",
+      "Key finding 17 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        3
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "D",
+    "keywords": "ML"
+  },
+  {
+    "id": 18,
+    "citation_key": "REF18_OnMachine",
+    "title": "On Machine Learning Approaches for Protein-Ligand Binding Affinity Prediction",
+    "authors": [
+      "Author 18A",
+      "Author 18B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2021,
+    "doi": "10.1234/18",
+    "type": "Research",
+    "abstract": "Abstract for On Machine Learning Approaches for Protein-Ligand Binding Affinity Prediction. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 18 a",
+      "Key finding 18 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        4
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "E",
+    "keywords": "XAI"
+  },
+  {
+    "id": 19,
+    "citation_key": "REF19_Interpreta",
+    "title": "Interpretable machine learning-driven QSAR modeling for coagulation factor X inhibitors",
+    "authors": [
+      "Author 19A",
+      "Author 19B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2022,
+    "doi": "10.1234/19",
+    "type": "Review",
+    "abstract": "Abstract for Interpretable machine learning-driven QSAR modeling for coagulation factor X inhibitors. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 19 a",
+      "Key finding 19 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        5
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "F",
+    "keywords": "RAG"
+  },
+  {
+    "id": 20,
+    "citation_key": "REF20_Enhancing",
+    "title": "Enhancing BACE1 Inhibitor Discovery with Machine Learning by Integrating Binding Interactions and QSAR Features",
+    "authors": [
+      "Author 20A",
+      "Author 20B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2023,
+    "doi": "10.1234/20",
+    "type": "Research",
+    "abstract": "Abstract for Enhancing BACE1 Inhibitor Discovery with Machine Learning by Integrating Binding Interactions and QSAR Features. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 20 a",
+      "Key finding 20 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        1
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "G",
+    "keywords": "Ayurveda"
+  },
+  {
+    "id": 21,
+    "citation_key": "REF21_Integrated",
+    "title": "Integrated QSAR Models for Prediction of Serotonergic Activity",
+    "authors": [
+      "Author 21A",
+      "Author 21B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2024,
+    "doi": "10.1234/21",
+    "type": "Review",
+    "abstract": "Abstract for Integrated QSAR Models for Prediction of Serotonergic Activity. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 21 a",
+      "Key finding 21 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        2
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "A",
+    "keywords": "docking"
+  },
+  {
+    "id": 22,
+    "citation_key": "REF22_Physics-in",
+    "title": "Physics-inspired explainable AI for mechanistic and decision support in drug discovery",
+    "authors": [
+      "Author 22A",
+      "Author 22B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2025,
+    "doi": "10.1234/22",
+    "type": "Research",
+    "abstract": "Abstract for Physics-inspired explainable AI for mechanistic and decision support in drug discovery. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 22 a",
+      "Key finding 22 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        3
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "B",
+    "keywords": "ML"
+  },
+  {
+    "id": 23,
+    "citation_key": "REF23_Explainabl",
+    "title": "Explainable Artificial Intelligence: A Perspective on Drug Discovery",
+    "authors": [
+      "Author 23A",
+      "Author 23B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2026,
+    "doi": "10.1234/23",
+    "type": "Review",
+    "abstract": "Abstract for Explainable Artificial Intelligence: A Perspective on Drug Discovery. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 23 a",
+      "Key finding 23 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        4
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "C",
+    "keywords": "XAI"
+  },
+  {
+    "id": 24,
+    "citation_key": "REF24_Explainabl",
+    "title": "Explainable AI methods for drug discovery: A survey of interpretability, metrics and mechanistic insight",
+    "authors": [
+      "Author 24A",
+      "Author 24B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2015,
+    "doi": "10.1234/24",
+    "type": "Research",
+    "abstract": "Abstract for Explainable AI methods for drug discovery: A survey of interpretability, metrics and mechanistic insight. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 24 a",
+      "Key finding 24 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        5
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "D",
+    "keywords": "RAG"
+  },
+  {
+    "id": 25,
+    "citation_key": "REF25_Meta-Model",
+    "title": "Meta-Modeling with Drug Discovery Stack Regressor for Drug Discovery: An Explainable AI Perspective",
+    "authors": [
+      "Author 25A",
+      "Author 25B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2016,
+    "doi": "10.1234/25",
+    "type": "Review",
+    "abstract": "Abstract for Meta-Modeling with Drug Discovery Stack Regressor for Drug Discovery: An Explainable AI Perspective. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 25 a",
+      "Key finding 25 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        1
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "E",
+    "keywords": "Ayurveda"
+  },
+  {
+    "id": 26,
+    "citation_key": "REF26_Explainabl",
+    "title": "Explainable Artificial Intelligence in Drug Discovery: Bridging Predictive Power and Mechanistic Insight",
+    "authors": [
+      "Author 26A",
+      "Author 26B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2017,
+    "doi": "10.1234/26",
+    "type": "Research",
+    "abstract": "Abstract for Explainable Artificial Intelligence in Drug Discovery: Bridging Predictive Power and Mechanistic Insight. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 26 a",
+      "Key finding 26 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        2
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "F",
+    "keywords": "docking"
+  },
+  {
+    "id": 27,
+    "citation_key": "REF27_Performanc",
+    "title": "Performance of Retrieval-Augmented Generation (RAG) on Pharmaceutical Documents",
+    "authors": [
+      "Author 27A",
+      "Author 27B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2018,
+    "doi": "10.1234/27",
+    "type": "Review",
+    "abstract": "Abstract for Performance of Retrieval-Augmented Generation (RAG) on Pharmaceutical Documents. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 27 a",
+      "Key finding 27 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        3
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "G",
+    "keywords": "ML"
+  },
+  {
+    "id": 28,
+    "citation_key": "REF28_Retrieval-",
+    "title": "Retrieval-Augmented Generation for Reducing Hallucinations in Drug-Related Question Answering Systems",
+    "authors": [
+      "Author 28A",
+      "Author 28B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2019,
+    "doi": "10.1234/28",
+    "type": "Research",
+    "abstract": "Abstract for Retrieval-Augmented Generation for Reducing Hallucinations in Drug-Related Question Answering Systems. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 28 a",
+      "Key finding 28 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        4
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "A",
+    "keywords": "XAI"
+  },
+  {
+    "id": 29,
+    "citation_key": "REF29_Benchmarki",
+    "title": "Benchmarking Retrieval-Augmented Generation for Medicine",
+    "authors": [
+      "Author 29A",
+      "Author 29B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2020,
+    "doi": "10.1234/29",
+    "type": "Review",
+    "abstract": "Abstract for Benchmarking Retrieval-Augmented Generation for Medicine. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 29 a",
+      "Key finding 29 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        5
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "B",
+    "keywords": "RAG"
+  },
+  {
+    "id": 30,
+    "citation_key": "REF30_Retrieval-",
+    "title": "Retrieval-Augmented Generation for AI-Generated Content: A Survey",
+    "authors": [
+      "Author 30A",
+      "Author 30B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2021,
+    "doi": "10.1234/30",
+    "type": "Research",
+    "abstract": "Abstract for Retrieval-Augmented Generation for AI-Generated Content: A Survey. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 30 a",
+      "Key finding 30 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        1
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "C",
+    "keywords": "Ayurveda"
+  },
+  {
+    "id": 31,
+    "citation_key": "REF31_HiPerRAG:",
+    "title": "HiPerRAG: High-Performance Retrieval Augmented Generation for Scientific Insights",
+    "authors": [
+      "Author 31A",
+      "Author 31B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2022,
+    "doi": "10.1234/31",
+    "type": "Review",
+    "abstract": "Abstract for HiPerRAG: High-Performance Retrieval Augmented Generation for Scientific Insights. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 31 a",
+      "Key finding 31 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        2
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "D",
+    "keywords": "docking"
+  },
+  {
+    "id": 32,
+    "citation_key": "REF32_AgenticAI",
+    "title": "Agentic AI in Pharma: Multi-Agent and Self-Driving Labs",
+    "authors": [
+      "Author 32A",
+      "Author 32B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2023,
+    "doi": "10.1234/32",
+    "type": "Research",
+    "abstract": "Abstract for Agentic AI in Pharma: Multi-Agent and Self-Driving Labs. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 32 a",
+      "Key finding 32 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        3
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "E",
+    "keywords": "ML"
+  },
+  {
+    "id": 33,
+    "citation_key": "REF33_AIAgents",
+    "title": "AI Agents in Drug Discovery",
+    "authors": [
+      "Author 33A",
+      "Author 33B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2024,
+    "doi": "10.1234/33",
+    "type": "Review",
+    "abstract": "Abstract for AI Agents in Drug Discovery. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 33 a",
+      "Key finding 33 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        4
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "F",
+    "keywords": "XAI"
+  },
+  {
+    "id": 34,
+    "citation_key": "REF34_Democratis",
+    "title": "Democratising real-world drug discovery through agentic AI",
+    "authors": [
+      "Author 34A",
+      "Author 34B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2025,
+    "doi": "10.1234/34",
+    "type": "Research",
+    "abstract": "Abstract for Democratising real-world drug discovery through agentic AI. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 34 a",
+      "Key finding 34 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        5
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "G",
+    "keywords": "RAG"
+  },
+  {
+    "id": 35,
+    "citation_key": "REF35_LargeLang",
+    "title": "Large Language Model Agent for Modular Task Execution in Drug Discovery (AgentD)",
+    "authors": [
+      "Author 35A",
+      "Author 35B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2026,
+    "doi": "10.1234/35",
+    "type": "Review",
+    "abstract": "Abstract for Large Language Model Agent for Modular Task Execution in Drug Discovery (AgentD). Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 35 a",
+      "Key finding 35 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        1
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "A",
+    "keywords": "Ayurveda"
+  },
+  {
+    "id": 36,
+    "citation_key": "REF36_Accelerati",
+    "title": "Accelerating Drug Discovery Through Agentic AI: A Multi-Agent Approach to Laboratory Automation in the DMTA Cycle (Tippy)",
+    "authors": [
+      "Author 36A",
+      "Author 36B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2015,
+    "doi": "10.1234/36",
+    "type": "Research",
+    "abstract": "Abstract for Accelerating Drug Discovery Through Agentic AI: A Multi-Agent Approach to Laboratory Automation in the DMTA Cycle (Tippy). Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 36 a",
+      "Key finding 36 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        2
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "B",
+    "keywords": "docking"
+  },
+  {
+    "id": 37,
+    "citation_key": "REF37_Bridgingt",
+    "title": "Bridging traditional and contemporary approaches in computational medicinal chemistry",
+    "authors": [
+      "Author 37A",
+      "Author 37B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2016,
+    "doi": "10.1234/37",
+    "type": "Review",
+    "abstract": "Abstract for Bridging traditional and contemporary approaches in computational medicinal chemistry. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 37 a",
+      "Key finding 37 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        3
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "C",
+    "keywords": "ML"
+  },
+  {
+    "id": 38,
+    "citation_key": "REF38_AI-Driven",
+    "title": "AI-Driven Drug Discovery: A Comprehensive Review",
+    "authors": [
+      "Author 38A",
+      "Author 38B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2017,
+    "doi": "10.1234/38",
+    "type": "Research",
+    "abstract": "Abstract for AI-Driven Drug Discovery: A Comprehensive Review. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 38 a",
+      "Key finding 38 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        4
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "D",
+    "keywords": "XAI"
+  },
+  {
+    "id": 39,
+    "citation_key": "REF39_SperoPredi",
+    "title": "SperoPredictor: An Integrated Machine Learning and Molecular Docking-Based Drug Repurposing Framework With Use Case of COVID-19",
+    "authors": [
+      "Author 39A",
+      "Author 39B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2018,
+    "doi": "10.1234/39",
+    "type": "Review",
+    "abstract": "Abstract for SperoPredictor: An Integrated Machine Learning and Molecular Docking-Based Drug Repurposing Framework With Use Case of COVID-19. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 39 a",
+      "Key finding 39 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        5
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "E",
+    "keywords": "RAG"
+  },
+  {
+    "id": 40,
+    "citation_key": "REF40_AI-enabled",
+    "title": "AI-enabled drug and molecular discovery: computational methods, platforms, and translational horizons",
+    "authors": [
+      "Author 40A",
+      "Author 40B"
+    ],
+    "journal": "Journal Placeholder",
+    "year": 2019,
+    "doi": "10.1234/40",
+    "type": "Research",
+    "abstract": "Abstract for AI-enabled drug and molecular discovery: computational methods, platforms, and translational horizons. Provides foundation for one of seven literature areas A-G and supports evidentiary tier labeling requirement per AYUSH-64 case study where computational prediction required separate validation.",
+    "key_findings": [
+      "Key finding 40 a",
+      "Key finding 40 b"
+    ],
+    "evidence_tier_relevance": {
+      "tiers": [
+        1
+      ],
+      "rationale": "Supports tiered evidence labeling"
+    },
+    "literature_area": "F",
+    "keywords": "Ayurveda"
+  }
+]

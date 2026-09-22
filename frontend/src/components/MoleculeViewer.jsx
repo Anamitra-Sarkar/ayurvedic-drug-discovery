@@ -1,0 +1,237 @@
+
+/**
+ * MoleculeViewer.jsx
+ * 3Dmol.js viewer for protein-ligand complex, shows interactions, pose
+ * - Supports PDB for protein, SDF/MOL for ligand
+ * - Interaction visualization
+ * - Evidence tier: DOCKING_RESULT
+ */
+import React, { useEffect, useRef, useState } from 'react';
+import EvidenceTierBadge from './EvidenceTierBadge.jsx';
+
+export default function MoleculeViewer({ 
+  proteinPDB = null, // PDB string or URL
+  ligandSDF = null, // SDF/MOL string
+  dockingResult = null,
+  height = 480,
+  showControls = true,
+}) {
+  const viewerRef = useRef(null);
+  const containerRef = useRef(null);
+  const [style, setStyle] = useState('stick'); // stick, sphere, cartoon, line
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [viewerReady, setViewerReady] = useState(false);
+
+  // Default PDB for demo - small peptide from 6LU7 Mpro active site snippet
+  const defaultProteinPDB = `ATOM      1  N   HIS A  41      10.123  15.234  20.345  1.00  20.00           N
+ATOM      2  CA  HIS A  41      11.345  15.678  21.123  1.00  20.00           C
+ATOM      3  C   HIS A  41      12.123  14.567  22.000  1.00  20.00           C
+ATOM      4  O   HIS A  41      11.890  13.400  22.100  1.00  20.00           O
+ATOM      5  CB  HIS A  41      10.900  16.900  22.000  1.00  20.00           C
+ATOM      6  CG  HIS A  41      10.200  18.100  21.200  1.00  20.00           C
+ATOM      7  N   MET A  49       9.000  14.000  18.000  1.00  20.00           N
+ATOM      8  CA  MET A  49       8.123  13.500  17.200  1.00  20.00           C
+ATOM      9  C   MET A  49       7.500  12.200  17.800  1.00  20.00           C
+ATOM     10  O   MET A  49       7.800  11.200  17.200  1.00  20.00           O
+ATOM     11  N   HIS A 163       5.000  10.000  15.000  1.00  20.00           N
+ATOM     12  CA  HIS A 163       4.200   9.500  14.200  1.00  20.00           C
+ATOM     13  C   HIS A 163       3.500   8.200  14.800  1.00  20.00           C
+ATOM     14  O   HIS A 163       3.800   7.200  14.200  1.00  20.00           O
+ATOM     15  N   GLU A 166       2.000   9.000  13.000  1.00  20.00           N
+ATOM     16  CA  GLU A 166       1.200   8.500  12.200  1.00  20.00           C
+END
+`;
+
+  const defaultLigandSDF = `
+  Withaferin A mock
+     RDKit          2D
+
+  8  8  0  0  0  0  0  0  0  0999 V2000
+    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    1.2000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    1.8000    1.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    1.2000    2.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    0.0000    2.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+   -0.6000    1.0000    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+    2.5000   -1.0000    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0
+   -1.2000   -0.5000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+  1  2  2  0  0  0  0
+  2  3  1  0  0  0  0
+  3  4  2  0  0  0  0
+  4  5  1  0  0  0  0
+  5  1  1  0  0  0  0
+  5  6  1  0  0  0  0
+  2  7  2  0  0  0  0
+  1  8  1  0  0  0  0
+M  END
+$$$$
+`;
+
+  useEffect(() => {
+    let mounted = true;
+    const initViewer = async () => {
+      if (!containerRef.current) return;
+      setIsLoading(true);
+      setError(null);
+      try {
+        // Dynamic import 3dmol
+        const $3Dmol = await import('3dmol');
+        if (!mounted) return;
+
+        // Clear previous
+        containerRef.current.innerHTML = '';
+        const viewer = $3Dmol.createViewer(containerRef.current, {
+          backgroundColor: '#f8faf6',
+          antialias: true,
+        });
+        viewerRef.current = viewer;
+
+        const pdbData = proteinPDB || defaultProteinPDB;
+        const ligandData = ligandSDF || defaultLigandSDF;
+
+        // Add protein
+        viewer.addModel(pdbData, 'pdb');
+        viewer.setStyle({ model: 0 }, { cartoon: { color: '#a3b18a', opacity: 0.85 }, stick: { radius: 0.15, colorscheme: 'Jmol' } });
+
+        // Add ligand as second model
+        if (ligandData) {
+          viewer.addModel(ligandData, 'sdf');
+          const ligandStyle = style === 'sphere' ? { sphere: { scale: 0.3 } } :
+                              style === 'line' ? { line: {} } :
+                              style === 'cartoon' ? { stick: { radius: 0.2 }, sphere: { scale: 0.25 } } :
+                              { stick: { radius: 0.25, colorscheme: 'greenCarbon' }, sphere: { scale: 0.22 } };
+          viewer.setStyle({ model: 1 }, ligandStyle);
+        }
+
+        // Highlight interactions if present
+        if (dockingResult?.interactions) {
+          dockingResult.interactions.forEach(inter => {
+            // Simple labeling - create pseudo shape
+            // In real implementation you'd get residue coordinates
+          });
+        }
+
+        viewer.zoomTo();
+        viewer.render();
+        setViewerReady(true);
+      } catch (e) {
+        console.error('3Dmol init failed', e);
+        setError(e.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initViewer();
+    return () => { mounted = false; };
+  }, [proteinPDB, ligandSDF, dockingResult]);
+
+  // Update style dynamically
+  useEffect(() => {
+    if (!viewerRef.current || !viewerReady) return;
+    try {
+      const ligandStyle = style === 'sphere' ? { sphere: { scale: 0.3 } } :
+                          style === 'line' ? { line: {} } :
+                          style === 'cartoon' ? { stick: { radius: 0.2 }, sphere: { scale: 0.25 } } :
+                          { stick: { radius: 0.25, colorscheme: 'greenCarbon' }, sphere: { scale: 0.22 } };
+      viewerRef.current.setStyle({ model: 1 }, ligandStyle);
+      viewerRef.current.render();
+    } catch {}
+  }, [style, viewerReady]);
+
+  const handleExport = () => {
+    if (!viewerRef.current) return;
+    const img = viewerRef.current.pngURI();
+    const a = document.createElement('a');
+    a.href = img;
+    a.download = 'docking_pose.png';
+    a.click();
+  };
+
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white shadow-card overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-slate-50/60">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-violet-600 text-white flex items-center justify-center text-sm">🧬</div>
+          <div>
+            <div className="font-display font-semibold text-sm">Protein-Ligand Complex</div>
+            <div className="font-mono text-[11px] text-slate-500">{dockingResult?.target || 'Mpro (6LU7) - demo'} • {dockingResult?.affinity_kcal_mol ? `${dockingResult.affinity_kcal_mol} kcal/mol` : 'pose preview'}</div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <EvidenceTierBadge tier="DOCKING_RESULT" size="sm" />
+        </div>
+      </div>
+
+      {/* Viewer */}
+      <div className="relative bg-[#f8faf6]">
+        <div ref={containerRef} style={{ width: '100%', height: height, position: 'relative' }} />
+        {isLoading && (
+          <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex items-center justify-center">
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-6 h-6 border-2 border-violet-600 border-t-transparent rounded-full animate-spin" />
+              <span className="font-mono text-xs text-slate-600">Loading 3Dmol.js viewer...</span>
+            </div>
+          </div>
+        )}
+        {error && (
+          <div className="absolute inset-0 bg-red-50 flex items-center justify-center p-6 text-center">
+            <div>
+              <div className="text-red-700 font-semibold text-sm">Viewer failed</div>
+              <div className="text-xs text-red-600 mt-1 font-mono break-all">{error}</div>
+              <div className="text-[11px] text-slate-500 mt-2">Check proteinPDB / ligand SDF format. Showing fallback is available.</div>
+            </div>
+          </div>
+        )}
+        {/* Watermark */}
+        <div className="absolute bottom-2 right-3 font-mono text-[10px] text-slate-400 bg-white/80 px-2 py-0.5 rounded-full border border-slate-200">3Dmol.js • Computational Pose</div>
+      </div>
+
+      {/* Controls */}
+      {showControls && (
+        <div className="px-4 py-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-1.5">
+            {[
+              { id: 'stick', label: 'Stick' },
+              { id: 'sphere', label: 'Sphere' },
+              { id: 'line', label: 'Wire' },
+              { id: 'cartoon', label: 'Cartoon+' },
+            ].map(b => (
+              <button
+                key={b.id}
+                onClick={()=>setStyle(b.id)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium border transition ${style===b.id ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`}
+              >
+                {b.label}
+              </button>
+            ))}
+          </div>
+          <div className="flex items-center gap-2">
+            <button onClick={()=>viewerRef.current?.zoomTo()} className="px-3 py-1.5 rounded-full text-xs border border-slate-200 bg-white hover:bg-slate-50">Fit</button>
+            <button onClick={handleExport} className="px-3 py-1.5 rounded-full text-xs border border-slate-200 bg-white hover:bg-slate-50">PNG</button>
+          </div>
+        </div>
+      )}
+
+      {/* Interactions */}
+      {dockingResult?.interactions && (
+        <div className="px-4 py-3 bg-violet-50/60 border-t border-violet-100">
+          <div className="font-mono text-[11px] tracking-widest text-violet-800 font-semibold mb-2">PREDICTED INTERACTIONS — DOCKING_RESULT TIER</div>
+          <div className="flex flex-wrap gap-2">
+            {dockingResult.interactions.map((it, i)=>(
+              <span key={i} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-violet-200 text-xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-violet-600" />
+                <span className="font-medium">{it.type}</span>
+                <span className="font-mono text-slate-500">{it.residue}</span>
+                <span className="font-mono text-[11px] text-slate-400">{it.distance}Å</span>
+              </span>
+            ))}
+          </div>
+          <div className="mt-2 font-mono text-[10px] text-violet-700">⚠️ In-silico interaction hypothesis — requires experimental validation (e.g., co-crystallography).</div>
+        </div>
+      )}
+    </div>
+  );
+}

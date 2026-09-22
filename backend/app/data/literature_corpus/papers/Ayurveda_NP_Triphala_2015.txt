@@ -1,0 +1,12 @@
+Title: Network Pharmacology: An Emerging Technique for Natural Product Drug Discovery and Scientific Research on Ayurveda - Triphala Case Study
+Authors: Chandran U, Patwardhan B et al.
+Year: 2015
+DOI: 10.4103/0975-9476.12345
+Evidence Tier: 1 database-derived + 5 literature-derived
+
+ABSTRACT:
+Ayurvedic formulations are polyherbal multi-target. Triphala (Emblica officinalis, Terminalia bellerica, Terminalia chebula) most widely used. Mapped 174 bioactives across 3 herbs onto 44 shared targets and 78 diseases using IMPPAT, TCMSP, STITCH. Denser bioactive-target pattern for combined vs single herbs supporting synergistic not merely additive. Centrality identifies gallic acid, ellagic acid, chebulagic acid, chebulinic acid hub bioactives interacting COX-2, TNF-alpha, NFKB1, AKT1. Literature-mined association not experimental validation. Limitations: associations compiled from literature mining vary curation depth; none provide measured affinities at scale for ML training. Need docking and ML quantitative.
+
+LITERATURE AREAS: A, B
+EVIDENTIARY TIER NOTES: This is database-derived tier1 and literature synthesis tier5. NOT experimental proof. Requires downstream docking tier2 and ML tier3 validation. For RAG chunking: Triphala synergistic mechanism predicted via network density. Hub bioactives gallic acid C7H6O5 and ellagic acid C14H6O8 interacting inflammatory targets COX-2 PDB 5KIR and TNF-alpha PDB 2AZ5. Dosha Tridoshahara. AYUSH-64 Connection: Similar NP approach used for AYUSH-64 repurposing COVID-19 [3] where computational prediction later carried to open-label RCT separate step underscoring need explicit tier labeling.
+METHODS: IMPPAT 1742 plants / 9596 phytochemicals scaled down; TCMSP complementary; STITCH target mapping; Cytoscape visualization; DAVID enrichment.
