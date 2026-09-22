@@ -32,6 +32,7 @@ from app.agents.evidence_tiers import EvidenceTier, TieredOutput, global_registr
 from app.agents.database_agent import DatabaseAgent
 from app.agents.cheminformatics_agent import CheminformaticsAgent
 from app.agents.docking_agent import DockingAgent
+from app.agents.interaction_agent import InteractionAnalysisAgent
 from app.agents.ml_agent import MLAgent
 from app.agents.xai_agent import XAIAgent
 from app.agents.literature_agent import LiteratureAgent
@@ -145,6 +146,7 @@ class AyurvedicDiscoveryOrchestrator:
         self.agents["database"] = DatabaseAgent()
         self.agents["cheminformatics"] = CheminformaticsAgent()
         self.agents["docking"] = DockingAgent()
+        self.agents["interaction"] = InteractionAnalysisAgent()
         self.agents["ml"] = MLAgent()
         self.agents["xai"] = XAIAgent(ml_agent=self.agents["ml"])
         self.agents["literature"] = LiteratureAgent()
@@ -156,6 +158,7 @@ class AyurvedicDiscoveryOrchestrator:
             "database": NodeDefinition(name="database", agent=self.agents["database"], dependencies=[], can_parallel=False),
             "cheminformatics": NodeDefinition(name="cheminformatics", agent=self.agents["cheminformatics"], dependencies=["database"], can_parallel=False),
             "docking": NodeDefinition(name="docking", agent=self.agents["docking"], dependencies=["cheminformatics"], can_parallel=False),
+            "interaction": NodeDefinition(name="interaction", agent=self.agents["interaction"], dependencies=["docking"], can_parallel=True),
             "ml": NodeDefinition(name="ml", agent=self.agents["ml"], dependencies=["docking"], can_parallel=False),
             "xai": NodeDefinition(name="xai", agent=self.agents["xai"], dependencies=["ml"], can_parallel=False),
             "literature": NodeDefinition(name="literature", agent=self.agents["literature"], dependencies=["ml"], can_parallel=True),  # parallel with XAI
