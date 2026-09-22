@@ -506,6 +506,6 @@
   "ayush64_case_study_justification": {
     "lesson": "AYUSH-64 repurposing COVID-19 via NP+docking [3] subsequently evaluated in open-label RCT as adjunct - rare documented computational -> clinical tier progression",
     "implication": "Underscores why every output must be explicitly labeled by tier rather than undifferentiated result; computational prediction presented as hypothesis not therapy",
-    "hard_constraint_enforcement": "central module backend/app/core/evidence/tiers.py decorator @enforce_tier and validate_no_clinical_claim blocks phrases like 'clinically proven'"
+    "hard_constraint_enforcement": "central module backend/app/core/evidence/tiers.py decorator @enforce_tier and validate_no_clinical_claim blocks phrases claiming clinical proof"
   }
 }

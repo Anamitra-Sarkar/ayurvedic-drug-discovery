@@ -8,7 +8,7 @@ def test_imppat_sample_exists():
     assert p.exists()
     with open(p) as f:
         data = json.load(f)
-    assert len(data) == 100
+    assert len(data) == 65  # real record count after Phase B fabrication fix (see docs/DATA_PROVENANCE.md)
     triphala = [d for d in data if 'Triphala' in str(d['traditional_formulations'])]
     assert len(triphala) >= 20
     ayush = [d for d in data if 'AYUSH-64' in str(d['traditional_formulations'])]

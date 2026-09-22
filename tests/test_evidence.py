@@ -52,7 +52,7 @@ def test_imppat_sample_tier_label():
     imppat_path = BASE / "backend/app/data/imppat_sample.json"
     with open(imppat_path) as f:
         data = json.load(f)
-    assert len(data) == 100
+    assert len(data) == 65  # real record count after Phase B fabrication fix (see docs/DATA_PROVENANCE.md)
     for entry in data[:5]:
         assert entry['evidence_tier'] == 1
         assert entry['evidence_tier_label'] == "database-derived information"
