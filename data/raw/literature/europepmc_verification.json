@@ -67,11 +67,12 @@
   {
     "ref_number": 8,
     "original_ref_title": "Expanded curation base 100+ books traditional Indian medicine 7,000+ published articles largest digital resource of its kind",
-    "matched_title": "Abstracts of the 7th World Parkinson Congress.",
-    "doi": "10.1177/1877718x261451755",
-    "pmid": "42175618",
-    "pub_year": "2026",
-    "match_plausible": false
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "Europe PMC query failed or returned nothing: unexpected Europe PMC response shape: 'resultList'"
   },
   {
     "ref_number": 9,
@@ -138,16 +139,17 @@
     "pmid": null,
     "pub_year": null,
     "match_plausible": false,
-    "note": "Europe PMC query failed or returned nothing: unexpected Europe PMC response shape: 'resultList'"
+    "note": "Europe PMC query failed or returned nothing: no results returned by Europe PMC"
   },
   {
     "ref_number": 16,
     "original_ref_title": "TLR4 binding-affinity ML study",
-    "matched_title": "MAP Crosslinker Chirality Regulates Macrophage Polarization Through MD-2 Engagement and Enables Tunable Immunomodulation Through Novel Peptide Design.",
-    "doi": "10.1002/adhm.71572",
-    "pmid": "42596107",
-    "pub_year": "2026",
-    "match_plausible": false
+    "matched_title": null,
+    "doi": null,
+    "pmid": null,
+    "pub_year": null,
+    "match_plausible": false,
+    "note": "Europe PMC query failed or returned nothing: unexpected Europe PMC response shape: 'resultList'"
   },
   {
     "ref_number": 17,
@@ -340,7 +342,7 @@
     "pmid": null,
     "pub_year": null,
     "match_plausible": false,
-    "note": "Europe PMC query failed or returned nothing: no results returned by Europe PMC"
+    "note": "Europe PMC query failed or returned nothing: unexpected Europe PMC response shape: 'resultList'"
   },
   {
     "ref_number": 37,
