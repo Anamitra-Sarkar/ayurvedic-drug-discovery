@@ -7,6 +7,16 @@ import { ConfidenceBadge } from './ui.jsx';
 import { TierSeparator } from './EvidenceTierBadge.jsx';
 import { fitVerdict } from '../utils/friendly.js';
 
+// The real /candidates/rank endpoint only ever runs DATABASE_DERIVED +
+// DOCKING_RESULT for a shortlist (no ML/XAI/literature call per candidate -
+// too slow to run for a whole ranked list, unlike a single compound's
+// Results page). Showing "Trust 0%"/"0% grounded" from undefined ml/
+// literature fields presented an absent computation as a real zero result -
+// exactly what this app's own evidentiary-tier rule says never to do.
+// tiersPresent (real, from the backend) is the source of truth for what
+// was actually computed for a given candidate.
+const hasTier = (c, tier) => Array.isArray(c.tiersPresent) && c.tiersPresent.includes(tier);
+
 export default function CandidateRankingTable({ ranking, loading, onSelect }) {
   const [sortBy, setSortBy] = useState('rank');
   const [expanded, setExpanded] = useState(null);
@@ -88,12 +98,20 @@ export default function CandidateRankingTable({ ranking, loading, onSelect }) {
                   <div className="text-[10px] text-forest-700/70 dark:text-cream-100/60 mt-0.5">{fitVerdict(c.docking?.affinity_kcal_mol)}</div>
                 </div>
                 <div className="rounded-xl bg-gold-50 border border-gold-300/50 p-2 dark:bg-white/5">
-                  <div className="text-xs font-bold text-forest-800 dark:text-cream-50">Strength {c.ml?.pKd_pred?.toFixed(1)}</div>
-                  <div className="text-[10px] text-forest-700/70 dark:text-cream-100/60 mt-0.5">Trust {Math.round((c.ml?.applicability || 0) * 100)}%</div>
+                  {hasTier(c, 'ML_PREDICTION') ? (
+                    <>
+                      <div className="text-xs font-bold text-forest-800 dark:text-cream-50">Strength {c.ml?.pKd_pred?.toFixed(1)}</div>
+                      <div className="text-[10px] text-forest-700/70 dark:text-cream-100/60 mt-0.5">Trust {Math.round((c.ml?.applicability || 0) * 100)}%</div>
+                    </>
+                  ) : (
+                    <div className="text-[10px] italic text-forest-700/60 dark:text-cream-100/50">Not scored for this shortlist</div>
+                  )}
                 </div>
                 <div className="rounded-xl bg-forest-50 border border-forest-900/10 p-2 dark:bg-white/5">
-                  <div className="text-[10px] text-forest-700 dark:text-cream-100/70 truncate">Why: {plainTop(c.xai?.topFeature)}</div>
-                  <div className="text-[10px] text-forest-700/70 dark:text-cream-100/60 mt-0.5">{c.literature?.citations} papers · {Math.round((c.literature?.faithfulness || 0) * 100)}% grounded</div>
+                  <div className="text-[10px] text-forest-700 dark:text-cream-100/70 truncate">Why: {hasTier(c, 'XAI_INTERPRETATION') ? plainTop(c.xai?.topFeature) : 'not explained here'}</div>
+                  <div className="text-[10px] text-forest-700/70 dark:text-cream-100/60 mt-0.5">
+                    {hasTier(c, 'LITERATURE_DERIVED') ? `${c.literature?.citations} papers · ${Math.round((c.literature?.faithfulness || 0) * 100)}% grounded` : 'Papers not checked here'}
+                  </div>
                 </div>
               </div>
               <button onClick={() => setExpanded(expanded === c.compound.id ? null : c.compound.id)} className="mt-2 w-full rounded-full border border-forest-900/10 bg-white py-2 text-[12px] font-medium text-forest-700 active:scale-[0.98] dark:bg-white/5 dark:text-cream-100">
@@ -106,9 +124,9 @@ export default function CandidateRankingTable({ ranking, loading, onSelect }) {
                     {[
                       { tier: 'DATABASE_DERIVED', val: `Balance ${c.database?.qed?.toFixed(2)} · ${c.compound.plant}` },
                       { tier: 'DOCKING_RESULT', val: `${c.docking?.affinity_kcal_mol?.toFixed(2)} fit score` },
-                      { tier: 'ML_PREDICTION', val: `Strength ${c.ml?.pKd_pred?.toFixed(2)}` },
-                      { tier: 'XAI_INTERPRETATION', val: `${plainTop(c.xai?.topFeature)}` },
-                      { tier: 'LITERATURE_DERIVED', val: `${c.literature?.citations} papers` },
+                      { tier: 'ML_PREDICTION', val: hasTier(c, 'ML_PREDICTION') ? `Strength ${c.ml?.pKd_pred?.toFixed(2)}` : 'Not computed for this shortlist' },
+                      { tier: 'XAI_INTERPRETATION', val: hasTier(c, 'XAI_INTERPRETATION') ? plainTop(c.xai?.topFeature) : 'Not computed for this shortlist' },
+                      { tier: 'LITERATURE_DERIVED', val: hasTier(c, 'LITERATURE_DERIVED') ? `${c.literature?.citations} papers` : 'Not computed for this shortlist' },
                     ].map((row) => (
                       <div key={row.tier} className="rounded-xl bg-white border border-forest-900/10 p-2 dark:bg-white/5">
                         <ConfidenceBadge tier={row.tier} size="sm" />
@@ -163,17 +181,25 @@ export default function CandidateRankingTable({ ranking, loading, onSelect }) {
 
               <div className="col-span-2">
                 <div className="rounded-xl bg-gold-50 border border-gold-300/50 p-2 dark:bg-white/5">
-                  <div className="text-xs font-bold text-forest-800 dark:text-cream-50">Strength {c.ml?.pKd_pred?.toFixed(1)}</div>
-                  <div className="text-[10px] text-forest-700/70 dark:text-cream-100/60 mt-1">Trust {Math.round((c.ml?.applicability || 0) * 100)}% · model guess</div>
+                  {hasTier(c, 'ML_PREDICTION') ? (
+                    <>
+                      <div className="text-xs font-bold text-forest-800 dark:text-cream-50">Strength {c.ml?.pKd_pred?.toFixed(1)}</div>
+                      <div className="text-[10px] text-forest-700/70 dark:text-cream-100/60 mt-1">Trust {Math.round((c.ml?.applicability || 0) * 100)}% · model guess</div>
+                    </>
+                  ) : (
+                    <div className="text-[10px] italic text-forest-700/60 dark:text-cream-100/50">Not scored for this shortlist</div>
+                  )}
                 </div>
               </div>
 
               <div className="col-span-2 flex flex-col gap-1">
                 <div className="rounded-xl bg-cream-50 border border-forest-900/10 p-1.5 dark:bg-white/5">
-                  <div className="text-[10px] text-forest-700/80 dark:text-cream-100/70 truncate">Why: {plainTop(c.xai?.topFeature)}</div>
+                  <div className="text-[10px] text-forest-700/80 dark:text-cream-100/70 truncate">Why: {hasTier(c, 'XAI_INTERPRETATION') ? plainTop(c.xai?.topFeature) : 'not explained here'}</div>
                 </div>
                 <div className="rounded-xl bg-forest-50 border border-forest-900/10 p-1.5 dark:bg-white/5">
-                  <div className="text-[10px] text-forest-700 dark:text-cream-100/70">{c.literature?.citations} papers · {Math.round((c.literature?.faithfulness || 0) * 100)}% grounded</div>
+                  <div className="text-[10px] text-forest-700 dark:text-cream-100/70">
+                    {hasTier(c, 'LITERATURE_DERIVED') ? `${c.literature?.citations} papers · ${Math.round((c.literature?.faithfulness || 0) * 100)}% grounded` : 'Papers not checked here'}
+                  </div>
                 </div>
                 <button onClick={() => setExpanded(expanded === c.compound.id ? null : c.compound.id)} className="mt-1 text-[11px] font-medium text-forest-700 hover:text-forest-900 dark:text-cream-100 transition active:scale-95">
                   {expanded === c.compound.id ? 'Hide breakdown' : 'See breakdown'}
@@ -187,9 +213,9 @@ export default function CandidateRankingTable({ ranking, loading, onSelect }) {
                     {[
                       { tier: 'DATABASE_DERIVED', val: `Balance ${c.database?.qed?.toFixed(2)} · ${c.compound.plant}` },
                       { tier: 'DOCKING_RESULT', val: `${c.docking?.affinity_kcal_mol?.toFixed(2)} fit score` },
-                      { tier: 'ML_PREDICTION', val: `Strength ${c.ml?.pKd_pred?.toFixed(2)}` },
-                      { tier: 'XAI_INTERPRETATION', val: `${plainTop(c.xai?.topFeature)}` },
-                      { tier: 'LITERATURE_DERIVED', val: `${c.literature?.citations} papers` },
+                      { tier: 'ML_PREDICTION', val: hasTier(c, 'ML_PREDICTION') ? `Strength ${c.ml?.pKd_pred?.toFixed(2)}` : 'Not computed for this shortlist' },
+                      { tier: 'XAI_INTERPRETATION', val: hasTier(c, 'XAI_INTERPRETATION') ? plainTop(c.xai?.topFeature) : 'Not computed for this shortlist' },
+                      { tier: 'LITERATURE_DERIVED', val: hasTier(c, 'LITERATURE_DERIVED') ? `${c.literature?.citations} papers` : 'Not computed for this shortlist' },
                     ].map((row) => (
                       <div key={row.tier} className="rounded-xl bg-white border border-forest-900/10 p-2 dark:bg-white/5">
                         <ConfidenceBadge tier={row.tier} size="sm" />
