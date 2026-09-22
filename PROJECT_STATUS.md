@@ -284,8 +284,14 @@ upload, Vercel deploy).
       (chunk F2) also independently confirmed building successfully via this same CI,
       without needing a local build on this RAM-constrained machine. Final
       `SCIENTIFIC_LIMITATIONS.md`/`FINAL_REPORT.md` synthesis from real verified artifacts only.
-- [ ] Phase H remainder: HF Hub model upload (bhumika's account, `bhumika-hf.txt` token),
-      HF Space for backend (Docker SDK), Vercel frontend deploy, end-to-end live verification
-      pass (real compound+target through the live deployed system).
+- [x] ~~Phase H: HF model upload, HF Space backend, Vercel frontend deploy~~ — DONE.
+      Live URLs: frontend https://ayurvedic-drug-discovery.vercel.app , backend
+      https://bhumika-tewari-282006-ayurvedic-drug-discovery-backend.hf.space , model
+      https://huggingface.co/bhumika-tewari-282006/ayurvedic-drug-discovery-affinity-model .
+      See docs/DEPLOYMENT_VERIFICATION.md. Verified via direct curl: real target data
+      returned, both frontend and backend /docs return HTTP 200. GitHub Actions CI is
+      fully green (frontend+backend). **Not yet done**: exercising a full pipeline run
+      (`POST /api/pipeline/run`) through the live frontend in an actual browser - the
+      individual pieces are verified live but the full user journey isn't yet.
 - [ ] Full Definition-of-Done checklist review against
       `docs/client_provided/complete_phase_plan.md` before considering the project done.
