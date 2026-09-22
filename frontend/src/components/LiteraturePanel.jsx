@@ -42,7 +42,7 @@ export default function LiteraturePanel({ literature, loading, query }) {
             </div>
           </div>
         </div>
-        <div className="shrink-0"><ConfidenceBadge tier="LITERATURE_DERIVED" size="sm" /></div>
+        <div className="shrink-0"><ConfidenceBadge tier="LITERATURE_DERIVED" size="sm" align="right" /></div>
       </div>
 
       <div className="p-5">

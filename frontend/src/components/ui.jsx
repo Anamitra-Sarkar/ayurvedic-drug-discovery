@@ -43,7 +43,7 @@ export function EmptyState({ icon = '🌱', title = 'Nothing here yet', hint = '
 }
 
 /** Confidence badge — plain-language face over the internal tier id (prop API unchanged). */
-export function ConfidenceBadge({ tier, size = 'md', showTooltip = true, showLabel = true, className = '' }) {
+export function ConfidenceBadge({ tier, size = 'md', showTooltip = true, showLabel = true, className = '', align = 'left' }) {
   const [hover, setHover] = useState(false);
   const meta = confidenceLevel(tier);
   if (!meta) {
@@ -65,7 +65,7 @@ export function ConfidenceBadge({ tier, size = 'md', showTooltip = true, showLab
         <span className="h-1.5 w-1.5 rounded-full" style={{ background: meta.color }} />
       </span>
       {showTooltip && hover && (
-        <div className="modal-panel absolute left-0 top-full z-50 mt-2 w-[min(320px,calc(100vw-3rem))] max-w-[calc(100vw-3rem)] rounded-2xl border border-forest-900/10 bg-white p-4 text-left shadow-lift dark:bg-forest-900 dark:border-white/10">
+        <div className={`modal-panel absolute ${align === 'right' ? 'right-0' : 'left-0'} top-full z-50 mt-2 w-[min(320px,calc(100vw-3rem))] max-w-[calc(100vw-3rem)] rounded-2xl border border-forest-900/10 bg-white p-4 text-left shadow-lift dark:bg-forest-900 dark:border-white/10`}>
           <div className="flex items-center gap-2.5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl text-lg" style={{ background: `${meta.color}15` }}>{meta.icon}</div>
             <div>

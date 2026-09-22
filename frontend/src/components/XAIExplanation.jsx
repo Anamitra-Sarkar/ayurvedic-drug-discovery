@@ -84,7 +84,7 @@ export default function XAIExplanation({ explanation, loading }) {
             <div className="text-[11px] text-forest-700/75 dark:text-cream-100/60">Which chemical patterns mattered most · {explanation.topFeatures?.length} patterns</div>
           </div>
         </div>
-        <div className="shrink-0"><ConfidenceBadge tier="XAI_INTERPRETATION" size="sm" /></div>
+        <div className="shrink-0"><ConfidenceBadge tier="XAI_INTERPRETATION" size="sm" align="right" /></div>
       </div>
 
       <div className="p-4 sm:p-5">

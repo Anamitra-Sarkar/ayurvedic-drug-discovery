@@ -45,7 +45,7 @@ export default function DockingResults({ result, loading }) {
             </div>
           </div>
         </div>
-        <div className="shrink-0"><ConfidenceBadge tier="DOCKING_RESULT" size="sm" /></div>
+        <div className="shrink-0"><ConfidenceBadge tier="DOCKING_RESULT" size="sm" align="right" /></div>
       </div>
 
       {meter != null && (

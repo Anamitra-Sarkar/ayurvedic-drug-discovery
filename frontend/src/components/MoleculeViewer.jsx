@@ -192,7 +192,7 @@ $$$$
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-2">
-          <ConfidenceBadge tier="DOCKING_RESULT" size="sm" />
+          <ConfidenceBadge tier="DOCKING_RESULT" size="sm" align="right" />
         </div>
       </div>
 

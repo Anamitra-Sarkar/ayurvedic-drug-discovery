@@ -53,7 +53,7 @@ export default function MLPredictionCard({ prediction, loading }) {
             <div className="text-[11px] text-forest-700/75 dark:text-cream-100/60">Our model’s best guess · based on {prediction.featuresUsed || 'many'} chemical patterns</div>
           </div>
         </div>
-        <div className="shrink-0"><ConfidenceBadge tier="ML_PREDICTION" size="sm" /></div>
+        <div className="shrink-0"><ConfidenceBadge tier="ML_PREDICTION" size="sm" align="right" /></div>
       </div>
 
       <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
