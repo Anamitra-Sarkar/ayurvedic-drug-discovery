@@ -285,6 +285,19 @@ function normalizeExplanation(r) {
  * retrievedDocs, query}. The real answer was already being computed
  * honestly (including a correct "the corpus has nothing on this" refusal)
  * but never reached the UI because of this shape mismatch. */
+/** The real Groq answer is markdown with **Answer:**/**Disclaimer:**/
+ * **Evidence tier:**/**References** sections - LiteraturePanel.jsx just
+ * prints it as plain text (no markdown renderer), so the raw "**" showed
+ * up literally. The UI already has its own disclaimer text and evidence-tier
+ * badge everywhere, so pull out just the real answer prose instead of
+ * adding a markdown renderer for one field. */
+function cleanLiteratureAnswer(raw) {
+  if (!raw) return raw;
+  const m = raw.match(/\*\*Answer:?\*\*\s*([\s\S]*?)(?=\n\s*\*\*(?:Disclaimer|Evidence tier|References)|$)/i);
+  const text = m ? m[1] : raw;
+  return text.replace(/\*\*/g, '').replace(/\[SAFETY DISCLAIMER\][\s\S]*$/i, '').trim();
+}
+
 function normalizeLiterature(r) {
   const lit = r ?? {};
   const content = lit.content ?? {};
@@ -299,7 +312,7 @@ function normalizeLiterature(r) {
   return {
     ...lit,
     query: content.query ?? lit.query,
-    synthesis: content.answer ?? lit.synthesis,
+    synthesis: cleanLiteratureAnswer(content.answer) ?? lit.synthesis,
     citations,
     faithfulness: typeof content.hallucination_rate === 'number' ? 1 - content.hallucination_rate : lit.faithfulness,
     retrievedDocs: content.retrieval_details?.length ?? lit.metadata?.num_retrieved ?? lit.retrievedDocs,
