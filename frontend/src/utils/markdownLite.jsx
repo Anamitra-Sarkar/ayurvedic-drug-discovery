@@ -1,22 +1,27 @@
 /**
  * markdownLite.jsx — small, dependency-free renderer for the plain markdown
  * the real Groq LLM answers come back in (headers, bold/italic, bullet and
- * numbered lists, horizontal rules). No npm markdown library was added on
- * purpose (avoids an untested remote-build risk); this covers exactly the
- * patterns real answers have used, not arbitrary markdown.
+ * numbered lists, horizontal rules, pipe tables, inline sup/sub HTML tags
+ * for chemistry notation like ICsub50/sub). No npm markdown library was
+ * added on purpose (avoids an untested remote-build risk); this covers
+ * exactly the patterns real answers have used, not arbitrary markdown.
  */
 
-/** Inline bold and italic markers within one line of text. */
+/** Inline bold/italic markers plus literal sup/sub HTML tags (the LLM
+ * emits real <sup>/<sub> for chemistry notation, not markdown for these). */
 function renderInline(text, keyPrefix) {
   const parts = [];
-  const re = /\*\*(.+?)\*\*|\*(.+?)\*|_(.+?)_/g;
+  const re = /\*\*(.+?)\*\*|\*(.+?)\*|_(.+?)_|<sup>(.+?)<\/sup>|<sub>(.+?)<\/sub>/g;
   let lastIndex = 0;
   let m;
   let key = 0;
   while ((m = re.exec(text)) !== null) {
     if (m.index > lastIndex) parts.push(text.slice(lastIndex, m.index));
-    if (m[1] !== undefined) parts.push(<strong key={`${keyPrefix}-${key++}`}>{m[1]}</strong>);
-    else parts.push(<em key={`${keyPrefix}-${key++}`}>{m[2] ?? m[3]}</em>);
+    const k = `${keyPrefix}-${key++}`;
+    if (m[1] !== undefined) parts.push(<strong key={k}>{m[1]}</strong>);
+    else if (m[2] !== undefined || m[3] !== undefined) parts.push(<em key={k}>{m[2] ?? m[3]}</em>);
+    else if (m[4] !== undefined) parts.push(<sup key={k}>{m[4]}</sup>);
+    else parts.push(<sub key={k}>{m[5]}</sub>);
     lastIndex = re.lastIndex;
   }
   if (lastIndex < text.length) parts.push(text.slice(lastIndex));
@@ -36,17 +41,36 @@ export function stripAnswerBoilerplate(raw) {
   return text.trim();
 }
 
-/** Parse plain markdown lines into block objects (heading/ul/ol/p/hr). */
+const isTableRow = (line) => /^\|.*\|$/.test(line.trim());
+const isSeparatorRow = (line) => /^\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)+\|?$/.test(line.trim());
+const splitRow = (line) => line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((c) => c.trim());
+
+/** Parse plain markdown lines into block objects (heading/ul/ol/p/hr/table). */
 function parseBlocks(text) {
   const lines = text.split('\n');
   const blocks = [];
   let currentList = null;
   const flush = () => { if (currentList) { blocks.push(currentList); currentList = null; } };
+  let i = 0;
 
-  for (const rawLine of lines) {
-    const line = rawLine.trim();
-    if (!line) { flush(); continue; }
-    if (/^-{3,}$/.test(line)) { flush(); blocks.push({ type: 'hr' }); continue; }
+  while (i < lines.length) {
+    const line = lines[i].trim();
+    if (!line) { flush(); i += 1; continue; }
+
+    if (isTableRow(line) && i + 1 < lines.length && isSeparatorRow(lines[i + 1])) {
+      flush();
+      const headers = splitRow(line);
+      const rows = [];
+      i += 2;
+      while (i < lines.length && isTableRow(lines[i])) {
+        rows.push(splitRow(lines[i]));
+        i += 1;
+      }
+      blocks.push({ type: 'table', headers, rows });
+      continue;
+    }
+    if (/^-{3,}$/.test(line)) { flush(); blocks.push({ type: 'hr' }); i += 1; continue; }
+
     const heading = line.match(/^(#{1,6})\s+(.*)$/);
     const bullet = line.match(/^[-*]\s+(.*)$/);
     const numbered = line.match(/^\d+\.\s+(.*)$/);
@@ -63,13 +87,15 @@ function parseBlocks(text) {
       flush();
       blocks.push({ type: 'p', text: line });
     }
+    i += 1;
   }
   flush();
   return blocks;
 }
 
 /** Render real (already-boilerplate-stripped) markdown prose as proper
- * headings/lists/paragraphs instead of a wall of text with raw syntax. */
+ * headings/lists/tables/paragraphs instead of a wall of text with raw
+ * syntax leaking through. */
 export default function MarkdownLite({ text, className = '' }) {
   if (!text) return null;
   const blocks = parseBlocks(text);
@@ -96,6 +122,30 @@ export default function MarkdownLite({ text, className = '' }) {
             <ol key={i} className="mt-1.5 space-y-1 list-decimal pl-4 marker:text-forest-500">
               {b.items.map((it, j) => <li key={j} className="text-sm leading-relaxed">{renderInline(it, `ol${i}-${j}`)}</li>)}
             </ol>
+          );
+        }
+        if (b.type === 'table') {
+          return (
+            <div key={i} className="mt-2 overflow-x-auto rounded-xl border border-forest-900/10">
+              <table className="min-w-full text-xs">
+                <thead>
+                  <tr className="bg-cream-50 dark:bg-white/5">
+                    {b.headers.map((h, j) => (
+                      <th key={j} className="px-2.5 py-1.5 text-left font-semibold text-forest-800 dark:text-cream-100 border-b border-forest-900/10">{renderInline(h, `th${i}-${j}`)}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {b.rows.map((row, ri) => (
+                    <tr key={ri} className="border-b last:border-0 border-forest-900/5">
+                      {row.map((cell, ci) => (
+                        <td key={ci} className="px-2.5 py-1.5 align-top text-forest-900/85 dark:text-cream-100/80">{renderInline(cell, `td${i}-${ri}-${ci}`)}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           );
         }
         return <p key={i} className="mt-2 text-sm leading-relaxed first:mt-0">{renderInline(b.text, `p${i}`)}</p>;
