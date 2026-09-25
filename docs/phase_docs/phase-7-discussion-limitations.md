@@ -40,7 +40,7 @@ development, that naive code review was insufficient to catch a specific recurri
 bug class (an API route calling a nonexistent agent method, silently falling back to
 a fabricated result) — found five separate times, only by actually exercising live
 endpoints and reading live logs. This shaped the project's own verification
-methodology (see `PROJECT_STATUS.md`) as much as any chemistry result did, and is
+methodology (see `phase-5-evaluation-validation.md` §5.4) as much as any chemistry result did, and is
 reported here as a genuine methodological finding about building evidentiary-tiered
 scientific software, not a footnote.
 

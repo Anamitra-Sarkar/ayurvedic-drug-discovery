@@ -133,8 +133,8 @@ literature, and pipeline endpoints (`backend/app/api/`), each calling the real
 agents above directly — verified, over the course of this project's live-testing
 history, to be free of the "endpoint calls a method that doesn't exist and silently
 falls back to fabricated data" bug pattern that was found and fixed in five separate
-locations during development (see `PROJECT_STATUS.md`'s session log for the full
-history of that specific bug class).
+locations during development (see `phase-5-evaluation-validation.md` §5.4 for the
+full history of that specific bug class).
 
 ---
 *Previous: [Phase 3 — Training & Benchmarking](phase-3-training-benchmarking.md) · Next: [Phase 5 — Evaluation & Validation](phase-5-evaluation-validation.md)*
