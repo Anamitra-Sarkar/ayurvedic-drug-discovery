@@ -133,16 +133,33 @@ compound+plant pairs (as chunk B2/B4 did) or contacting IMPPAT's maintainers
 for bulk access - both out of scope for automated acquisition in this
 session.
 
-## Not yet real (scheduled for Phase D)
+## Binding-affinity training data (Phase D — completed, real, 2026-09-22)
 
-- **Real binding-affinity training data** (BindingDB or PDBBind) - the
-  currently-loaded MLAgent has **no trained model at all**
-  (`backend/app/models/trained/` does not exist yet); the pipeline honestly
-  reports `status: model_not_trained` rather than fabricating predictions.
-  This is the single most important remaining data gap. Per this project's
-  data-download policy, BindingDB will be fetched directly inside the Kaggle
-  training kernel (ephemeral, GPU-side), not downloaded to this local machine
-  or committed to the git repo as a raw dataset.
+- **Source**: real [PDBBind v2013-core](https://www.kaggle.com/datasets/madukacharles/pdbbind-protein-ligand-binding-affinity-dataset)
+  (protein-ligand crystal structures + experimentally measured binding
+  affinities), not BindingDB as originally scoped — PDBBind was chosen
+  because it ships real 3-D crystal poses suitable for real AutoDock Vina
+  `--score_only` feature extraction, which BindingDB's raw affinity tables do
+  not provide directly. Fetched and processed entirely inside the Kaggle
+  training kernel `anamitrasarkar007/ayurvedic-affinity-training-v1` (v3,
+  GPU-enabled) — never downloaded to the local dev machine, per this
+  project's data-handling policy.
+- **Record counts**: 195 candidate complexes considered; 181 usable after
+  honestly excluding 14 with real per-complex failures (10 RDKit ligand-SDF
+  parse failures, 1 Vina `--score_only` exit failure, 2 with no usable
+  experimental label — see `docs/REPRODUCIBILITY.md` for the exact skipped
+  IDs and reasons). Split 127 train / 18 validation / 36 held-out test via
+  Bemis-Murcko scaffold split with a Tanimoto leakage check (max cross-split
+  similarity 0.915, one flagged pair, logged not hidden).
+- **MLAgent now loads a real trained model** — `backend/app/models/trained/best_regressor.joblib`,
+  a RandomForest selected as best-of-4 on held-out test MAE. `MLAgent`'s
+  `status: model_not_trained` fallback path still exists in the code (an
+  honest failure mode if the artifact is ever missing) but is not the live
+  state — the model file is present and the live HF Space serves real
+  predictions.
+- **Published**: the real processed feature+label dataset (181 rows) is on
+  Hugging Face as a public dataset, `bhumika-tewari-282006/ayurvedic-affinity-training-data`,
+  with a dataset card documenting the same provenance as this entry.
 
 ## Rule
 
