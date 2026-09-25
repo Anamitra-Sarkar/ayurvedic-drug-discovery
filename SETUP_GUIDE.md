@@ -40,11 +40,11 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 ### Backend Data:
 
-- `app/data/imppat_sample.json` - 100 phytochemicals covering Triphala, AYUSH-64, 63 anti-epileptic herbs - realistic ADMET
+- `app/data/imppat_sample.json` - 65 real, individually PubChem-verified phytochemicals covering Triphala, AYUSH-64, 63 anti-epileptic herbs (see `docs/DATA_PROVENANCE.md`)
 - `app/data/proteins/targets.json` - 10 targets: mGluR2 7E9G, mGluR3 5CNK, TLR4 3FXI, Factor Xa 2BOH, BACE1 2WJO, SARS-CoV-2 Mpro 6LU7 AYUSH-64 [3], GABRA1, SCN1A, GRIN2B etc
 - `app/data/literature_corpus/references.json` - 40 refs covering 7 areas A-G
 - `app/data/literature_corpus/papers/` - 5 sample papers
-- `app/data/ml/training_data.csv` - 500 synthetic PDBBind-like
+- `app/models/trained/best_regressor.joblib` - real RandomForest trained on 181 real PDBBind v2013-core complexes (see `docs/REPRODUCIBILITY.md`)
 - `app/models/ml_rescorer.pkl` - DockingApp RF style rescorer
 
 ### Frontend Setup

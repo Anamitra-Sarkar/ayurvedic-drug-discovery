@@ -9,7 +9,7 @@ Frontend (React Vite 3Dmol.js Plotly) <-> FastAPI Backend (6 layers agents) <-> 
 ### 1. Database Layer
 - **Agent:** DatabaseAgent
 - **Core:** None, direct JSON load
-- **Data:** imppat_sample.json 100 phytochemicals: 20 Triphala (Emblica, Terminalia bellerica, Terminalia chebula - gallic acid, ellagic acid, chebulagic acid, chebulinic acid, corilagin), 20 AYUSH-64 (Alstonia scholaris echitamine alstonine, Picrorhiza kurroa picroside I II kutkoside, Swertia chirata amarogentin mangiferin, Caesalpinia crista), 60 anti-epileptic (Bacopa bacoside A B, Withania withanolide A withaferin A, Nardostachys, Valeriana, Centella)
+- **Data:** imppat_sample.json - 65 real, individually PubChem-verified phytochemicals across Triphala, AYUSH-64, and anti-epileptic herb sets (an earlier 100-record version included 80 fabricated entries; found and removed - see `docs/DATA_PROVENANCE.md`)
 - **Each entry:** plant name botanical family phytochemical SMILES formula MW therapeutic uses Ayurvedic rasa guna virya vipaka dosha ADMET water sol caco2 BBB CYP Ames hepatotox drug-likeness Lipinski Veber QED bioavailability SA bioactivity predicted targets evidence_tier 1 disclaimer literature-mined not experimentally validated
 - **Methods:** search_plants(), get_phytochemicals_for_plant(), search_by_property(), get_network_pharmacology_graph() Triphala 174 bioactives 44 targets [4]
 - **API:** /api/database/search, /plants, /triphala, /ayush64
@@ -31,6 +31,11 @@ Frontend (React Vite 3Dmol.js Plotly) <-> FastAPI Backend (6 layers agents) <-> 
 - **Agent:** MLAgent
 - **Core:** features.py (AyurvedicFeatureEngineer fusing docking vina_affinity ligand_efficiency intermol hbonds hydrophobic pocket_occupancy QSAR MW LogP HBD HBA TPSA rotatable rings CSP3 BertzCT QED RDKit else pure-python hash fallback Ayurvedic phytochemical class one-hot flavonoid alkaloid terpenoid privileged scaffold dosha fit_scaler transform replicates BACE1 combined-feature improvement 0.59->0.78 R2), models.py (42-algorithm benchmark list documented top5 implemented RandomForest oob_score balanced, ExtraTrees low variance noisy docking, XGBoost -> HistGradientBoosting fallback, NuSVR NuSVC critical small n=49 TLR4 regime, StackingEnsemble RF+ET+XGB Ridge meta best generalization includes both regressors classifiers MODEL_METADATA), training.py (create_synthetic_pdbbind_dataset n=500 synthetic PDBBind-like curcumin withanolide seeds physics-inspired pKd = -vina + MW LogP QED + privileged + hbond clipped [3,10.5], leakage_aware_split GroupKFold scaffold hash KMeans cluster diversity TLR4 n=49 methodology, cross_validate_model benchmark_models metrics R2 RMSE MAE Pearson Spearman ROC-AUC PR-AUC)
 - **Methods:** train(), predict(), batch_predict(), binding affinity classification + regression
+- **Note:** `create_synthetic_pdbbind_dataset` (training.py) exists as a dev/offline
+  utility only. The model actually deployed in production
+  (`backend/app/models/trained/best_regressor.joblib`) is a RandomForest trained on
+  181 **real** PDBBind v2013-core complexes with real AutoDock Vina `--score_only`
+  features, not on synthetic data - see `docs/REPRODUCIBILITY.md`.
 - **Evidence:** ML_PREDICTION with applicability domain
 
 ### 5. XAI Layer

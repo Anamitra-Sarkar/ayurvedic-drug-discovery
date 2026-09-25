@@ -10,13 +10,29 @@ The distinction is motivated by **AYUSH-64 case study [3]** where a polyherbal f
 
 ---
 
+## Live Deployment
+
+This system is deployed and live, not a local-only prototype:
+
+- **Frontend**: [ayurvedic-drug-discovery.vercel.app](https://ayurvedic-drug-discovery.vercel.app)
+- **Backend API**: a public Hugging Face Space (Docker SDK) — API docs at `/docs`
+- **Trained model + dataset**: published as public Hugging Face model and dataset
+  repositories (real RandomForest binding-affinity model, real 181-row PDBBind
+  training set — see `docs/REPRODUCIBILITY.md` and `docs/FINAL_REPORT.md`)
+
+A real end-to-end pipeline run (all nine agent nodes) has been exercised through the
+live deployed frontend and independently verified; see
+`docs/DEPLOYMENT_VERIFICATION.md` for the dated verification log.
+
+---
+
 ## 2. Project Overview - Six Functional Layers
 
 1. **(i) Curated Phytochemical & Traditional-Medicine Databases**
    - Primary: IMPPAT (1,742 plants, 9,596 phytochemicals, 27,074 plant-phytochemical, 11,514 plant-therapeutic associations) [7][8]
    - IMPPAT 2.0: 100+ books, 7,000+ articles, largest digital resource [8]
    - Complementary: TCMSP (499 herbs, 29,384 ingredients, 3,311 targets, 12 ADME) [9], TCMID 2.0 [10]
-   - Sample: 100 phytochemicals covering Triphala, AYUSH-64, 63 anti-epileptic herbs
+   - Sample: 65 real, individually PubChem-verified phytochemicals covering Triphala, AYUSH-64, 63 anti-epileptic herbs (an original 100-record sample included 80 fabricated entries, found and removed — see `docs/DATA_PROVENANCE.md`)
 
 2. **(ii) Cheminformatic Molecular-Structure Processing**
    - RDKit descriptors: MW, LogP, HBD, HBA, TPSA, rotatable bonds, QED, BertzCT, CSP3
@@ -31,9 +47,9 @@ The distinction is motivated by **AYUSH-64 case study [3]** where a polyherbal f
 
 4. **(iv) Supervised ML for Binding-Affinity Prediction**
    - Fusion: Docking + QSAR features - BACE1 study R² 0.78 combined vs 0.65/0.64 alone [20]
-   - Models: Top 5 of 42-algorithm benchmark [19] - RF, ExtraTrees (R² 0.760 Factor Xa), XGBoost (ROC-AUC 0.962), NuSVR (critical for n=49 TLR4 [16]), Stacking Ensemble
-   - Splitting: Leakage-aware, diversity-preserving GroupKFold by scaffold + KMeans [16]
-   - Training: 500 synthetic PDBBind-like, physics-inspired pKd
+   - Models compared, informed by benchmark literature [19][16][20]: RandomForest, GradientBoosting, Ridge, XGBoost - RandomForest selected as best on held-out test MAE (real result: MAE 1.35, R² 0.01 - honestly modest, see `docs/REPRODUCIBILITY.md`)
+   - Splitting: Bemis-Murcko scaffold split with Tanimoto-similarity leakage check (real, not random)
+   - Training: 181 real PDBBind v2013-core complexes (127 train / 18 val / 36 test), real AutoDock Vina `--score_only` + RDKit features - not synthetic
 
 5. **(v) Explainable AI**
    - SHAP TreeSHAP + LIME + feature importance triangulation [24]
@@ -70,7 +86,7 @@ CompositeComputational = null principle: computational tiers do not sum to clini
 ## Pipeline Flow Diagram
 
 ```
-[IMPPAT 100 sample] 
+[IMPPAT 65 real verified records] 
     |
     v
 DatabaseAgent (TIER 1) -> 1,742 plants / 9,596 phytochemicals [7], Triphala 174 bioactives / 44 targets / 78 diseases [4], 63 herbs / 349 phytochemicals / 11 candidates [5]
@@ -144,21 +160,23 @@ ayurvedic-drug-discovery-pipeline/
 │   │   │   ├── rag/ - retriever, generator, corpus (40 refs)
 │   │   │   └── cheminformatics/ - descriptors, filters
 │   │   └── data/
-│   │       ├── imppat_sample.json (100 phytochemicals)
-│   │       ├── proteins/targets.json (10 targets)
+│   │       ├── imppat_sample.json (65 real, verified phytochemicals)
+│   │       ├── proteins/targets.json (10 real targets)
 │   │       ├── literature_corpus/references.json (40 refs)
-│   │       └── ml/training_data.csv (500 synthetic)
+│   │       └── trained/best_regressor.joblib (real RandomForest, trained on 181 real PDBBind complexes)
 │   ├── requirements.txt
 │   └── Dockerfile
 ├── frontend/
 │   ├── src/
 │   │   ├── components/ - EvidenceTierBadge, MoleculeViewer (3Dmol), DockingResults, MLPredictionCard, XAIExplanation, LiteraturePanel, PipelineFlow, CandidateRankingTable, NetworkGraph (Triphala 174)
-│   │   ├── pages/ - Dashboard, CompoundDetail, PipelineRun, Documentation
+│   │   ├── pages/ - Landing, Compounds, CompoundDetail, Targets, PipelineRun, Results, Ranking, Network, Documentation
 │   │   ├── services/api.js
 │   │   └── utils/evidence.js - central 5-tier registry with AYUSH-64 note
 │   └── package.json
 ├── docs/
 │   ├── LITERATURE_REVIEW_COMBINED.md - Extended Section 2, 3.1, 3.2.A-G, 4 matrix 20 rows, 5 gap with flow diagram + taxonomy + must not statement, 6 references 40 entries
+│   ├── FINAL_REPORT.md - capstone synthesis of the real, verified, deployed system
+│   ├── SCIENTIFIC_LIMITATIONS.md, DATA_PROVENANCE.md, REPRODUCIBILITY.md, DEPLOYMENT_VERIFICATION.md
 │   ├── PIPELINE_DIAGRAM.md
 │   ├── EVIDENTIARY_TIERS.md
 │   └── ...
