@@ -33,7 +33,28 @@ async def run_docking(req: DockingRequest):
             num_modes=req.num_poses,
             exhaustiveness=8,  # lower than the default 16 to stay responsive on a CPU-only host
         )
-        return tiered.data if hasattr(tiered, "data") else tiered
+        result = tiered.data if hasattr(tiered, "data") else tiered
+
+        # Real InteractionAnalysisAgent module - built and pipeline-wired already,
+        # but never called from this single-compound endpoint, so the frontend's
+        # "Where it seems to touch the protein" panel was always empty. Runs in
+        # "mock mode" (no real 3D docked coordinates available here) - rule-based,
+        # honestly self-labeled "PLIP-mimetic" in its own output, same disclosure
+        # pattern as the Vina empirical fallback above. Never let a failure here
+        # break the real docking result already computed.
+        try:
+            from app.agents.interaction_agent import InteractionAnalysisAgent
+            interaction_tiered = InteractionAnalysisAgent().analyze(
+                docking_result=result, protein_target=req.protein_pdb_id
+            )
+            interaction_data = interaction_tiered.data if hasattr(interaction_tiered, "data") else interaction_tiered
+            result["interactions"] = interaction_data.get("interactions", [])
+            result["interaction_summary"] = interaction_data.get("summary", {})
+        except Exception as ie:
+            result["interactions"] = []
+            result["interaction_summary_error"] = str(ie)
+
+        return result
     except Exception as e:
         # Honest failure - no fabricated score, no random.seed trick.
         return {

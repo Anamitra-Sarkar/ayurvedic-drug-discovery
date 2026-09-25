@@ -8,7 +8,7 @@
  */
 import React, { useEffect, useRef, useState } from 'react';
 import { ConfidenceBadge } from './ui.jsx';
-import { proteinShapeName } from '../utils/friendly.js';
+import { proteinShapeName, interactionLabel } from '../utils/friendly.js';
 
 function shapeTitle(raw) {
   if (!raw) return 'Protein shape preview';
@@ -257,9 +257,9 @@ $$$$
             {dockingResult.interactions.map((it, i)=>(
               <span key={i} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-violet-200 text-xs">
                 <span className="w-1.5 h-1.5 rounded-full bg-violet-600" />
-                <span className="font-medium">{it.type}</span>
+                <span className="font-medium">{interactionLabel(it.type).icon} {interactionLabel(it.type).label}</span>
                 <span className="font-mono text-slate-500">{it.residue}</span>
-                <span className="font-mono text-[11px] text-slate-400">{it.distance}Å</span>
+                <span className="font-mono text-[11px] text-slate-400">{typeof it.distance === 'number' ? it.distance.toFixed(2) : it.distance}Å</span>
               </span>
             ))}
           </div>

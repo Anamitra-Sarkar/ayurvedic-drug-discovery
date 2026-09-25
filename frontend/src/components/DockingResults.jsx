@@ -3,7 +3,7 @@
  * Numbers come straight from the API; only labels/explanations changed.
  */
 import { ConfidenceBadge, HowCalculated, ResearchNote } from './ui.jsx';
-import { fitScoreToMeter, fitVerdict } from '../utils/friendly.js';
+import { fitScoreToMeter, fitVerdict, interactionLabel } from '../utils/friendly.js';
 
 // Real docking/RMSD values come back as raw floats with 15+ significant
 // digits (e.g. -6.347847183429078) - displayed as-is they overflow their
@@ -111,7 +111,7 @@ export default function DockingResults({ result, loading }) {
             <div className="flex flex-wrap gap-2">
               {interactions.map((it, idx) => (
                 <span key={idx} className="chip bg-white border-forest-900/10 text-xs dark:bg-white/5 dark:text-cream-100">
-                  {it.type === 'H-bond' ? '🤝 Held' : it.type === 'Hydrophobic' ? '💧 Snug' : '🔗 Touch'} · {it.residue} · {it.distance}Å
+                  {interactionLabel(it.type).icon} {interactionLabel(it.type).label} · {it.residue} · {fmt(it.distance)}Å
                 </span>
               ))}
             </div>

@@ -107,6 +107,24 @@ export function shortChemicalId(smiles, len = 18) {
   return `${smiles.slice(0, len)}…`;
 }
 
+/** Plain-word label + icon for a real interaction type (InteractionType enum
+ * values from backend/app/core/docking/interactions.py: hbond, hydrophobic,
+ * pi_stacking, pi_cation, salt_bridge, water_bridge, halogen_bond,
+ * metal_complex). */
+const INTERACTION_LABELS = {
+  hbond: { icon: '🤝', label: 'Held' },
+  hydrophobic: { icon: '💧', label: 'Snug' },
+  pi_stacking: { icon: '🔶', label: 'Stacked' },
+  pi_cation: { icon: '⚡', label: 'Charge-pulled' },
+  salt_bridge: { icon: '🧂', label: 'Salt-linked' },
+  water_bridge: { icon: '💦', label: 'Water-linked' },
+  halogen_bond: { icon: '🧲', label: 'Halogen-linked' },
+  metal_complex: { icon: '🔩', label: 'Metal-linked' },
+};
+export function interactionLabel(type) {
+  return INTERACTION_LABELS[type] || { icon: '🔗', label: 'Touch' };
+}
+
 /** Friendly pipeline steps (internal layer ids i..vi unchanged) */
 export const FRIENDLY_STEPS = [
   { id: 'i', name: 'Plant library', icon: '🌿', text: 'Look up the plant and compound in our library.' },
