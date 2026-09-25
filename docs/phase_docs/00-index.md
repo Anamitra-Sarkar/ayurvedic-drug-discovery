@@ -1,21 +1,24 @@
 # Phase Documentation Index
 
 This project follows the 8-phase methodology specified in the client's brief
-(`docs/client_provided/complete_phase_plan.md`). Each phase below links to where
-its Definition-of-Done evidence actually lives in this repo — no phase is marked
-complete here until the linked artifact is real and has been verified by running
-it, not just written.
+(`docs/client_provided/complete_phase_plan.md`). Each phase has its own professional
+report below, written from real, verified artifacts — no phase is marked complete
+until the facts in its document have been checked against a real file, a real live
+test, or a real deployed URL, not just asserted.
 
-| Phase | Status | Evidence |
+| Phase | Document | Status |
 |---|---|---|
-| 1. Literature Review & Research Design | Done | `docs/LITERATURE_REVIEW_COMBINED.md`, `docs/LITERATURE_MATRIX.md`, `docs/RESEARCH_GAP.md`, `docs/REFERENCES.md` (40 refs, reused from client-provided review) |
-| 2. Data Collection, Segregation, Cleaning | In progress | `docs/DATA_PROVENANCE.md` (real IMPPAT seed data verified in Phase A; PubChem/PDB/BindingDB real acquisition scheduled for Phase B) |
-| 3. Dataset Training & Benchmarking | Pending | Real training data + Kaggle GPU run scheduled for Phase D; `docs/REPRODUCIBILITY.md` will carry the exact kernel ID |
-| 4. Full Scientific Implementation | In progress | Backend agent pipeline verified end-to-end (Phase A); docking/RDKit/PLIP hardening scheduled for Phase C |
-| 5. Evaluation Metrics & Validation | Pending | `backend/app/agents/validation_agent.py` (evidence-tier compliance, overclaim guard, hallucination check - all verified running); quantitative model metrics pending Phase D |
-| 6. Results & Analysis | Pending | `docs/FINAL_REPORT.md` (to be written from real artifacts in Phase G) |
-| 7. Discussion, Limitations, Future Work | Pending | `docs/SCIENTIFIC_LIMITATIONS.md` |
-| 8. Final Report & Presentation | Pending | `docs/FINAL_REPORT.md` |
+| 1 | [Literature Review & Research Design](phase-1-literature-review.md) | Complete |
+| 2 | [Data Collection, Segregation & Cleaning](phase-2-data-collection.md) | Complete |
+| 3 | [Dataset Training & Benchmarking](phase-3-training-benchmarking.md) | Complete |
+| 4 | [Full Scientific Implementation](phase-4-scientific-implementation.md) | Complete (2 honest gaps flagged) |
+| 5 | [Evaluation Metrics & Validation](phase-5-evaluation-validation.md) | Complete |
+| 6 | [Results & Scientific Analysis](phase-6-results-analysis.md) | Complete |
+| 7 | [Discussion, Limitations & Future Work](phase-7-discussion-limitations.md) | Complete |
+| 8 | [Final Report](phase-8-final-report.md) | Complete (no slide deck — explicitly not required for this delivery) |
 
-See `docs/client_provided/complete_phase_plan.md` for the full original brief this
-tracks against.
+For the single-document synthesis of the whole project, see `docs/FINAL_REPORT.md`.
+For the underlying technical detail each phase document cites, see
+`docs/LITERATURE_REVIEW_COMBINED.md`, `docs/DATA_PROVENANCE.md`,
+`docs/REPRODUCIBILITY.md`, `docs/SCIENTIFIC_LIMITATIONS.md`, and
+`docs/DEPLOYMENT_VERIFICATION.md`.
